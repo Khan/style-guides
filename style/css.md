@@ -45,7 +45,7 @@ If you aren't familiar with LESS, [check out the documentation](http://lesscss.o
 - As a rule of thumb, don't nest further than 3 levels deep. If you find yourself going further, think about reorganizing your rules (either the specificity needed, or the layout of the nesting).
 - If you are creating mixins that don't take parameters in a file that is going to be imported elsewhere (e.g. `shared-package/mixins.less`), include an empty parameter list to guard against the class being output each time the file is imported.
 
-```less
+```scss
 /* This is a good example of rule nesting with LESS */
 .third-format {
     background: rgba(0,0,0,0.5);
@@ -98,7 +98,7 @@ When styling a component, start with an element + class namespace (prefer class 
 </ul>
 ```
 
-```less
+```scss
 ul.category-list { // element + class namespace
 
   > .item { // direct descendant selector > for list items
@@ -117,7 +117,7 @@ ul.category-list { // element + class namespace
 
 If you are adding LESS files to a package you are working on, add only a single LESS file to the list in packages.py that imports all of the required files like this:
 
-```less
+```scss
 @import "../shared-package/variables.less";
 @import "../shared-package/mixins.less";
 @import "my-new-package-file.less";
