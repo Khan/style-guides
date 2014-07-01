@@ -1,5 +1,9 @@
 
-# 1) Naming
+# Javascript Style Guide
+
+Adapted from the jQuery style guide
+
+## 1) Naming
 
 ```js
 ClassNamesLikeThis
@@ -10,7 +14,7 @@ propertyNamesLikeThis
 SYMBOLIC_CONSTANTS_LIKE_THIS
 ```
 
-## Variables and properties referring to jQuery element objects are prefixed with $
+### Variables and properties referring to jQuery element objects are prefixed with $
 
 example:
 
@@ -25,14 +29,14 @@ function doSomethingFancy(selector) {
 }
 ```
 
-# 2) File names
+## 2) File names
 
 ```
 file-names-like-this.js
 template-names-like-this.handlebars
 ```
 
-# 3) Whitespace and Code Formatting
+## 3) Whitespace and Code Formatting
 
 
 Use 4-space indenting for all code. Do not use tabs.
@@ -82,12 +86,12 @@ Good:
    }
 ```
 
-# 4) Line length
+## 4) Line length
 
 Lines should not exceed 79 characters.
 This is consistent with our Python style guide, which adheres to PEP8.
 
-# 5) Equality
+## 5) Equality
 
 
 Strict equality checks using `===` should be used in favor of `==` due to the numerous oddities related to JavaScript’s type coercion.
@@ -128,12 +132,12 @@ Though, in most cases, other falsey values should also be included and the above
 if (!someVariable) {
 ```
 
-# 6) Strings
+## 6) Strings
 
 
 Strings should use double quotes (“) instead of single quotes (‘)
 
-# 7) Method and property visibility
+## 7) Method and property visibility
 
 
 Private methods and properties (in files, classes, and namespaces) should be named with a leading underscore.
@@ -159,7 +163,7 @@ var z = y._privateMember;  // NOT OK!
 
 Rationale: leading underscores for private methods and properties is consistent with the styles used in numerous JavaScript libraries, many of which we include in our code base (e.g. Backbone). It is also consistent with our Python style guide, lowering the mental effort for developers to switch between the two.
 
-# 8) Array and Object literals
+## 8) Array and Object literals
 
 Always use `[]` and `{}` style literals to initialize arrays and objects, instead of the Array and Object constructor. 
 
@@ -196,11 +200,11 @@ var a4 = [];
 
 Object constructors don't have the same problems, but for readability and consistency object literals should be used.
 
-# 9) Inline Comments.
+## 9) Inline Comments.
 
 Inline style comments should be of the // variety, not the /* */ variety.
 
-# 10) Top level file and class comments
+## 10) Top level file and class comments
 
 All files and classes should have JSDoc comments.
 
@@ -253,7 +257,7 @@ function SomeFunClass(arg1, arg2) {
 }
 ```
 
-# 11) Methods and properties comments
+## 11) Methods and properties comments
 
 All non-trivial methods and properties should also have JSDoc comments.
 Type annotations are strongly encouraged; if there is even a slight chance that the type will be ambiguous to future readers, put in a type annotation.
@@ -298,7 +302,7 @@ Badges.DisplayCase = Backbone.View.extend({
 };
 ```
 
-# 12) Use “$” for jQuery
+## 12) Use “$” for jQuery
 
 We use $ as the jQuery identifier, as opposed to typing out jQuery in full.
 
@@ -312,7 +316,7 @@ Good:
 $(".some-class span").hide();
 ```
 
-# 13) Avoid href="#" for javascript triggers
+## 13) Avoid href="#" for javascript triggers
 
  When you want a link-like thing rather than a button to trigger a javascript operation, rather than going to a new address.
 
@@ -328,7 +332,7 @@ Acceptable (if not totally "Good"):
 ```
 
 
-# 14) Use a new var statement for each declaration
+## 14) Use a new var statement for each declaration
 
 Bad:
 ```js
