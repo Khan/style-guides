@@ -8,9 +8,11 @@ As a living organiation, we want to have a place where company policy, standards
 
 ## Contents
 
-- [javascript style guide](/style/javascript.md)
+### Style Guides
 
-<!-- TODO convert these too
-- [css style guide]
-- [python style guide]
--->
+- [javascript](/style/javascript.md)
+- [css](/style/css.md)
+- [react](/style/react.md)
+- [python](/style/python.md)
+- [ObjC](https://github.com/Khan/objective-c-style-guide) (hosted separately)
+
