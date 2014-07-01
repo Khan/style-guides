@@ -10,9 +10,7 @@ Copying data from props to state can cause the UI to get out of sync form the un
 
 ## When and how do you use Backbone models?
 
-Use Backbone models often. Always use a model for data that's both readable and writable. This is optional for data thats read-only or write-only. Backbone models work really well with React - see for instance this [example](http://jsfiddle.net/WV3U7/8/) (note BackboneMixin is provided by `react-package`). Same goes for collections - they should just work.
-
-We're principled software engineers.
+You probably shouldn't. **TODO: expand**
 
 ## Use [propTypes](http://facebook.github.io/react/docs/reusable-components.html)
 
@@ -40,41 +38,12 @@ Example:
 
 As you may have noticed there is also a convention to name a handler that your component takes as a parameter `onEventName`. This is consistent with React's event naming - `onClick`, `onDrag`, `onChange`, etc.
 
-## Waiting for jsx compilation in dev
-
-On prod everything executes in the order it’s included on the page.
-
-In dev, due to jsx compilation, jsx files execute last (though Craig’s planned packaging work will change this so they execute at the same time on prod and dev). Say you have a setup like this:
-
-pkg1.js:
-    pkg1file1.jsx
-    pkg1file2.js
-
-pkg2.js:
-    pkg2file.js
-Assuming they’re included in the page in that order, execution will go:
-
-pkg1file2.js
-pkg2file.js
-pkg1file1.jsx
-So if pkg2file.js relies on pkg1file1.jsx, it could find that pkg1file1.jsx hasn’t been evaluated yet.
-
-The fix is simple - just use PackageManager to define and require packages. The code in pkg2file.js that relies on pkg1file1.jsx will wait until that file has executed and called setLoaded.
-
-There’s one catch - PackageManager by default calls setLoaded for you after including the file. So the files are executed in this order:
-
-pkg1file2.js
-PackageManager.setLoaded('pkg1.js');
-pkg2file.js
-PackageManager.setLoaded('pkg2.js');
-pkg1file1.jsx
-The trick is to tell PackageManager to not setLoaded, by using {{ js_css_packages.package('pkg1.js', register=False) }}, or something similar.
-
 ## Standard components
+
+**TODO: update this list**
 
 react-package provides several standard components, and there are more to come.
 
-- BackboneMixin - automatically updates your component whenever the model or collection it represents changes
 - SetIntervalMixin - provides a setInterval method so something can be done every x milliseconds
 - Animation - still a work in progress. demo
 
