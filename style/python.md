@@ -1,6 +1,6 @@
 # Python
 
-We follow the PEP8 style guide for Python.  Docstrings follow PEP257.  The rest of the document describes additions and clarifications to the PEP documents that we follow at Khan.
+We follow the [PEP8 style guide for Python](http://www.python.org/dev/peps/pep-0008/).  Docstrings follow [PEP257](http://www.python.org/dev/peps/pep-0257/).  The rest of the document describes additions and clarifications to the PEP documents that we follow at Khan.
 
 You can use `make lint` from the top level of the website source tree to run a pep8 check over all the source code. You should aim to not introduce any new violations, before checking in code.
 
@@ -14,7 +14,7 @@ This is a strict rule and ignoring this can (has) cause(d) bugs.
 
 Unless an exception is explicitly allowed by a codebase owner (Kamens or Jason, for now), __init__.py files should be empty.
 
-  *Rationale:* when you do import foo.bar python imports two files: foo/bar.py, and foo/__init__.py. If foo/__init__.py has imports of its own, those will be run as well -- even if you don’t plan to run any of the code defined in __init__.py. This slows down execution, and worse causes circular-import problems that could be entirely avoided.
+> *Rationale:* when you do import foo.bar python imports two files: foo/bar.py, and foo/__init__.py. If foo/__init__.py has imports of its own, those will be run as well -- even if you don’t plan to run any of the code defined in __init__.py. This slows down execution, and worse causes circular-import problems that could be entirely avoided.
 
 If you have code that you think every user of every function inside this directory needs to run first, __init__.py may be appropriate, but you should also consider just creating a function that executes that code, and running the function at the top level (that is, not indented) inside each file in your directory. This makes it more obvious what's going on, and also makes it easier to special-case certain files if the need ever arises.
 
@@ -47,11 +47,11 @@ from auth import models              # code uses models.Token -- ambiguous!
 from auth import oauth_credentials   # code uses oauth_credentials.Token -- clear
 ```
 
-  Rationale: This is the single best -- and easiest -- way to avoid the circular-import problem. To simplify, when you say import x python basically just needs to see that x.py exists, but when you say from x import foo python needs to actually read x.py, to ensure that foo is in there. When x does a 'from-import' from y, and y does a 'from-import' from x, there's no ordering where python can read both files in full, and a circular import ensues.
+> Rationale: This is the single best -- and easiest -- way to avoid the circular-import problem. To simplify, when you say import x python basically just needs to see that x.py exists, but when you say from x import foo python needs to actually read x.py, to ensure that foo is in there. When x does a 'from-import' from y, and y does a 'from-import' from x, there's no ordering where python can read both files in full, and a circular import ensues.
 
-  Another way to think about it is saying import x allows python to do a two-phase load of x: at import time it loads x's contents but doesn't try to parse them, and then when you first need a symbol from x, python does the parsing. But you probably don't need a symbol from x until someone calls a function you wrote that uses x.whatever. But calling of functions happens after __main__ executes, which is after all the imports have happened.
+> Another way to think about it is saying import x allows python to do a two-phase load of x: at import time it loads x's contents but doesn't try to parse them, and then when you first need a symbol from x, python does the parsing. But you probably don't need a symbol from x until someone calls a function you wrote that uses x.whatever. But calling of functions happens after __main__ executes, which is after all the imports have happened.
 
-  *Side note:* While this rule helps with most circular-import problems, it doesn’t help with all: python may still need to look up symbols from x even at parse time. For instance, if you say class xclass(y.yclass): ..., python needs to parse y at import-time.
+> *Side note:* While this rule helps with most circular-import problems, it doesn’t help with all: python may still need to look up symbols from x even at parse time. For instance, if you say class xclass(y.yclass): ..., python needs to parse y at import-time.
 
 The downside of this rule is that code gets more verbose: where before you could do
 
@@ -75,7 +75,7 @@ I argue, though, this verbiage is beneficial: in the same way that self.xxx is a
 
 All imports should be at the top of the file, separated (by blank lines) into three sections: system imports, third-party imports (including appengine), and khan academy-written imports. All non-system imports should be specified relative to the root of the ka python tree; do not use absolute_import. Each section should be sorted alphabetically. Only one import should be on each line.
 
-  *Rationale:* When I see autocomplete.foo() in the code, and I want to know what it does, it’s helpful to know if I should be looking on the web (because autocomplete is part of the python distribution), or in the local source tree (because autocomplete is written by us). It’s also helpful to know if it’s code we wrote (and the barrier to hacking on it is low) or code someone else wrote (which means it may be easier to just work around any problems I have with it). The three sections tell me that with just a quick glance at the top of the file. Plus, since each section is alphabetical, it’s easy for me to find the import within the section.
+> *Rationale:* When I see autocomplete.foo() in the code, and I want to know what it does, it’s helpful to know if I should be looking on the web (because autocomplete is part of the python distribution), or in the local source tree (because autocomplete is written by us). It’s also helpful to know if it’s code we wrote (and the barrier to hacking on it is low) or code someone else wrote (which means it may be easier to just work around any problems I have with it). The three sections tell me that with just a quick glance at the top of the file. Plus, since each section is alphabetical, it’s easy for me to find the import within the section.
 
 Alphabetical sorting is by the main module name (so second word of the line), and ignores case:
 
@@ -132,7 +132,7 @@ A function (including methods and generators) must have a docstring, unless it m
 
 The docstring should describe the function's calling syntax and its semantics, not its implementation.
 
-The docstring should end with the following special sections (see the Google style guide for more details).
+The docstring should end with the following special sections (see [the Google style guide](http://google-styleguide.googlecode.com/svn/trunk/pyguide.html?showone=Comments#Comments) for more details).
 
 - **Args:** List each parameter by name, and a description of it. The description can span several lines (use a hanging indent if so).
 - **Returns:** (or **Yields:** for generators): Describe the type and semantics of the return value. If the function only returns None, this section is not required.
@@ -140,9 +140,15 @@ The docstring should end with the following special sections (see the Google sty
 
 Classes should follow a similar format: a single line describing the class, plus more details, but instead of Args/Returns/Raises, it should have an Attributes: section that lists and describes the public attributes of the class (if any).
 
-Modules (files) should have a docstring too, at the top of the file, starting with the usual one-line summary:  """One line summary\n\nLonger description.\n"""
+Modules (files) should have a docstring too, at the top of the file, starting with the usual one-line summary:  
+```py
+"""One line summary
 
-  Rationale: People will read a piece of code many more times than they will write it. Time spent documenting at write-time more than pays off at read time. What is obvious to you as the code-author, well versed in the module where this function lives, may not be at all obvious to a code reader, who is possibly jumping into this function from some unrelated part of the codebase.
+Longer description.
+"""
+```
+
+> Rationale: People will read a piece of code many more times than they will write it. Time spent documenting at write-time more than pays off at read time. What is obvious to you as the code-author, well versed in the module where this function lives, may not be at all obvious to a code reader, who is possibly jumping into this function from some unrelated part of the codebase.
 
 The rules here may seem like overkill, especially the need to document every argument and return value. I can say from experience two things: it often does seem like overkill when writing it (especially when the docstring is longer than the function!) but I've almost never thought it was overkill when reading unfamiliar code. You may find, as you write the docstring, you're putting down something that wasn't as obvious as you thought it was:
 
@@ -160,33 +166,33 @@ Even though the meaning of now may seem obvious, it's not obvious that it's only
 
 ## Top of the file
 
-Start your file with a module docstring. Do not put a shebang line (`#!/usr/bin/python`) or copyright notice, or anything else.  Follow the docstring with your imports; don't put an __author__ line.
+Start your file with a module docstring. Do not put a shebang line (`#!/usr/bin/python`) or copyright notice, or anything else.  Follow the docstring with your imports; don't put an `__author__` line.
 
-  Exception: if the python file is meant to be executable, it should start with the following shebang line:
+> *Exception:* if the python file is meant to be executable, it should start with the following shebang line:
 
-```py
+> ```py
 #!/usr/bin/env python
 ```
 
-  *Rationale:* a shebang line is useless for non-executable files. An __author__ line just gets out of date, and is better determined by looking at source control history in any case. Code is automatically copyrighted; a copyright line doesn't help. No need to put this useless boilerplate at the top of the file!
+> *Rationale:* a shebang line is useless for non-executable files. An `__author__` line just gets out of date, and is better determined by looking at source control history in any case. Code is automatically copyrighted; a copyright line doesn't help. No need to put this useless boilerplate at the top of the file!
 
 TODO(csilvers): should we put in a line indicating licensing?
 
 ## Unused variables
 
-If you want to assign a value to a variable that will not be used again, name the variable either _ (python convention) or unused_<something> (less-well-known python convention).  This will keep our lint checkers from complaining.
+If you want to assign a value to a variable that will not be used again, name the variable either `_` (python convention) or `unused_<something>` (less-well-known python convention).  This will keep our lint checkers from complaining.
 
 ## Splitting lines
 
 Using PEP8 as a guideline for Python formatting runs us head-long into a great debate: the 79-character line limit. For better or worse, the PEP8 limit is part of the lint check for Khan Academy's Python code.
 
-  Rationale: short lines have benefits, including:
+> Rationale: short lines have benefits, including:
 
-  - Broad tool support. Code is read more frequently than it is written, often by those whose tools don't match the original author. Short lines are always well-supported. Many tools only naively support long lines (<pre> tags and most terminal tools), and no editor wraps long lines intelligently enough in all cases.
-  - Side-by-side code windows. Try it out, it's great.
-  - A free gut check. It's easy to reach 100 or 200 columns when writing complex expressions or nesting deeply. If this indicates unclear code, future readers would appreciate a quick refactoring.
+> - Broad tool support. Code is read more frequently than it is written, often by those whose tools don't match the original author. Short lines are always well-supported. Many tools only naively support long lines (`<pre>` tags and most terminal tools), and no editor wraps long lines intelligently enough in all cases.
+> - Side-by-side code windows. Try it out, it's great.
+> - A free gut check. It's easy to reach 100 or 200 columns when writing complex expressions or nesting deeply. If this indicates unclear code, future readers would appreciate a quick refactoring.
 
-  Of course having a hard limit for line length is silly. Any reasonable limit runs into a case where breaking the rule produces better code. However, having unnecessarily long lines scattered about due to assumptions about a reader's tools is also silly.
+> Of course having a hard limit for line length is silly. Any reasonable limit runs into a case where breaking the rule produces better code. However, having unnecessarily long lines scattered about due to assumptions about a reader's tools is also silly.
 
 Python expressions end with a newline, not a semicolon, unlike many C-based languages. The trick is that lines can be continued within parentheses, brackets, and braces, or following a backslash. Parentheses are recommended. Backslashes should be avoided.
 
@@ -224,8 +230,8 @@ This makes splitting long messages easy.
 
 Because Python's indentation style is unlike many C-based languages, your editor might need some cajoling to support it.
 
-- Emacs has great support out of the box via python-mode.
-- Vim needs some help. Installing this indent script by Eric Mc Sween will get you there.
+- Emacs has great support out of the box via `python-mode`.
+- Vim needs some help. Installing [this indent script by Eric Mc Sween](http://www.vim.org/scripts/script.php?script_id=974) will get you there.
 
 Examples of line splitting from our code
 
