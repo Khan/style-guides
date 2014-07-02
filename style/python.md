@@ -2,7 +2,7 @@
 
 We follow the [PEP8 style guide for Python](http://www.python.org/dev/peps/pep-0008/).  Docstrings follow [PEP257](http://www.python.org/dev/peps/pep-0257/).  The rest of the document describes additions and clarifications to the PEP documents that we follow at Khan.
 
-You can use `make lint` from the top level of the website source tree to run a pep8 check over all the source code. You should aim to not introduce any new violations, before checking in code.
+You can use `make lint` from the top level of the website source tree to run a pep8 check over all the source code or `make linc` to check only files you've changed. You should aim to not introduce any new violations, before checking in code.
 
 ## Indentation
 
@@ -10,15 +10,15 @@ Use 4 spaces -- never tabs -- for indentation.
 
 This is a strict rule and ignoring this can (has) cause(d) bugs.
 
-## __init__.py
+## \_\_init\_\_.py
 
-Unless an exception is explicitly allowed by a codebase owner (Kamens or Jason, for now), __init__.py files should be empty.
+Unless an exception is explicitly allowed by a codebase owner (Kamens or Jason, for now), `__init__.py` files should be empty.
 
-> *Rationale:* when you do import foo.bar python imports two files: foo/bar.py, and foo/__init__.py. If foo/__init__.py has imports of its own, those will be run as well -- even if you don’t plan to run any of the code defined in __init__.py. This slows down execution, and worse causes circular-import problems that could be entirely avoided.
+> *Rationale:* when you do `import foo.bar` python imports two files: `foo/bar.py`, and `foo/__init__.py`. If `foo/__init__.py` has imports of its own, those will be run as well -- even if you don’t plan to run any of the code defined in `__init__.py`. This slows down execution, and worse causes circular-import problems that could be entirely avoided.
 
-If you have code that you think every user of every function inside this directory needs to run first, __init__.py may be appropriate, but you should also consider just creating a function that executes that code, and running the function at the top level (that is, not indented) inside each file in your directory. This makes it more obvious what's going on, and also makes it easier to special-case certain files if the need ever arises.
+If you have code that you think every user of every function inside this directory needs to run first, `__init__.py` may be appropriate, but you should also consider just creating a function that executes that code, and running the function at the top level (that is, not indented) inside each file in your directory. This makes it more obvious what's going on, and also makes it easier to special-case certain files if the need ever arises.
 
-Using __init__.py to bring variables from sub-modules into the main module space totally defeats the point of having sub-modules in the first place; don’t do it.
+Using `__init__.py` to bring variables from sub-modules into the main module space totally defeats the point of having sub-modules in the first place; don’t do it.
 
 For more discussion, see http://stackoverflow.com/questions/1944569/how-do-i-write-good-correct-init-py-files.
 
