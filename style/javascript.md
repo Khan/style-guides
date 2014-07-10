@@ -134,8 +134,14 @@ if (!someVariable) {
 
 ## 6) Strings
 
+Strings should use double quotes `'` where possible, and double quotes `"` when necessary, just as in python.
 
-Strings should use double quotes (“) instead of single quotes (‘)
+```js
+var good = 'a string';
+var alsoGood = "When you need 'apostrophes' then double-quotes won't hurt";
+
+var notGood = "double quotes for no reason"
+```
 
 ## 7) Method and property visibility
 
