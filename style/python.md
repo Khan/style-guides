@@ -182,9 +182,15 @@ TODO(csilvers): should we put in a line indicating licensing?
 
 If you want to assign a value to a variable that will not be used again, name the variable either `_` (python convention) or `unused_<something>` (less-well-known python convention).  This will keep our lint checkers from complaining.
 
+## Line length
+
+Lines are to have a maximum length of 99 characters. This is consistent with PEP8.
+
+> For code maintained exclusively or primarily by a team that can reach agreement on this issue, it is okay to increase the nominal line length from 80 to 100 characters
+
 ## Splitting lines
 
-Using PEP8 as a guideline for Python formatting runs us head-long into a great debate: the 79-character line limit. For better or worse, the PEP8 limit is part of the lint check for Khan Academy's Python code.
+Using PEP8 as a guideline for Python formatting runs us head-long into a great debate: the 99-character line limit. For better or worse, the PEP8 limit is part of the lint check for Khan Academy's Python code.
 
 > Rationale: short lines have benefits, including:
 
