@@ -88,8 +88,10 @@ Good:
 
 ## 4) Line length
 
-Lines should not exceed 79 characters.
+Lines should not exceed 99 characters.
 This is consistent with our Python style guide, which adheres to PEP8.
+
+> For code maintained exclusively or primarily by a team that can reach agreement on this issue, it is okay to increase the nominal line length from 80 to 100 characters
 
 ## 5) Equality
 
