@@ -327,7 +327,9 @@ http://stackoverflow.com/questions/134845/href-tag-for-javascript-links-or-javas
 Bad:
 ```js
 <a href="#">Flag</a>
+```
 Acceptable (if not totally "Good"):
+```js
 <a href="javascript:void 0">Flag</a>
 ```
 
