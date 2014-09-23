@@ -380,19 +380,8 @@ window.Jungle = {
 };
 ```
 
-Acceptable:
-```
-exports.welcome = function() {
-    // ...
-};
-
-exports.haveFever = function() {
-    // ...
-};
-```
-
-Best:
-```
+Good:
+```js
 var Jungle = {
     welcome: function() {
         // ...
@@ -405,14 +394,18 @@ var Jungle = {
 module.exports = Jungle;
 ```
 
+In most cases where you'd want to export multiple things from the same file, the right thing to do is split up the file so you maintain one export per file.
+
 ## 16) Separate first party and third party `require()` lines, and sort `require()` lines.
 
 This is to mirror our import style in python: https://github.com/Khan/org-docs/blob/master/style/python.md#import-style (except that there are no "system" imports except when writing code to run in node).
 
+"First party" code is anything we wrote whose primary source lives in the repository its being used in. Underscore is third party because we didn't write it. Katex is third party in webapp because even though we wrote it, its primary sources lives in a different repository.
+
 Imports should be sorted lexicographically (which is what unix `sort` should do).
 
 Bad:
-```
+```js
 var _ = require("underscore");
 var $ = require("jquery");
 var APIActionResults = require("../shared-package/api-action-results.js");
@@ -429,12 +422,16 @@ var BoosterTaskStore = require("./datastores/booster-task-store.js");
 var LearningTask = require("../tasks-package/learning-task.js");
 var UserMissionStore = require("./datastores/user-mission-store.jsx");
 var updateDocumentTitle = require("../shared-package/update-document-title.js");
+var Kicksend = require(
+    "../../third_party/javascript-khansrc/mailcheck/mailcheck.js");
 ```
 
 Good:
-```
+```js
 var $ = require("jquery");
 var Backbone = require("backbone");
+var Kicksend = require(
+    "../../third_party/javascript-khansrc/mailcheck/mailcheck.js");
 var React = require("react");
 var _ = require("underscore");
 
@@ -451,4 +448,31 @@ var RecentTopicStore = require("./datastores/recent-topic-store.jsx");
 var UserMission = require("../missions-package/user-mission.js");
 var UserMissionStore = require("./datastores/user-mission-store.jsx");
 var updateDocumentTitle = require("../shared-package/update-document-title.js");
+```
+
+## 17) Object destructuring goes after all require lines:
+
+Bad:
+```
+var React = require("react");
+var ReactART = require("react-art");
+var Group = ReactART.Group;
+var Path = ReactART.Path;
+var Shape = ReactART.Shape;
+var _ = require("underscore");
+
+var ItemStore = require("./item-store.jsx");
+```
+
+Good:
+```
+var React = require("react");
+var ReactART = require("react-art");
+var _ = require("underscore");
+
+var ItemStore = require("./item-store.jsx");
+
+var Group = ReactART.Group;
+var Path = ReactART.Path;
+var Shape = ReactART.Shape;
 ```
