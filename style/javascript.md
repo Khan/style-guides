@@ -224,9 +224,7 @@ The top level file comment is designed to orient readers unfamiliar with the cod
 coaches.js
 ```js
 /**
-
  * Various components to handle management of lists of coaches for
-
  * the profile page.
  *
  * These utilities were not written to be a general purpose utility
@@ -241,15 +239,11 @@ Classes must be documented with a description, and appropriate type tags (see â€
 
 ```js
 /**
-
  * Class making something fun and easy.
-
+ *
  * @param {string} arg1 An argument that makes this more interesting.
-
  * @param {Array.<number>} arg2 List of numbers to be processed.
-
  */
-
 function SomeFunClass(arg1, arg2) {
 
   // ...
@@ -355,8 +349,130 @@ if you forget a comma, you just made a global
 it originated when people wanted to save bytes, but we have a minifier
 it makes line-based diffs/editing messier
 it encourages C89-style declarations at the top of scope, preventing you from only declaring vars before first use, the latter preferable as it conveys intended scope to the reader
-15) Don't pollute the global namespace, i.e. module.exports best practices
 
-https://docs.google.com/a/khanacademy.org/document/d/13Sz-dGGzmH5oA7RcUTSz8vmGf770XXNAk7F8CBjeq3Q
 
-Basically, use module.exports= and put it at the end of the file. It's best to have only one logical unit (function/class/component) per file.
+## 15) Use modules, not global variables
+
+In most of our major JavaScript repositories (webapp, perseus, khan-exerises), we use some form of module system like [RequireJS](http://requirejs.org/) or [browserify](http://browserify.org/), or in the case of webapp our own home built thing that works similarly to browserify.
+
+In all of these cases, there are mechanisms for an explicit import/export mechanism rather than using global variables to export functionality.
+
+Awful
+```js
+window.welcome = function() {
+   // ...
+};
+
+window.haveFever = function() {
+   // ...
+};
+```
+
+Bad
+```js
+window.Jungle = {
+    welcome: function() {
+        // ...
+    },
+    haveFever: function() {
+        // ...
+    }
+};
+```
+
+Good:
+```js
+var Jungle = {
+    welcome: function() {
+        // ...
+    },
+    haveFever: function() {
+        // ...
+    }
+};
+
+module.exports = Jungle;
+```
+
+In most cases where you'd want to export multiple things from the same file, the right thing to do is split up the file so you maintain one export per file.
+
+## 16) Separate first party and third party `require()` lines, and sort `require()` lines.
+
+This is to mirror our import style in python: https://github.com/Khan/org-docs/blob/master/style/python.md#import-style (except that there are no "system" imports except when writing code to run in node).
+
+"First party" code is anything we wrote whose primary source lives in the repository its being used in. Underscore is third party because we didn't write it. Katex is third party in webapp because even though we wrote it, its primary sources lives in a different repository.
+
+Imports should be sorted lexicographically (which is what unix `sort` should do).
+
+Bad:
+```js
+var _ = require("underscore");
+var $ = require("jquery");
+var APIActionResults = require("../shared-package/api-action-results.js");
+var Analytics = require("../shared-package/analytics.js");
+var Backbone = require("backbone");
+var Cookies = require("../shared-package/cookies.js");
+var HappySurvey = require("../missions-package/happy-survey.jsx");
+var DashboardActions = require('./datastores/dashboard-actions.js');
+var ProfileRouter = require('../profile-nav-package/profile-router.js');
+var React = require("react");
+var RecentTopicStore = require("./datastores/recent-topic-store.jsx");
+var UserMission = require("../missions-package/user-mission.js");
+var BoosterTaskStore = require("./datastores/booster-task-store.js");
+var LearningTask = require("../tasks-package/learning-task.js");
+var UserMissionStore = require("./datastores/user-mission-store.jsx");
+var updateDocumentTitle = require("../shared-package/update-document-title.js");
+var Kicksend = require(
+    "../../third_party/javascript-khansrc/mailcheck/mailcheck.js");
+```
+
+Good:
+```js
+var $ = require("jquery");
+var Backbone = require("backbone");
+var Kicksend = require(
+    "../../third_party/javascript-khansrc/mailcheck/mailcheck.js");
+var React = require("react");
+var _ = require("underscore");
+
+var APIActionResults = require("../shared-package/api-action-results.js");
+var Analytics = require("../shared-package/analytics.js");
+var BoosterTaskStore = require("./datastores/booster-task-store.js");
+var Cookies = require("../shared-package/cookies.js");
+var DashboardActions = require('./datastores/dashboard-actions.js');
+var HappySurvey = require("../missions-package/happy-survey.jsx");
+var LearningTask = require("../tasks-package/learning-task.js");
+var Profile = require("../profile-nav-package/profile-nav.js");
+var ProfileRouter = require('../profile-nav-package/profile-router.js');
+var RecentTopicStore = require("./datastores/recent-topic-store.jsx");
+var UserMission = require("../missions-package/user-mission.js");
+var UserMissionStore = require("./datastores/user-mission-store.jsx");
+var updateDocumentTitle = require("../shared-package/update-document-title.js");
+```
+
+## 17) Object destructuring goes after all require lines:
+
+Bad:
+```
+var React = require("react");
+var ReactART = require("react-art");
+var Group = ReactART.Group;
+var Path = ReactART.Path;
+var Shape = ReactART.Shape;
+var _ = require("underscore");
+
+var ItemStore = require("./item-store.jsx");
+```
+
+Good:
+```
+var React = require("react");
+var ReactART = require("react-art");
+var _ = require("underscore");
+
+var ItemStore = require("./item-store.jsx");
+
+var Group = ReactART.Group;
+var Path = ReactART.Path;
+var Shape = ReactART.Shape;
+```
