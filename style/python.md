@@ -134,11 +134,11 @@ The docstring should describe the function's calling syntax and its semantics, n
 
 The docstring should end with the following special sections (see [the Google style guide](http://google-styleguide.googlecode.com/svn/trunk/pyguide.html?showone=Comments#Comments) for more details).
 
-- **Args:** List each parameter by name, and a description of it. The description can span several lines (use a hanging indent if so).
+- **Arguments:** List each parameter by name, and a description of it. The description can span several lines (use a hanging indent if so). Use instead of "Args". 
 - **Returns:** (or **Yields:** for generators): Describe the type and semantics of the return value. If the function only returns None, this section is not required.
 - **Raises:** List all exceptions that are relevant to the interface.
 
-Classes should follow a similar format: a single line describing the class, plus more details, but instead of Args/Returns/Raises, it should have an Attributes: section that lists and describes the public attributes of the class (if any).
+Classes should follow a similar format: a single line describing the class, plus more details, but instead of Arguments/Returns/Raises, it should have an Attributes: section that lists and describes the public attributes of the class (if any).
 
 Modules (files) should have a docstring too, at the top of the file, starting with the usual one-line summary:  
 ```py
