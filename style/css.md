@@ -15,14 +15,15 @@ Welcome to the CSS style guide. This guide borrows heavily from the [Github styl
 - Alphabetize properties within rule declarations
 - Properties with values of 0 should *not* have units
 - Use lowercase hex color codes #fff unless using rgba.
-- Use /* */ for comment blocks (instead of //).
+- Use // for comments (unless you're writing inline CSS, but please don't)
+- Use /* */ for block comments (instead of //).
 - Use a maximum line length of 80 characters (rationale: looking at files side-by-side)
 - Use dashes in selectors instead of underscores (.my-class, not .my_class)
 
 Here is good example syntax:
 
 ```css
-/* This is a good example! */
+// This is a good example!
 .styleguide-format,
 .other-format,
 .third-format {
@@ -46,25 +47,24 @@ If you aren't familiar with LESS, [check out the documentation](http://lesscss.o
 - If you are creating mixins that don't take parameters in a file that is going to be imported elsewhere (e.g. `shared-package/mixins.less`), include an empty parameter list to guard against the class being output each time the file is imported.
 
 ```scss
-/* This is a good example of rule nesting with LESS */
+/*
+ * This is a good example of rule nesting with LESS.
+ */
 .third-format {
     background: rgba(0,0,0,0.5);
     border: 1px solid #0f0;
     color: #000;
     margin: 0;
 
-    .next-rule {
-    /* This outputs: .third-format .next-rule {...} */
+    .next-rule {  // outputs: .third-format .next-rule {...}
         color: #fff;
     }
     
-    &.next-rule {
-    /* This outputs: .third-format.next-rule {...} */
+    &.next-rule {  // outputs: .third-format.next-rule {...}
         color: #aaa;
     }
 
-    > .next-rule {
-    /* This outputs: .third-format > .next-rule {...} */
+    > .next-rule {  // outputs: .third-format > .next-rule {...}
         color: red;
     }
 }
