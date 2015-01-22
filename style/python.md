@@ -47,9 +47,9 @@ from auth import models              # code uses models.Token -- ambiguous!
 from auth import oauth_credentials   # code uses oauth_credentials.Token -- clear
 ```
 
-> Rationale: This is the single best -- and easiest -- way to avoid the circular-import problem. To simplify, when you say import x Python executes the x.py file, but doesn't need to get any attributes from it.  When you say from x import foo Python needs x.py to be executed enough that foo is defined in it.  When x does a 'from-import' from y, and y does a 'from-import' from x, the circular import can succeed if a partial module is enough (as it will be with import x), but it can fail if the circularity happens before the needed attribute is defined (as it might be with from x import foo).
+> Rationale: This is the single best -- and easiest -- way to avoid the circular-import problem. To simplify, when you say `import x`, Python executes the `x.py` file, but doesn't need to get any attributes from it.  When you say `from x import foo`, Python needs `x.py` to be executed enough that `foo` is defined in it.  When `x` does a 'from-import' from `y`, and `y` does a 'from-import' from `x`, the circular import can succeed if a partial module is enough (as it will be with `import x`), but it can fail if the circularity happens before the needed attribute is defined (as it might be with `from x import foo`).
 
-> *Side note:* While this rule helps with most circular-import problems, it doesn’t help with all: Python may still need to look up symbols from x even at parse time. For instance, if you say class xclass(y.yclass): ..., Python the yclass attribute at import-time.
+> *Side note:* While this rule helps with most circular-import problems, it doesn’t help with all: a module `x` may still need symbols from a module `y` while `x` is still being imported. For instance, if you say `class xclass(y.yclass): ...`, Python needs the `yclass` attribute at import-time.
 
 The downside of this rule is that code gets more verbose: where before you could do
 
