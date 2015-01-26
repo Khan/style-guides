@@ -56,7 +56,7 @@ More KA-specific
 
 For now (until the rise of the New Package Manager) drop any reusable components (anything you could see someone else using) you've made in react-package. Also, let everyone know what you've built. Email the team and blog it.
 
-Open elements on the same line
+## Open elements on the same line
 
 ```jsx
 return <div>
