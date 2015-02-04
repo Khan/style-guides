@@ -82,20 +82,20 @@ Fit them all on the same line if you can, but put them all in the same column if
 
 Good:
 
-`<div class="highlight" key="highlight-div">`
+`<div className="highlight" key="highlight-div">`
 
 Good
 
 ```jsx
 <div
-    class="highlight"
+    className="highlight"
     key="highlight-div">
 ```
 
 Bad
 
 ```jsx
-<div class="highlight"
+<div className="highlight"
     key="highlight-div"
 ```
 
