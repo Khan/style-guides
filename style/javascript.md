@@ -476,3 +476,14 @@ var Group = ReactART.Group;
 var Path = ReactART.Path;
 var Shape = ReactART.Shape;
 ```
+
+ES6! (also good)
+```
+var React = require("react");
+var ReactART = require("react-art");
+var _ = require("underscore");
+
+var ItemStore = require("./item-store.jsx");
+
+var {Group, Path, Shape} = ReactART;
+```
