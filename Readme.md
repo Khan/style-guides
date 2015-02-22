@@ -22,7 +22,8 @@ In code reviews, it is common to put in TODOs when a reviewer points out some th
 ## Language Style Guides
 
 - [JavaScript](/style/javascript.md)
-- [CSS](/style/css.md)
 - [React](/style/react.md)
+- [CSS](/style/css.md)
 - [Python](/style/python.md)
+- [Java](/style/java.md)
 - [ObjC](https://github.com/Khan/objective-c-style-guide) (hosted separately)
