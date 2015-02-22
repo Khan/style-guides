@@ -1,6 +1,6 @@
 # Python
 
-We follow the [PEP8 style guide for Python](http://www.python.org/dev/peps/pep-0008/).  Docstrings follow [PEP257](http://www.python.org/dev/peps/pep-0257/).  The rest of the document describes additions and clarifications to the PEP documents that we follow at Khan.
+We follow the [PEP8 style guide for Python](http://www.python.org/dev/peps/pep-0008/).  Docstrings follow [PEP257](http://www.python.org/dev/peps/pep-0257/). The rest of the document describes additions and clarifications to the PEP documents that we follow at Khan Academy.
 
 You can use `make lint` from the top level of the website source tree to run a pep8 check over all the source code or `make linc` to check only files you've changed. You should aim to not introduce any new violations, before checking in code.
 
