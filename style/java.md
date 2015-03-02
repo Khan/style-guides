@@ -2,6 +2,7 @@
 
 At Khan Academy, we only use Java for Android and, as such, follow the [Android Code Style Guidelines for Contributors](https://source.android.com/source/code-style.html). Note that those rules themselves extend the [standard Java language style guide as of 1999](http://www.oracle.com/technetwork/java/javase/documentation/codeconventions-141855.html). The rest of this document describes additions and clarifications to those rules that we follow at Khan Academy.
 
+To import these settings for Android Studio, copy [the config file](/configs/KhanAcademyAndroid.xml) into `$HOME/Library/Preferences/AndroidStudio/codestyles/`.
 
 ## Imports
 
