@@ -61,7 +61,7 @@ For now (until the rise of the New Package Manager) drop any reusable components
 ```jsx
 return <div>
    ...
-</div>
+</div>;
 ```
 
 not
