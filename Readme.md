@@ -169,7 +169,7 @@ We follow these guidelines to produce legible code that adheres to the 79-charac
 - All parentheses should follow the inline or block rule:
   Either the open paren and the close paren are on the same line (inline) OR
   the open paren is the last character of a line and the close paren 
-  is the first character of a subsequent line with the same indentation as the first line (block).
+  is the first (non-whitespace) character of a subsequent line with the same indentation as the first line (block).
   * Exception: for block parens, the open paren can be followed by other open parens
     iff. the close paren is preceded by corresponding close parens.
 - The contents of block expressions should be indented with 4 spaces relative to the start of the
