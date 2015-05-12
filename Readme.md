@@ -152,7 +152,7 @@ If you want to assign a value to a variable that will not be used again, name th
 
 ## Splitting lines
 
-Using PEP8 as a guideline for Python formatting runs us head-long into a great debate: the 79-character line limit. For better or worse, the PEP8 limit is part of the lint check for Khan Academy's Python code.
+Using PEP8 as a guideline for Python formatting runs us head-long into a great debate: the 79-character line limit.
 
 > Rationale: short lines have benefits, including:
 
@@ -162,108 +162,155 @@ Using PEP8 as a guideline for Python formatting runs us head-long into a great d
 
 > Of course having a hard limit for line length is silly. Any reasonable limit runs into a case where breaking the rule produces better code. However, having unnecessarily long lines scattered about due to assumptions about a reader's tools is also silly.
 
-Python expressions end with a newline, not a semicolon, unlike many C-based languages. The trick is that lines can be continued within parentheses, brackets, and braces, or following a backslash. Parentheses are recommended. Backslashes should be avoided.
+We follow these guidelines to produce legible code that adheres to the 79-character line limit:
 
-```py
->>> True and (True or
-...           False)
-
-
->>> [x * x
-...  for x
-...  in xrange(0, 10)
-...  if x % 2]
-
-
->>> {'Earth': 1,
-...  'Jupiter': 5.3,
-...  'Saturn': 9}
-```
-
-Notably, splitting string literals doesn't require use of the + operator. Adjacent literals are automatically combined.
-
-```py
->>> twist = 'Peter Piper ' 'split a set ' 'of simple strings'
->>> twist
-'Peter Piper split a set of simple strings'
-```
-
-This makes splitting long messages easy.
-
-```py
->>> twist = ('Peter Piper '
-...          'split a set '
-...          'of simple strings')
-```
-
-Because Python's indentation style is unlike many C-based languages, your editor might need some cajoling to support it.
-
-- Emacs has great support out of the box via `python-mode`.
-- Vim needs some help. Installing [this indent script by Eric Mc Sween](http://www.vim.org/scripts/script.php?script_id=974) will get you there.
-
-Examples of line splitting from our code
+- Do not use backslashes to split lines.
+- Use parentheses, brackets, and braces to split lines.
+- All parentheses should follow the inline or block rule:
+  Either the open paren and the close paren are on the same line (inline) OR
+  the open paren is the last character of a line and the close paren 
+  is the first (non-whitespace) character of a subsequent line with the same indentation as the first line (block).
+  * Exception: for block parens, the open paren can be followed by other open parens
+    iff. the close paren is preceded by corresponding close parens.
+- The contents of block expressions should be indented with 4 spaces relative to the start of the
+  first and last lines.
+- Comma-separated arguments to a block parenthetical expression should all be on separate lines.
 
 ```py
 # BAD
 
-zero_duration_videos = video_models.Video.all().filter("duration =", 0).fetch(10000)
+# > 79 characters
+words = ['the', 'big', 'brown', 'dog', 'jumped', 'over', 'the', 'lazy', 'fox', 'and', 'broke', 'pep8']
+
+# comma-separated arguments are not all on separate lines
+words = [
+'the', 'big', 'brown', 'dog', 'jumped', 'over', 'the', 'lazy',
+'fox', 'and', 'broke', 'pep8'
+]
+
+# block is not indented
+words = [
+'the',
+'big',
+'brown',
+'dog',
+'jumped',
+'over',
+'the',
+'lazy',
+'fox'
+]
+
+# use of backslash
+user = User.objects.filter(name__icontains='joe'). \
+    values_list('user' 'username')
+
+# block is not clear
+[{ 'foo': 'bar',    # open paren is not the last character
+'biz': 'bang',
+'boo' : 'qux',
+'dog' : 'cat'}]     # close paren is not the first character
 
 # GOOD
-zero_duration_videos = (video_models.Video.all()
-                        .filter("duration =", 0)
-                        .fetch(10000))
+
+words = [
+    'the',
+    'big',
+    'brown',
+    'dog',
+    'jumped',
+    'over',
+    'the',
+    'lazy',
+    'fox'
+]
+
+user = (
+    User.objects.filter(name__icontains='joe').
+    values_list('user', 'username')
+)
+
+[{
+    'foo': 'bar',
+    'biz': 'bang',
+    'boo': 'qux',
+    'dog': 'cat'
+}]
 ```
+
+### More examples
+
+Splitting string literals doesn't require use of the + operator. Adjacent literals are automatically combined:
 
 ```py
 # BAD
-return current_app.response_class("OAuth error. %s" % e.message, status=401, headers=build_authenticate_header(realm="http://www.khanacademy.org"))
+twist = (
+    'Peter Piper' +
+    'split a set ' +
+    'of simple strings '
+)
 
 # GOOD
-return current_app.response_class(
-    "OAuth error. %s" % e.message, status=401,
-    headers=build_authenticate_header(realm="http://www.khanacademy.org"))
+twist = (
+     'Peter Piper '
+     'split a set '
+     'of simple strings'
+)
 ```
+
+Dictionary comprehension:
 
 ```py
 # BAD
 kwargs = dict((str(key), value) for key, value in topic_json.iteritems() if key in ['id', 'title', 'standalone_title', 'description', 'tags', 'hide'])
+
 # GOOD
-kwargs = dict((str(key), value)
-              for key, value in topic_json.iteritems()
-              if key in ['id', 'title', 'standalone_title',
-                         'description', 'tags', 'hide'])
+kwargs = dict(
+    (str(key), value)
+    for key, value in topic_json.iteritems()
+    if key in [
+        'id',
+        'title',
+        'standalone_title',
+        'description',
+        'tags',
+        'hide'
+    ]
+)
 ```
 
-## Splitting tricky lines
-
-There are cases where line splitting doesn't feel nice. Let's look at a few of them, sigh, and move on.
-
-This long method reference needs surrounding parens and splits the line before the dot operator.
+Nested properties:
 
 ```py
 # BAD
 badge_name = badges.topic_exercise_badges.TopicExerciseBadge.name_for_topic_key_name(self.key().name())
+
 # GOOD
-badge_name = (badges.topic_exercise_badges.TopicExerciseBadge
-              .name_for_topic_key_name(self.key().name()))
+badge_name = (
+    badges.topic_exercise_badges.TopicExerciseBadge.
+    name_for_topic_key_name(self.key().name())
+)
 ```
 
-This long string path needs to be split.
+Long string formatting:
 
 ```py
 # BAD
 self.redirect("/class_profile?selected_graph_type=%s&coach_email=%s&graph_query_params=%s" %
         (self.GRAPH_TYPE, urllib.quote(coach.email), urllib.quote(urllib.quote(self.request.query_string))))
+
 # GOOD
 self.redirect(
     "/class_profile?selected_graph_type=%s&coach_email=%s"
     "&graph_query_params=%s" % (
         self.GRAPH_TYPE,
         urllib.quote(coach.email),
-        urllib.quote(urllib.quote(self.request.query_string))))
+        urllib.quote(urllib.quote(self.request.query_string))
+    )
+)
 ```
 
-Sometimes, the best way to avoid long lines is to use temporary variables.  This can improve readability in any case.
+Using temporary variables:
 
 ```py
 # BAD
@@ -271,26 +318,45 @@ topics_list = [t for t in topics if not (
     (t.standalone_title == "California Standards Test: Algebra I" and t.id != "algebra-i") or
     (t.standalone_title == "California Standards Test: Geometry" and t.id != "geometry-2"))
     ]
+
 # GOOD
-bad_title_and_ids = [("California Standards Test: Algebra I", "algebra-i"),
-                     ("California Standards Test: Geometry", "geometry-2"),
-                    ]
-topics_list = [t for t in topics
-               if not (t.standalone_title, t.id) in bad_title_and_ids]
+bad_title_and_ids = [
+    ("California Standards Test: Algebra I", "algebra-i"),
+    ("California Standards Test: Geometry", "geometry-2"),
+]
+topics_list = [
+    t for t in topics
+    if not (t.standalone_title, t.id) in bad_title_and_ids
+]
 ```
 
-## Indenting continued lines properly
-
-When a logical statement is split into multiple lines and is followed by an indented line, the continued lines should be indented further to set them apart from the next logical statement.
-
-In the following example taken from http://www.python.org/dev/peps/pep-0008/#maximum-line-length, notice how the second and third lines of the if condition are indented further to differentiate them from the actual raise statement within the if block:
+Class initializers and if statements:
 
 ```py
+# BAD
 class Rectangle(Blob):
-    def __init__(self, width, height,
-                     color='black', emphasis=None, highlight=0):
+    def __init__(self, width,
+        height, color='black',
+        emphasis=None, highlight=0):
         if (width == 0 and height == 0 and
                 color == 'red' and emphasis == 'strong' or
                 highlight > 100):
+            raise ValueError("sorry, you lose")
+
+# GOOD
+class Rectangle(Blob):
+    def __init__(
+        self,
+        width,
+        height,
+        color='black',
+        emphasis=None,
+        highlight=0
+    ):
+        if (
+            width == 0 and height == 0 and
+            color == 'red' and emphasis == 'strong' or
+            highlight > 100
+        ):
             raise ValueError("sorry, you lose")
 ```
