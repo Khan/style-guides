@@ -14,7 +14,7 @@ You probably shouldn't. **TODO: expand**
 
 ## Use [propTypes](http://facebook.github.io/react/docs/reusable-components.html)
 
-Use it for every prop. This is the place to go to figure out which props need to be passed to a model. Great [example](http://jsfiddle.net/spicyj/DEpwb/).
+Use it for every prop. This is the place to go to figure out which props need to be passed to a model. Great [example](http://jsfiddle.net/DEpwb/45/).
 
 Make sure you understand required, instance, enum, and custom PropTypes.
 
