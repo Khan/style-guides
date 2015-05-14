@@ -213,7 +213,6 @@ JSDoc can be parsed by a number of open source tools, and must be well-formed.
 Syntax:
 ```js
 /**
-
  * A JSDoc comment should begin with a slash and 2 asterisks.
  */
 ```
