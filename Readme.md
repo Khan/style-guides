@@ -148,9 +148,9 @@ Start your file with a module docstring. Do not put a shebang line (`#!/usr/bin/
 
 ## Python Tests
 
-There are a few conventions to follow while writing unit tests. Tests for a particular method or function should be prefixed with 'test_' with underscores separating words. This agrees with the convention used in in the [python unittest documentation](https://docs.python.org/2/library/unittest.html) and also will be compatible with the [discovery mechanism used by pytest](http://pythontesting.net/framework/pytest/pytest-introduction/#discovery) and other tools.
+There are a few conventions to follow while writing unit tests. Tests for a particular method or function should be prefixed with 'test_' with underscores separating words. This agrees with the convention used in the [python unittest documentation](https://docs.python.org/2/library/unittest.html) and also will be compatible with the [discovery mechanism used by pytest](http://pythontesting.net/framework/pytest/pytest-introduction/#discovery) and other tools.
 
-Unlike method or function names, it is [recommended to use long and descriptive](http://docs.python-guide.org/en/latest/writing/tests/) names for your test methods. This allows them to be easily identified in command line output when tests fail. When naming your test method, use the following structure: test_*<item_under_test>*_when_*<condition>*_expect_<outcome>. This roughly corresponds to the [Given/When/Then test structure](http://martinfowler.com/bliki/GivenWhenThen.html) that has been documented, though eliminates the "Given" clause for brevity and assumes it is captured in the 'when' clause. 
+Unlike method or function names, it is [recommended to use long and descriptive](http://docs.python-guide.org/en/latest/writing/tests/) names for your test methods. This allows them to be easily identified in command line output when tests fail. When naming your test method, use the following structure: test_*<item_under_test>*_when_*<condition>*_expect_*<outcome>*. This roughly corresponds to the [Given/When/Then test structure](http://martinfowler.com/bliki/GivenWhenThen.html) that has been documented, though eliminates the "Given" clause for brevity and assumes it is captured in the 'when' clause. 
 
 ```py
 
