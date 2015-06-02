@@ -146,6 +146,39 @@ Start your file with a module docstring. Do not put a shebang line (`#!/usr/bin/
 
 > *Rationale:* a shebang line is useless for non-executable files. An `__author__` line just gets out of date, and is better determined by looking at source control history in any case. Code is automatically copyrighted; a copyright line doesn't help. No need to put this useless boilerplate at the top of the file!
 
+## Tests
+
+There are a few conventions to follow while writing tests. Tests for a particular method or function should be prefixed with 'test_' with underscores separating words. This agrees with the convention used in the [python unittest documentation](https://docs.python.org/2/library/unittest.html) and also will be compatible with the [discovery mechanism used by pytest](http://pythontesting.net/framework/pytest/pytest-introduction/#discovery) and other tools.
+
+Unlike method or function names, it is [recommended to use long and descriptive](http://docs.python-guide.org/en/latest/writing/tests/) names for your test methods. This allows them to be easily identified in command line output when tests fail. When naming your test method, use the following structure:
+
+```
+test_<item_under_test>_if_<condition>_then_<outcome>.
+```
+
+This roughly corresponds to the [Given/When/Then test structure](http://martinfowler.com/bliki/GivenWhenThen.html) that has been documented, though eliminates the "Given" clause for brevity and assumes it is captured in the 'if' clause. 
+
+```py
+
+# foo.py -- code to be tested
+def foo(bar=None):
+    # ...
+
+# test_foo.py
+
+class FooTestCase(TestCase):
+    def test_foo_if_bar_is_none_then_returns_10(self):
+        # ...
+        self.assertEquals(return_value, 10)
+        # ...
+
+    def test_foo_if_bar_is_string_then_returns_none(self):
+        # ...
+        self.assertEquals(return_value, None)
+        # ...
+```
+
+
 ## Unused variables
 
 If you want to assign a value to a variable that will not be used again, name the variable either `_` (python convention) or `unused_<something>` (less-well-known python convention). This will keep our lint checkers from complaining.
