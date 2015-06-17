@@ -76,7 +76,7 @@ return (
 
 80 chars is a bit tight so we opt to conserve the extra 4.
 
-Align properties
+## Align properties
 
 Fit them all on the same line if you can, but put them all in the same column if you have to break.
 
