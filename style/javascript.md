@@ -132,12 +132,7 @@ Though, in most cases, other falsey values should also be included and the above
 if (!someVariable) {
 ```
 
-## 6) Strings
-
-
-Strings should use double quotes (“) instead of single quotes (‘)
-
-## 7) Method and property visibility
+## 6) Method and property visibility
 
 
 Private methods and properties (in files, classes, and namespaces) should be named with a leading underscore.
@@ -163,7 +158,7 @@ var z = y._privateMember;  // NOT OK!
 
 Rationale: leading underscores for private methods and properties is consistent with the styles used in numerous JavaScript libraries, many of which we include in our code base (e.g. Backbone). It is also consistent with our Python style guide, lowering the mental effort for developers to switch between the two.
 
-## 8) Array and Object literals
+## 7) Array and Object literals
 
 Always use `[]` and `{}` style literals to initialize arrays and objects, instead of the Array and Object constructor. 
 
@@ -200,11 +195,11 @@ var a4 = [];
 
 Object constructors don't have the same problems, but for readability and consistency object literals should be used.
 
-## 9) Inline Comments.
+## 8) Inline Comments.
 
 Inline style comments should be of the // variety, not the /* */ variety.
 
-## 10) Top level file and class comments
+## 9) Top level file and class comments
 
 All files and classes should have JSDoc comments.
 
@@ -250,7 +245,7 @@ function SomeFunClass(arg1, arg2) {
 }
 ```
 
-## 11) Methods and properties comments
+## 10) Methods and properties comments
 
 All non-trivial methods and properties should also have JSDoc comments.
 Type annotations are strongly encouraged; if there is even a slight chance that the type will be ambiguous to future readers, put in a type annotation.
@@ -295,7 +290,7 @@ Badges.DisplayCase = Backbone.View.extend({
 };
 ```
 
-## 12) Use “$” for jQuery
+## 11) Use “$” for jQuery
 
 We use $ as the jQuery identifier, as opposed to typing out jQuery in full.
 
@@ -309,7 +304,7 @@ Good:
 $(".some-class span").hide();
 ```
 
-## 13) Avoid href="#" for javascript triggers
+## 12) Avoid href="#" for javascript triggers
 
  When you want a link-like thing rather than a button to trigger a javascript operation, rather than going to a new address.
 
@@ -327,7 +322,7 @@ Acceptable (if not totally "Good"):
 ```
 
 
-## 14) Use a new var statement for each declaration
+## 13) Use a new var statement for each declaration
 
 Bad:
 ```js
@@ -350,7 +345,7 @@ it makes line-based diffs/editing messier
 it encourages C89-style declarations at the top of scope, preventing you from only declaring vars before first use, the latter preferable as it conveys intended scope to the reader
 
 
-## 15) Use modules, not global variables
+## 14) Use modules, not global variables
 
 In most of our major JavaScript repositories (webapp, perseus, khan-exerises), we use some form of module system like [RequireJS](http://requirejs.org/) or [browserify](http://browserify.org/), or in the case of webapp our own home built thing that works similarly to browserify.
 
@@ -395,7 +390,7 @@ module.exports = Jungle;
 
 In most cases where you'd want to export multiple things from the same file, the right thing to do is split up the file so you maintain one export per file.
 
-## 16) Separate first party and third party `require()` lines, and sort `require()` lines.
+## 15) Separate first party and third party `require()` lines, and sort `require()` lines.
 
 This is to mirror our import style in python: https://github.com/Khan/org-docs/blob/master/style/python.md#import-style (except that there are no "system" imports except when writing code to run in node).
 
@@ -449,7 +444,7 @@ var UserMissionStore = require("./datastores/user-mission-store.jsx");
 var updateDocumentTitle = require("../shared-package/update-document-title.js");
 ```
 
-## 17) Object destructuring goes after all require lines:
+## 16) Object destructuring goes after all require lines:
 
 Bad:
 ```
