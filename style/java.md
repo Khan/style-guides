@@ -17,6 +17,11 @@ Import statements are divided into the following groups, in this order, with eac
 
 Imports are not subject to the 100 column limit rule; they should never be wrapped.
 
+We prefer using static imports when using the following:
+
+- `com.google.common.base.Preconditions.*` (e.g. `checkNotNull`)
+- `org.junit.Assert.*` (e.g. `assertEquals`)
+
 
 ## No per-file boilerplate
 
