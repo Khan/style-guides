@@ -13,15 +13,21 @@ Example:
 <Component onClick={this.handleClick} onLaunchMissiles={this.handleLaunchMissiles} />
 ```
 
-As you may have noticed there is also a convention to name a handler
-that your component takes as a parameter `onEventName`. This is
-consistent with React's event naming - `onClick`, `onDrag`,
+#### Name handlers in props `onEventName`
+
+This is consistent with React's event naming: `onClick`, `onDrag`,
 `onChange`, etc.
+
+Example:
+
+```jsx
+<Component onLaunchMissiles={this.handleLaunchMissiles} />
+```
 
 
 #### Open elements on the same line.
 
-80 chars is a bit tight so we opt to conserve the extra 4.
+80 characters per line is a bit tight so we opt to conserve the extra 4.
 
 Yes:
 ```jsx
@@ -72,20 +78,27 @@ more than one.
 ---------------------
 ### Language features
 
-#### Prefer [props to state](http://facebook.github.io/react/docs/interactivity-and-dynamic-uis.html).
+#### Prefer [props to state](http://facebook.github.io/react/docs/interactivity-and-dynamic-uis.html#what-components-should-have-state).
 
-You almost always want to use props.  Copying data from props to state
-can cause the UI to get out of sync from the underlying data models
-because what's displayed no longer directly tracks what's stored.  By
-having the data in one place instead of copying it, you ensure
-everything is consistent.
+You almost always want to use props.  By avoiding state when possible,
+you minimize redundancy, making it easier to reason about your
+application.
+
+A common pattern is to create several stateless components that just
+render data, and have a stateful component above them in the hierarchy
+that passes its state to its children via props. The stateful
+component encapsulates all of the interaction logic, while the
+stateless components take care of rendering data in a declarative way.
+
+Copying data from props to state ​can cause the UI to get out of sync
+and is especially bad.
 
 #### Use [propTypes](http://facebook.github.io/react/docs/reusable-components.html).
 
 React Components should always have complete propTypes.  Every
 attribute of this.props should have a corresponding entry in
 propTypes.  This documents that props need to be passed to a model.
-([example](http://jsfiddle.net/spicyj/DEpwb/))
+([example](https://github.com/Khan/webapp/blob/32aa862769d4e93c477dc0ee0388816056252c4a/javascript/search-package/search-results-list.jsx#L14))
 
 Avoid these non-descriptive prop-types:
    * `React.PropTypes.any`
@@ -115,9 +128,9 @@ should.
 
 #### *Never* store state in the DOM.
 
-Do not use data- attributes or classes).  All information should be
-stored in Javascript, either in the React component itself, or in a
-React store if using a framework such as Redux.
+Do not use `data-` attributes or classes.  All information
+should be stored in Javascript, either in the React component itself,
+or in a React store if using a framework such as Redux.
 
 
 ----------------------------------
@@ -131,21 +144,24 @@ TODO
 
 *Never* use jQuery for DOM manipulation.
 
+Use native promises instead of jQuery promises.
+
 Try to avoid using jQuery plugins.  When necessary, wrap the jQuery
 plugin with a React component so you only have to touch the jQuery
 once.
 
-You can use `$.ajax` (but no other function) for network
-communication.
+You can use `$.ajax` (but no other function, such as $.post) for
+network communication.
 
 #### Reuse standard components.
 
-If possible, re-use existing "dumb" components (pure components that
-emit html directly).  If you write a new one, as soon as it finds one
-other client put it in a shared location.
+If possible, re-use existing components, especially low-level, pure
+components that emit html directly.  If you write a new such one, and
+it finds a user in a different project, put it in a shared location
+such as the react.js package.
 
-The standard shared location for useful components provided *by the
-React team* is the `react-components` package in
+The standard shared location for useful components that have been
+opensourced is the `react-components.js` package in
 `javascript-packages.json`.  This includes components such as these:
 
 * `SetIntervalMixin` - provides a setInterval method so something can be
@@ -153,8 +169,9 @@ React team* is the `react-components` package in
 * `$_` - the i18n wrapper to allow for translating text in React.
 * `TimeAgo` - “five minutes ago”, etc - this replaces $.timeago
 
-Reusable components *written internally* are in the (poorly named)
-`react.js` package.  This include components such as these:
+Reusable components that have not (yet) been opensourced are in the
+(poorly named) `react.js` package.  This include components such as
+these:
 
 * `KUIButton` - render a Khan Academy styled button.
 * `Modal` - create a modal dialog.
