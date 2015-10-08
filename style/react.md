@@ -1,34 +1,31 @@
-# React style guide
+## React style guide
 
-**Follow the normal Javascript style guide - including the 80 character limit. In addition there are several React-specific rules.**
+> Follow the normal [Javascript style guide](javascript.md) - including the 80 character line limit. In addition there are several React-specific rules.
 
-## props vs state
+In addition to these style rules, you may also be interested in
+[React best practices](https://docs.google.com/document/d/1ChtFUao18IyNhaXZ5sE2W-CFuFcYnqlFTyi5gfe6XV0/edit).
 
-You almost always want to use [props, not state](http://facebook.github.io/react/docs/interactivity-and-dynamic-uis.html).
+----------
+### Syntax
 
-Copying data from props to state can cause the UI to get out of sync form the underlying data models because what's displayed no longer directly tracks what's stored. Instead, strive to have data in one place instead of copying it, which ensures that everything is consistent.
+#### Order your methods with lifecycle first and render last.
 
-## When and how do you use Backbone models?
+Within your react component, you should order your methods like so:
 
-You probably shouldn't. **TODO: expand**
+1. lifecycle methods (in chronological order: 
+      `getDefaultProps`,
+      `getInitialState`,
+      `componentWillMount`,
+      `componentDidMount`,
+      `componentWillReceiveProps`,
+      `shouldComponentUpdate`,
+      `componentWillUpdate`,
+      `componentDidUpdate`,
+      `componentWillUnmount`)
+2. everything else
+3. `render`
 
-## Use [propTypes](http://facebook.github.io/react/docs/reusable-components.html)
-
-Use it for every prop. This is the place to go to figure out which props need to be passed to a model. Great [example](http://jsfiddle.net/spicyj/DEpwb/).
-
-Make sure you understand required, instance, enum, and custom PropTypes.
-
-## Minimize use of jQuery
-
-With React, jQuery should
-
-- *never* be used for DOM manipulation
-- rarely be used for ajax - Backbone can usually take care of this for you
-- rarely be used for plugins - I recommend wrapping the jQuery plugin with a React component so you only have to touch the jQuery once
-
-In a similar vein, *never* store information in the DOM (using data- attributes or classes). All information should be stored in Javascript. Note: this rule probably applied before but is worth emphasizing with React. Ask Joel if you want to hear a rant on this subject.
-
-## Name handlers `handleEventName`
+#### Name handlers `handleEventName`.
 
 Example:
 
@@ -36,67 +33,186 @@ Example:
 <Component onClick={this.handleClick} onLaunchMissiles={this.handleLaunchMissiles} />
 ```
 
-As you may have noticed there is also a convention to name a handler that your component takes as a parameter `onEventName`. This is consistent with React's event naming - `onClick`, `onDrag`, `onChange`, etc.
+#### Name handlers in props `onEventName`.
 
-## Standard components
+This is consistent with React's event naming: `onClick`, `onDrag`,
+`onChange`, etc.
 
-**TODO: update this list**
+Example:
 
-react-package provides several standard components, and there are more to come.
+```jsx
+<Component onLaunchMissiles={this.handleLaunchMissiles} />
+```
 
-- SetIntervalMixin - provides a setInterval method so something can be done every x milliseconds
-- Animation - still a work in progress. demo
 
-More KA-specific
+#### Open elements on the same line.
 
-- TimeAgo - “five minutes ago”, etc - this replaces $.timeago
-- UserHoverable - the thing where you can hover over a username
-- blink, rumble, shudder, sparkle - for some reason React doesn’t come with these built in
-- etc - a lot of components have been built and they’re all supremely reusable
+The 80-character line limit is a bit tight so we opt to conserve the extra 4.
 
-For now (until the rise of the New Package Manager) drop any reusable components (anything you could see someone else using) you've made in react-package. Also, let everyone know what you've built. Email the team and blog it.
-
-## Open elements on the same line
-
+Yes:
 ```jsx
 return <div>
    ...
 </div>;
 ```
 
-not
-
+No:
 ```jsx
-return (
+return (      // "div" is not on the same line as "return"
     <div>
         ...
     </div>
 );
 ```
 
-80 chars is a bit tight so we opt to conserve the extra 4.
+#### Align and sort HTML properties.
 
-## Align properties
+Fit them all on the same line if you can.  If you can't, put each
+property on a line of its own, indented four spaces, in sorted order.
+The closing angle brace should be on a line of its own, indented the
+same as the opening angle brace.  This makes it easy to see the props
+at a glance.
 
-Fit them all on the same line if you can, but put them all in the same column if you have to break.
-
-Good:
-
-`<div className="highlight" key="highlight-div">`
-
-Good
-
+Yes:
 ```jsx
+<div className="highlight" key="highlight-div">
 <div
     className="highlight"
-    key="highlight-div">
-```
-
-Bad
-
-```jsx
-<div className="highlight"
     key="highlight-div"
+>
+<Image
+    className="highlight"
+    key="highlight-div"
+/>
 ```
 
-This makes it easy to see the props at a glance.
+No:
+```jsx
+<div className="highlight"      // property not on its own line
+     key="highlight-div"
+>
+<div                            // closing brace not on its own line
+    className="highlight"
+    key="highlight-div">
+<div                            // property is not sorted
+    key="highlight-div"
+    className="highlight"
+>
+```
+
+#### Only export a single react class.
+
+Every .jsx file should export a single react class, and nothing else.
+This is for testability: the fixture framework requires it to
+function.
+
+Note the file can still define multiple classes, it just can't export
+more than one.
+
+
+---------------------
+### Language features
+
+#### Make "dumb" components pure.
+
+It's useful to think of the React world as divided into "smart"
+components and "dumb" components.
+
+"Smart" components have application logic, but do not emit HTML
+themselves.
+
+"Dumb" components are typically reusable, and do emit HTML.
+
+Smart components can have internal state, but dumb components never
+should.
+
+#### Prefer [props to state](http://facebook.github.io/react/docs/interactivity-and-dynamic-uis.html#what-components-should-have-state).
+
+You almost always want to use props.  By avoiding state when possible,
+you minimize redundancy, making it easier to reason about your
+application.
+
+A common pattern -- which matches the "dumb" vs. "smart" component
+distinction -- is to create several stateless components that just
+render data, and have a stateful component above them in the hierarchy
+that passes its state to its children via props. The stateful
+component encapsulates all of the interaction logic, while the
+stateless components take care of rendering data in a declarative
+way.
+
+Copying data from props to state ​can cause the UI to get out of sync
+and is especially bad.
+
+#### Use [propTypes](http://facebook.github.io/react/docs/reusable-components.html).
+
+React Components should always have complete propTypes.  Every
+attribute of this.props should have a corresponding entry in
+propTypes.  This documents that props need to be passed to a model.
+([example](https://github.com/Khan/webapp/blob/32aa862769d4e93c477dc0ee0388816056252c4a/javascript/search-package/search-results-list.jsx#L14))
+
+Avoid these non-descriptive prop-types:
+   * `React.PropTypes.any`
+   * `React.PropTypes.array`
+   * `React.PropTypes.object`
+
+Instead, use 
+   * `React.PropTypes.arrayOf`
+   * `React.PropTypes.objectOf`
+   * `React.PropTypes.instanceOf`
+   * `React.PropTypes.shape`
+
+An exception is if you are simply passing the data to a child component.
+
+#### *Never* store state in the DOM.
+
+Do not use `data-` attributes or classes.  All information
+should be stored in Javascript, either in the React component itself,
+or in a React store if using a framework such as Redux.
+
+
+----------------------------------
+### React libraries and components
+
+#### Do not use Backbone models.
+
+Use flux actions, or `$.ajax` directly, instead.
+
+We are trying to remove backbone from our codebase entirely.
+
+#### Minimize use of jQuery.
+
+*Never* use jQuery for DOM manipulation.
+
+Try to avoid using jQuery plugins.  When necessary, wrap the jQuery
+plugin with a React component so you only have to touch the jQuery
+once.
+
+You can use `$.ajax` (but no other function, such as $.post) for
+network communication.
+
+#### Reuse standard components.
+
+If possible, re-use existing components, especially low-level, pure
+components that emit html directly.  If you write a new such one, and
+it finds a user in a different project, put it in a shared location
+such as the react.js package.
+
+The standard shared location for useful components that have been
+opensourced is the `react-components.js` package in
+`javascript-packages.json`.  This includes components such as these:
+
+* `SetIntervalMixin` - provides a setInterval method so something can be
+  done every x milliseconds
+* `$_` - the i18n wrapper to allow for translating text in React.
+* `TimeAgo` - “five minutes ago”, etc - this replaces $.timeago
+
+Reusable components that have not (yet) been opensourced are in the
+(poorly named) `react.js` package.  This include components such as
+these:
+
+* `KUIButton` - render a Khan Academy styled button.
+* `Modal` - create a modal dialog.
+
+This list is far from complete.
+
+### 
