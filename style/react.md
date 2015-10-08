@@ -12,9 +12,18 @@ In addition to these style rules, you may also be interested in
 
 Within your react component, you should order your methods like so:
 
-1. lifecycle methods
+1. lifecycle methods (in chronological order: 
+      `getInitialState`,
+      `getDefaultProps`,
+      `componentWillMount`,
+      `componentDidMount`,
+      `componentWillReceiveProps`,
+      `shouldComponentUpdate`,
+      `componentWillUpdate`,
+      `componentDidUpdate`,
+      `componentWillUnmount`)
 2. everything else
-3. `render()`
+3. `render`
 
 #### Name handlers `handleEventName`.
 
@@ -56,24 +65,39 @@ return (
 );
 ```
 
-#### Align properties.
+#### Align and sort HTML properties.
 
-Fit them all on the same line if you can, but put them all in the same
-column if you have to break.  This makes it easy to see the props at a
-glance.
+Fit them all on the same line if you can.  If you can't, put each
+property on a line of its own, indented four spaces, in sorted order.
+The closing angle brace should be on a line of its own, indented the
+same as the opening angle brace.  This makes it easy to see the props
+at a glance.
 
 Yes:
 ```jsx
 <div className="highlight" key="highlight-div">
 <div
     className="highlight"
-    key="highlight-div">
+    key="highlight-div"
+>
+<Image
+    className="highlight"
+    key="highlight-div"
+/>
 ```
 
 No:
 ```jsx
 <div className="highlight"
      key="highlight-div"
+>
+<div
+    className="highlight"
+    key="highlight-div">
+<div
+    key="highlight-div"
+    className="highlight"
+>
 ```
 
 #### Only export a single react class.
