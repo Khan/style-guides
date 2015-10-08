@@ -113,18 +113,18 @@ more than one.
 ---------------------
 ### Language features
 
-#### Make "dumb" components pure.
+#### Make "presentation" components pure.
 
-It's useful to think of the React world as divided into "smart"
-components and "dumb" components.
+It's useful to think of the React world as divided into ["logic"
+components and "presentation" components](https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0).
 
-"Smart" components have application logic, but do not emit HTML
+"Logic" components have application logic, but do not emit HTML
 themselves.
 
-"Dumb" components are typically reusable, and do emit HTML.
+"Presentation" components are typically reusable, and do emit HTML.
 
-Smart components can have internal state, but dumb components never
-should.
+Logic components can have internal state, but presentation components
+never should.
 
 #### Prefer [props to state](http://facebook.github.io/react/docs/interactivity-and-dynamic-uis.html#what-components-should-have-state).
 
@@ -132,12 +132,12 @@ You almost always want to use props.  By avoiding state when possible,
 you minimize redundancy, making it easier to reason about your
 application.
 
-A common pattern -- which matches the "dumb" vs. "smart" component
-distinction -- is to create several stateless components that just
-render data, and have a stateful component above them in the hierarchy
-that passes its state to its children via props. The stateful
-component encapsulates all of the interaction logic, while the
-stateless components take care of rendering data in a declarative
+A common pattern -- which matches the "logic" vs. "presentation"
+component distinction -- is to create several stateless components
+that just render data, and have a stateful component above them in the
+hierarchy that passes its state to its children via props. The
+stateful component encapsulates all of the interaction logic, while
+the stateless components take care of rendering data in a declarative
 way.
 
 Copying data from props to state ​can cause the UI to get out of sync
