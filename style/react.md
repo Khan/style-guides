@@ -5,7 +5,7 @@
 ----------
 ### Syntax
 
-#### Name handlers `handleEventName`
+#### Name handlers `handleEventName`.
 
 Example:
 
@@ -13,7 +13,7 @@ Example:
 <Component onClick={this.handleClick} onLaunchMissiles={this.handleLaunchMissiles} />
 ```
 
-#### Name handlers in props `onEventName`
+#### Name handlers in props `onEventName`.
 
 This is consistent with React's event naming: `onClick`, `onDrag`,
 `onChange`, etc.
@@ -138,13 +138,13 @@ or in a React store if using a framework such as Redux.
 
 #### Do not use Backbone models.
 
-TODO
+Use flux actions, or `$.ajax` directly, instead.
+
+We are trying to remove backbone from our codebase entirely.
 
 #### Minimize use of jQuery.
 
 *Never* use jQuery for DOM manipulation.
-
-Use native promises instead of jQuery promises.
 
 Try to avoid using jQuery plugins.  When necessary, wrap the jQuery
 plugin with a React component so you only have to touch the jQuery
