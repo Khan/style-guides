@@ -1,9 +1,20 @@
 ## React style guide
 
-> Follow the normal Javascript style guide - including the 80 character limit. In addition there are several React-specific rules.
+> Follow the normal [Javascript style guide](javascript.md) - including the 80 character line limit. In addition there are several React-specific rules.
+
+In addition to these style rules, you may also be interested in
+[React best practices](https://docs.google.com/document/d/1ChtFUao18IyNhaXZ5sE2W-CFuFcYnqlFTyi5gfe6XV0/edit).
 
 ----------
 ### Syntax
+
+#### Order your methods with lifecycle first and render last.
+
+Within your react component, you should order your methods like so:
+
+1. lifecycle methods
+2. everything else
+3. `render()`
 
 #### Name handlers `handleEventName`.
 
@@ -27,7 +38,7 @@ Example:
 
 #### Open elements on the same line.
 
-80 characters per line is a bit tight so we opt to conserve the extra 4.
+The 80-character line limit is a bit tight so we opt to conserve the extra 4.
 
 Yes:
 ```jsx
