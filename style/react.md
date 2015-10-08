@@ -150,6 +150,9 @@ attribute of this.props should have a corresponding entry in
 propTypes.  This documents that props need to be passed to a model.
 ([example](https://github.com/Khan/webapp/blob/32aa862769d4e93c477dc0ee0388816056252c4a/javascript/search-package/search-results-list.jsx#L14))
 
+If you as passing data through to a child component, you can use
+the prop-type `<child-class>.propTypes.<prop-name>`.
+
 Avoid these non-descriptive prop-types:
    * `React.PropTypes.any`
    * `React.PropTypes.array`
@@ -161,7 +164,9 @@ Instead, use
    * `React.PropTypes.instanceOf`
    * `React.PropTypes.shape`
 
-An exception is if you are simply passing the data to a child component.
+As an exception, if passing data through to a child component, and you
+can't use `<child-class>.propTypes.<prop-name>` for some reason, you
+can use `React.PropType.any`.
 
 #### *Never* store state in the DOM.
 
