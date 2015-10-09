@@ -1,5 +1,28 @@
 ## Javascript Style Guide
 
+----
+* [Syntax](#syntax)
+  * [Naming](#naming)
+  * [Naming private methods and properties](#naming-private-methods-and-properties)
+  * [File names](#file-names)
+  * [Indentation](#indentation)
+  * [Braces](#braces)
+  * [Line length](#line-length)
+  * [`require() lines.](#require-lines)
+* [Comments and documentation](#comments-and-documentation)
+  * [Inline Comments](#inline-comments)
+  * [Top level file and class comments](#top-level-file-and-class-comments)
+  * [Methods and properties comments](#methods-and-properties-comments)
+* [Core language rules](#core-language-rules)
+  * [Equality](#equality)
+  * [Array and Object literals](#array-and-object-literals)
+  * [Use a new var statement for each declaration](#use-a-new-var-statement-for-each-declaration)
+  * [Avoid href="#" for javascript triggers](#avoid-href-for-javascript-triggers" aria-hidden="true"><span class="octicon octicon-link"></span></a>Avoid href="#)
+  * [Use modules, not global variables](#use-modules-not-global-variables)
+* [Library rules](#library-rules)
+  * [Use $ for jQuery](#use--for-jquery)
+----
+
 This guide is adapted from the jQuery style guide.
 
 ----------
