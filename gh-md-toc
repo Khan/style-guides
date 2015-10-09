@@ -118,7 +118,7 @@ gh_toc_grab() {
     # trim head spaces
     sed 's/^\s*//' |
     # remove code tags
-    sed 's/<code>//' | sed 's/<\/code>//' |
+    sed 's/<code>//g' | sed 's/<\/code>//g' |
     # now all rows are like:
     #   <h1> <a id="user-content-..." href="..."><span ...></span></a> ... </h
     # format result line

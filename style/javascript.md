@@ -20,6 +20,13 @@
   * [Use a new var statement for each declaration](#use-a-new-var-statement-for-each-declaration)
   * [Avoid href="#" for javascript triggers](#avoid-href-for-javascript-triggers" aria-hidden="true"><span class="octicon octicon-link"></span></a>Avoid href="#)
   * [Use modules, not global variables](#use-modules-not-global-variables)
+* [ES6/7 rules](#es67-rules)
+  * [Use =&gt; instead of bind(this) ](#use--instead-of-bind)
+  * [Use backticks for string interpolation](#use-backticks-for-string-interpolation)
+  * [Do not use ES6 classes for React classes](#do-not-use-es6-classes-for-react-classes)
+  * [Do not use async/await or generators](#do-not-use-asyncawait-or-generators)
+  * [Do not use Set or Map ](#do-not-use-set-or-map)
+  * [Use let and const for new files; do not use var ](#use-let-and-const-for-new-files-do-not-use-var)
 * [Library rules](#library-rules)
   * [Use $ for jQuery](#use--for-jquery)
 
@@ -456,6 +463,72 @@ module.exports = Jungle;
 
 You can export multiple objects in one file, but consider if it
 wouldn't be better to split up the file to maintain one export per file.
+
+---------------
+### ES6/7 rules
+
+Several of our supported browsers support only ES5 natively.  We use
+polyfills to emulate [some -- but not all -- ES6 and ES7 language
+features](https://docs.google.com/spreadsheets/d/12mF99oCpERzLKS07wPPV3GiISUa8bPkKveuHsESDYHU/edit#gid=0)
+so they run on ES5-capable browsers.
+
+In some cases, we do not yet allow a new language feature, if it's
+expensive to polyfill.  In others, require using the newer language
+feature and avoiding the old:
+
+| Construct | Use...                                | ...instead of |
+| --------- | ------------------------------------- | ---------------------- |
+| backticks | `` `http://${host}/${path}` `` | `"http://" + host + "/" + path` |
+| destructuring | `var { x, y } = a;` | `var x = a.x; var y = a.y;` |
+| fat arrow | `foo(() => { ... })` | `foo(function() { ... }.bind(this))` |
+| let/const | `let a = 1; const b = "4EVAH"; a++;` | `var a = 1; var b = "4EVAH"; a++;` |
+| includes | `array.includes(item)` | `array.indexOf(item) !== -1` |
+| for/of | `for (let [key, value] of Object.entries(obj)) { ... }` | `_.each(obj, function(value, key) { ... })` |
+| spread | `{ ...a, ...b, c: d }` | `_.extend({}, a, b, { c: d })` |
+| rest params | `function(bar, ...args) { foo(...args); }` | `function(bar) { var args = Array.prototype.slice.call(arguments, 1); foo.apply(null, args); }` |
+
+#### Use `=>` instead of `bind(this)`
+
+An exception is if you need `bind()` because you need to access the
+`arguments` variable.  This should be rare.
+
+#### Use backticks for string interpolation
+
+`+` is not forbidden, but backticks are encouraged!
+
+#### Do not use ES6 classes for React classes
+
+Continue to use React's `createClass`, which works with React mixins.
+
+For classes outside of React -- which should actually be pretty rare
+-- there is no style rule whether to use ES6 classes or not.
+
+This rule may change once React supports mixins with ES6 classes.
+
+#### Do not use `async`/`await` or generators
+
+This is because the polyfill for these constructs generates very large
+code.
+
+This rule may change once all our supported browsers support ES6
+natively.
+
+#### Do not use `Set` or `Map`
+
+The polyfills for these, though not huge, are large enough it's not
+worth the (small) benefit of using these classes for hashtables
+instead of just using `object`.
+
+This rule may change if strong enough support for these types is
+evinced.
+
+#### Use `let` and `const` for new files; do not use `var`
+
+`let` is superior to `var`, so prefer it for new code.
+
+This rule will become mandatory everywhere once we have done a fixit
+to replace all uses of `var` in existing files.
+
 
 -----------------
 ### Library rules
