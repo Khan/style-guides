@@ -1,0 +1,33 @@
+{
+  "parser": "babel-eslint",
+  "plugins": [
+    "react"
+  ],
+  "ecmaFeatures": {
+    "jsx": true,
+    "modules": true
+  },
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "rules": {
+    "eol-last": [0],
+    "indent": [2, 4],
+    "comma-dangle": [2, "never"],
+    "max-len": [1, 79, 4],
+    "no-unused-vars": 1,
+    "quotes": [2, "single"],
+    "semi": [2, "always"],
+    "space-after-keywords": [2, "always"],
+    "space-before-blocks": 2,
+    "space-before-function-paren": [2, { "anonymous": "always", "named": "never" }],
+    "strict": [1, "never"],
+    "react/sort-comp": [2],
+    "react/jsx-no-undef": 2,
+    "react/jsx-uses-react": 2,
+    "react/jsx-uses-vars": 2,
+    "react/react-in-jsx-scope": 2,
+    "react/prop-types": 2,
+  }
+}
