@@ -1,9 +1,11 @@
+## Javascript Style Guide
 
-# Javascript Style Guide
+This guide is adapted from the jQuery style guide.
 
-Adapted from the jQuery style guide
+----------
+### Syntax
 
-## 1) Naming
+#### Naming
 
 ```js
 ClassNamesLikeThis
@@ -14,132 +16,23 @@ propertyNamesLikeThis
 SYMBOLIC_CONSTANTS_LIKE_THIS
 ```
 
-### Variables and properties referring to jQuery element objects are prefixed with $
-
-example:
+When naming variables and properties referring to jQuery element
+objects, prefix the name with `$`:
 
 ```js
-/**
- * @param {string} selector The jQuery selector for elements to apply 
- *     fanciness to.
- */
 function doSomethingFancy(selector) {
   var $elements = $(selector);
-  // do something fancy with $elements ...
+  ...
 }
 ```
 
-## 2) File names
+#### Naming private methods and properties
 
-```
-file-names-like-this.js
-template-names-like-this.handlebars
-```
+Private methods and properties (in files, classes, and namespaces)
+should be named with a leading underscore.
 
-## 3) Whitespace and Code Formatting
-
-
-Use 4-space indenting for all code. Do not use tabs.
-
-`if/else/for/while/try` always have braces and always go on multiple lines, with the opening brace on the same line
-
-Braces should always be used on blocks.
-
-Bad:
-```js
-   if (true)
-      blah();
-```
-
-Good:
-```js
-   if (true) {
-      blah();
-   }
-```
-
-`else/else if/catch` go on the same line as the brace.
-
-```js
-   if (blah) {
-      baz();
-   } else {
-      baz2();
-   }
-```
-
-Extra indentation should be used to clearly distinguish multiline conditionals from the following block of code (PEP8 addresses this for our Python code).
-
-Bad:
-```js
-   if (someReallyLongBooleanVariableIMeanReallyLong &&
-      someOtherBoolean) {
-      return "monkeys";
-   }
-```
-
-Good:
-```js
-   if (someReallyLongBooleanVariableIMeanReallyLong &&
-         someOtherBoolean) {
-      return "monkeys";
-   }
-```
-
-## 4) Line length
-
-Lines should not exceed 79 characters.
-This is consistent with our Python style guide, which adheres to PEP8.
-
-## 5) Equality
-
-
-Strict equality checks using `===` should be used in favor of `==` due to the numerous oddities related to JavaScript’s type coercion.
-
-Examples where `==` can be confusing (all of the following statements evaluate to true):
-
-```js
-Boolean('0') == true
-'0' != true
-0 != null
-0 == []
-0 == false
-Boolean(null) == false
-null != true
-null != false
-Boolean(undefined) == false
-undefined != true
-undefined != false
-Boolean([]) == true
-[] != true
-[] == false
-[[]] == false
-Boolean({}) == true
-{} != true
-{} != false
-```
-
-The only valid use of `==` is for comparing against null and undefined at the same time. 
-
-```js
-// Check null and undefined, but distinguish between other falsey values
-if (someVariable == null) {
-```
-
-Though, in most cases, other falsey values should also be included and the above can be simplified to the preferred:
-
-```js
-if (!someVariable) {
-```
-
-## 6) Method and property visibility
-
-
-Private methods and properties (in files, classes, and namespaces) should be named with a leading underscore.
-
-While we do not currently use any compilers to enforce this, clients of an API or class are expected to respect these conventions.
-
-example of some-module.js:
+While we do not currently use any compilers to enforce this, clients
+of an API or class are expected to respect these conventions.
 
 ```js
 function _PrivateClass() {
@@ -152,54 +45,167 @@ function PublicClass(param) {
 }
 
 var x = new _PrivateClass();  // OK - we’re in the same file.
-var y = new PublicClass();  // OK
-var z = y._privateMember;  // NOT OK!
+var y = new PublicClass();    // OK
+var z = y._privateMember;     // NOT OK!
 ```
 
-Rationale: leading underscores for private methods and properties is consistent with the styles used in numerous JavaScript libraries, many of which we include in our code base (e.g. Backbone). It is also consistent with our Python style guide, lowering the mental effort for developers to switch between the two.
+Rationale: leading underscores for private methods and properties is
+consistent with the styles used in numerous JavaScript libraries, many
+of which we include in our code base (e.g. Backbone). It is also
+consistent with our Python style guide, lowering the mental effort for
+developers to switch between the two.
 
-## 7) Array and Object literals
+#### File names
 
-Always use `[]` and `{}` style literals to initialize arrays and objects, instead of the Array and Object constructor. 
+```
+file-names-like-this.js
+template-names-like-this.handlebars
+```
 
-Array constructors are error-prone due to their arguments.
+#### Indentation
 
-Bad:
+Use 4-space indenting for all code. Do not use tabs.
+
+Extra indentation should be used to clearly distinguish multiline
+conditionals from the following block of code (similar to the PEP8
+rule for Python code).
+
+No:
 ```js
-// Length is 3.
-var a1 = new Array(x1, x2, x3);
-
-// Length is 2.
-var a2 = new Array(x1, x2);
-
-// If x1 is a number and it is a natural number the length will be x1.
-// If x1 is a number but not a natural number this will throw an exception.
-// Otherwise the array will have one element with x1 as its value.
-var a3 = new Array(x1);
-
-// Length is 0.
-var a4 = new Array();
+   if (someReallyLongBooleanVariableIMeanReallyLong &&
+      someOtherBoolean) {
+      return "monkeys";
+   }
 ```
 
-Because of this, if someone changes the code to pass 1 argument instead of 2 arguments, the array might not have the expected length.
-
-To avoid these kinds of weird cases, always use the more readable array literal.
-
-Good:
+Yes:
 ```js
-var a = [x1, x2, x3];
-var a2 = [x1, x2];
-var a3 = [x1];
-var a4 = [];
+   if (someReallyLongBooleanVariableIMeanReallyLong &&
+         someOtherBoolean) {
+      return "monkeys";
+   }
 ```
 
-Object constructors don't have the same problems, but for readability and consistency object literals should be used.
+#### Braces
 
-## 8) Inline Comments.
+Braces should always be used on blocks.
 
-Inline style comments should be of the // variety, not the /* */ variety.
+`if/else/for/while/try` should always have braces and always go on
+multiple lines, with the opening brace on the same line.
 
-## 9) Top level file and class comments
+No:
+```js
+   if (true)
+      blah();
+```
+
+Yes:
+```js
+   if (true) {
+      blah();
+   }
+```
+
+`else/else if/catch` should go on the same line as the brace:
+
+```js
+   if (blah) {
+      baz();
+   } else {
+      baz2();
+   }
+```
+
+#### Line length
+
+Lines should not exceed 79 characters.  (This is called the "80
+character rule," leaving 1 character for the newline.)
+
+This is consistent with our Python style guide, which adheres to PEP8.
+
+
+#### `require() lines.
+
+Separate first party and third party `require()` lines, and sort
+`require()` lines.
+
+This is to mirror our [Python import style](python.md#import-style),
+though there are no "system" imports in Javascript.
+
+"First party" code is anything we wrote whose primary source lives in
+the repository its being used in.  Underscore is third party because
+we didn't write it.  Katex is third party in webapp because even
+though we wrote it, its primary sources lives in a different
+repository.
+
+Imports should be sorted lexicographically (as per unix `sort`).
+
+No:
+```js
+var _ = require("underscore");
+var $ = require("jquery");
+var APIActionResults = require("../shared-package/api-action-results.js");
+var Cookies = require("../shared-package/cookies.js");
+var cookieStoreRenderer = require("../shared-package/cookie-store.handlebars");
+var HappySurvey = require("../missions-package/happy-survey.jsx");
+var DashboardActions = require('./datastores/dashboard-actions.js');
+var React = require("react");
+var UserMission = require("../missions-package/user-mission.js");
+var Kicksend = require(
+    "../../third_party/javascript-khansrc/mailcheck/mailcheck.js");
+```
+
+Yes:
+```js
+var $ = require("jquery");
+var Kicksend = require(
+    "../../third_party/javascript-khansrc/mailcheck/mailcheck.js");
+var React = require("react");
+var _ = require("underscore");
+
+var APIActionResults = require("../shared-package/api-action-results.js");
+var Cookies = require("../shared-package/cookies.js");
+var DashboardActions = require('./datastores/dashboard-actions.js');
+var HappySurvey = require("../missions-package/happy-survey.jsx");
+var UserMission = require("../missions-package/user-mission.js");
+var cookieStoreRenderer = require("../shared-package/cookie-store.handlebars");
+```
+
+Object destructuring should go after all require lines.
+
+No:
+```
+var React = require("react");
+var ReactART = require("react-art");
+var Group = ReactART.Group;
+var Path = ReactART.Path;
+var _ = require("underscore");
+
+var ItemStore = require("./item-store.jsx");
+```
+
+Yes:
+```
+var React = require("react");
+var ReactART = require("react-art");
+var _ = require("underscore");
+
+var ItemStore = require("./item-store.jsx");
+
+var Group = ReactART.Group;
+var Path = ReactART.Path;
+```
+
+
+------------------------------
+### Comments and documentation
+
+#### Inline Comments
+
+Inline style comments should be of the `//` variety, not the `/* */`
+variety.
+
+#### Top level file and class comments
 
 All files and classes should have JSDoc comments.
 
@@ -212,10 +218,12 @@ Syntax:
  */
 ```
 
-Top-level comments:
-The top level file comment is designed to orient readers unfamiliar with the code to what is in this file and any other disclaimers clients of the code should be given. It should provide a description of the file's contents and any dependencies or compatibility information. As an example:
+Top-level (top-of-file) comments are designed to orient readers
+unfamiliar with the code to what is in this file and any other
+disclaimers clients of the code should be given.  It should provide a
+description of the file's contents and any dependencies or
+compatibility information.  As an example:
 
-coaches.js
 ```js
 /**
  * Various components to handle management of lists of coaches for
@@ -228,8 +236,9 @@ coaches.js
  */
 ```
 
-Class comments:
-Classes must be documented with a description, and appropriate type tags (see “Methods and properties” comments for more information on types on the constructor.
+Class comments should be used for every class, and give a description
+along with appropriate type tags (see "Methods and properties"
+comments for more information on types on the constructor).
 
 ```js
 /**
@@ -239,20 +248,24 @@ Classes must be documented with a description, and appropriate type tags (see �
  * @param {Array.<number>} arg2 List of numbers to be processed.
  */
 function SomeFunClass(arg1, arg2) {
-
   // ...
-
 }
 ```
 
-## 10) Methods and properties comments
+#### Methods and properties comments
 
 All non-trivial methods and properties should also have JSDoc comments.
-Type annotations are strongly encouraged; if there is even a slight chance that the type will be ambiguous to future readers, put in a type annotation.
 
-Type annotations are based on the ES4/JS2 type system, and are documented in the Google JavaScript style guide.
+Type annotations are strongly encouraged; if there is even a slight
+chance that the type will be ambiguous to future readers, put in a
+type annotation.
 
-`@param` and `@return` type annotations that have comments that do not fit on one line wrap to the next line and indent 4 spaces.
+Type annotations are based on the ES4/JS2 type system, and are
+documented in the [Google JavaScript style
+guide](https://google.github.io/styleguide/javascriptguide.xml).
+
+`@param` and `@return` type annotations that have comments that do not
+fit on one line wrap to the next line and indent 4 spaces.
 
 Example:
 
@@ -290,47 +303,49 @@ Badges.DisplayCase = Backbone.View.extend({
 };
 ```
 
-## 11) Use “$” for jQuery
+-----------------------
+### Core language rules
 
-We use $ as the jQuery identifier, as opposed to typing out jQuery in full.
+#### Equality
 
-Bad:
+Prefer `===` (strict equality) to `==` due to the [numerous oddities
+related to JavaScript's type coercion](https://javascriptweblog.wordpress.com/2011/02/07/truth-equality-and-javascript/).
+
+The only valid use of `==` is for comparing against null and undefined
+at the same time:
+
 ```js
-jQuery(".some-class span").hide();
+// Check null and undefined, but distinguish between other falsey values
+if (someVariable == null) {
 ```
 
-Good:
-```js
-$(".some-class span").hide();
-```
+Though you will often want to just check against falsey values, and
+can just say `if (!someVariable) { ... }`.
 
-## 12) Avoid href="#" for javascript triggers
+#### Array and Object literals
 
- When you want a link-like thing rather than a button to trigger a javascript operation, rather than going to a new address.
+Always use `[]` and `{}` style literals to initialize arrays and
+objects, not the `Array` and `Object` constructors.
 
-Here's a discussion on Stack Overflow about options:
-http://stackoverflow.com/questions/134845/href-tag-for-javascript-links-or-javascriptvoid0
+Array constructors are error-prone due to their arguments: `new
+Array(3)` yields `[undefined, undefined, undefined]`, not `[3]`.
 
+To avoid these kinds of weird cases, always use the more readable
+array literal.
 
-Bad:
-```js
-<a href="#">Flag</a>
-```
-Acceptable (if not totally "Good"):
-```js
-<a href="javascript:void 0">Flag</a>
-```
+Object constructors don't have the same problems, but follow the same
+rule for consistency with arrays.  Plus, `{}` is more readable.
 
+#### Use a new var statement for each declaration
 
-## 13) Use a new var statement for each declaration
-
-Bad:
+No:
 ```js
 var a = "foo",
     b = a + "bar",
     c = fn(a, b);
 ```
-Good:
+
+Yes:
 ```js
 var a = "foo";
 var b = a + "bar";
@@ -339,30 +354,45 @@ var c = fn(a, b);
 
 A single var statement is bad because:
 
-if you forget a comma, you just made a global 
-it originated when people wanted to save bytes, but we have a minifier
-it makes line-based diffs/editing messier
-it encourages C89-style declarations at the top of scope, preventing you from only declaring vars before first use, the latter preferable as it conveys intended scope to the reader
+* If you forget a comma, you just made a global 
+* It originated when people wanted to save bytes, but we have a minifier
+* It makes line-based diffs/editing messier
+* It encourages C89-style declarations at the top of scope, preventing
+  you from only declaring vars before first use, the latter preferable
+  as it conveys intended scope to the reader
+
+#### Avoid href="#" for javascript triggers
+
+When you want a link-like thing rather than a button to trigger a
+javascript operation, rather than going to a new address.
+
+Here's a discussion on Stack Overflow about options:
+http://stackoverflow.com/questions/134845/href-tag-for-javascript-links-or-javascriptvoid0
 
 
-## 14) Use modules, not global variables
-
-In most of our major JavaScript repositories (webapp, perseus, khan-exerises), we use some form of module system like [RequireJS](http://requirejs.org/) or [browserify](http://browserify.org/), or in the case of webapp our own home built thing that works similarly to browserify.
-
-In all of these cases, there are mechanisms for an explicit import/export mechanism rather than using global variables to export functionality.
-
-Awful
+No:
 ```js
-window.welcome = function() {
-   // ...
-};
-
-window.haveFever = function() {
-   // ...
-};
+<a href="#">Flag</a>
 ```
 
-Bad
+Yes:
+```js
+<a href="javascript:void 0">Flag</a>
+```
+
+#### Use modules, not global variables
+
+In most of our major JavaScript repositories (webapp, perseus,
+khan-exerises), we use some form of module system like
+[RequireJS](http://requirejs.org/) or
+[browserify](http://browserify.org/), or in the case of webapp our own
+home built thing that works similarly to browserify.
+
+In all of these cases, there are mechanisms for an explicit
+import/export mechanism rather than using global variables to export
+functionality.
+
+No:
 ```js
 window.Jungle = {
     welcome: function() {
@@ -374,7 +404,18 @@ window.Jungle = {
 };
 ```
 
-Good:
+**NO**:
+```js
+window.welcome = function() {
+   // ...
+};
+
+window.haveFever = function() {
+   // ...
+};
+```
+
+Yes:
 ```js
 var Jungle = {
     welcome: function() {
@@ -388,85 +429,23 @@ var Jungle = {
 module.exports = Jungle;
 ```
 
-In most cases where you'd want to export multiple things from the same file, the right thing to do is split up the file so you maintain one export per file.
+You can export multiple objects in one file, but consider if it
+wouldn't be better to split up the file to maintain one export per file.
 
-## 15) Separate first party and third party `require()` lines, and sort `require()` lines.
+-----------------
+### Library rules
 
-This is to mirror our import style in python: https://github.com/Khan/org-docs/blob/master/style/python.md#import-style (except that there are no "system" imports except when writing code to run in node).
+#### Use `$` for jQuery
 
-"First party" code is anything we wrote whose primary source lives in the repository its being used in. Underscore is third party because we didn't write it. Katex is third party in webapp because even though we wrote it, its primary sources lives in a different repository.
+We use `$` as the jQuery identifier, as opposed to typing out `jQuery`
+in full.
 
-Imports should be sorted lexicographically (which is what unix `sort` should do).
-
-Bad:
+No:
 ```js
-var _ = require("underscore");
-var $ = require("jquery");
-var APIActionResults = require("../shared-package/api-action-results.js");
-var Analytics = require("../shared-package/analytics.js");
-var Backbone = require("backbone");
-var Cookies = require("../shared-package/cookies.js");
-var HappySurvey = require("../missions-package/happy-survey.jsx");
-var DashboardActions = require('./datastores/dashboard-actions.js');
-var ProfileRouter = require('../profile-nav-package/profile-router.js');
-var React = require("react");
-var RecentTopicStore = require("./datastores/recent-topic-store.jsx");
-var UserMission = require("../missions-package/user-mission.js");
-var BoosterTaskStore = require("./datastores/booster-task-store.js");
-var LearningTask = require("../tasks-package/learning-task.js");
-var UserMissionStore = require("./datastores/user-mission-store.jsx");
-var updateDocumentTitle = require("../shared-package/update-document-title.js");
-var Kicksend = require(
-    "../../third_party/javascript-khansrc/mailcheck/mailcheck.js");
+jQuery(".some-class span").hide();
 ```
 
-Good:
+Yes:
 ```js
-var $ = require("jquery");
-var Backbone = require("backbone");
-var Kicksend = require(
-    "../../third_party/javascript-khansrc/mailcheck/mailcheck.js");
-var React = require("react");
-var _ = require("underscore");
-
-var APIActionResults = require("../shared-package/api-action-results.js");
-var Analytics = require("../shared-package/analytics.js");
-var BoosterTaskStore = require("./datastores/booster-task-store.js");
-var Cookies = require("../shared-package/cookies.js");
-var DashboardActions = require('./datastores/dashboard-actions.js');
-var HappySurvey = require("../missions-package/happy-survey.jsx");
-var LearningTask = require("../tasks-package/learning-task.js");
-var Profile = require("../profile-nav-package/profile-nav.js");
-var ProfileRouter = require('../profile-nav-package/profile-router.js');
-var RecentTopicStore = require("./datastores/recent-topic-store.jsx");
-var UserMission = require("../missions-package/user-mission.js");
-var UserMissionStore = require("./datastores/user-mission-store.jsx");
-var updateDocumentTitle = require("../shared-package/update-document-title.js");
-```
-
-## 16) Object destructuring goes after all require lines:
-
-Bad:
-```
-var React = require("react");
-var ReactART = require("react-art");
-var Group = ReactART.Group;
-var Path = ReactART.Path;
-var Shape = ReactART.Shape;
-var _ = require("underscore");
-
-var ItemStore = require("./item-store.jsx");
-```
-
-Good:
-```
-var React = require("react");
-var ReactART = require("react-art");
-var _ = require("underscore");
-
-var ItemStore = require("./item-store.jsx");
-
-var Group = ReactART.Group;
-var Path = ReactART.Path;
-var Shape = ReactART.Shape;
+$(".some-class span").hide();
 ```
