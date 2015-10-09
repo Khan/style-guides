@@ -1,6 +1,7 @@
 ## Javascript Style Guide
 
 ----
+
 * [Syntax](#syntax)
   * [Naming](#naming)
   * [Naming private methods and properties](#naming-private-methods-and-properties)
@@ -8,7 +9,7 @@
   * [Indentation](#indentation)
   * [Braces](#braces)
   * [Line length](#line-length)
-  * [`require() lines.](#require-lines)
+  * [require() lines.](#require-lines)
 * [Comments and documentation](#comments-and-documentation)
   * [Inline Comments](#inline-comments)
   * [Top level file and class comments](#top-level-file-and-class-comments)
@@ -21,6 +22,7 @@
   * [Use modules, not global variables](#use-modules-not-global-variables)
 * [Library rules](#library-rules)
   * [Use $ for jQuery](#use--for-jquery)
+
 ----
 
 This guide is adapted from the jQuery style guide.
@@ -147,7 +149,7 @@ character rule," leaving 1 character for the newline.)
 This is consistent with our Python style guide, which adheres to PEP8.
 
 
-#### `require() lines.
+#### `require()` lines.
 
 Separate first party and third party `require()` lines, and sort
 `require()` lines.
@@ -384,7 +386,7 @@ A single var statement is bad because:
   you from only declaring vars before first use, the latter preferable
   as it conveys intended scope to the reader
 
-#### Avoid href="#" for javascript triggers
+#### Avoid `href="#"` for javascript triggers
 
 When you want a link-like thing rather than a button to trigger a
 javascript operation, rather than going to a new address.
