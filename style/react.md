@@ -9,7 +9,7 @@
   * [Align and sort HTML properties.](#align-and-sort-html-properties)
   * [Only export a single react class.](#only-export-a-single-react-class)
 * [Language features](#language-features)
-  * [Make "presentation" components pure.](#make-presentation-components-pure" aria-hidden="true"><span class="octicon octicon-link"></span></a>Make "presentation)
+  * [Make "presentation" components pure.](#make-presentation-components-pure)
   * [Prefer <a href="http://facebook.github.io/react/docs/interactivity-and-dynamic-uis.html#what-components-should-have-state">props to state</a>.](#prefer-props-to-state)
   * [Use <a href="http://facebook.github.io/react/docs/reusable-components.html">propTypes</a>.](#use-proptypes)
   * [<em>Never</em> store state in the DOM.](#never-store-state-in-the-dom)
