@@ -1,4 +1,4 @@
-## Javascript Style Guide
+## JavaScript Style Guide
 
 ----
 
@@ -18,7 +18,7 @@
   * [Equality](#equality)
   * [Array and Object literals](#array-and-object-literals)
   * [Use a new var statement for each declaration](#use-a-new-var-statement-for-each-declaration)
-  * [Avoid href="#" for javascript triggers](#avoid-href-for-javascript-triggers" aria-hidden="true"><span class="octicon octicon-link"></span></a>Avoid href="#)
+  * [Avoid href="#" for JavaScript triggers](#avoid-href-for-javascript-triggers)
   * [Use modules, not global variables](#use-modules-not-global-variables)
 * [ES6/7 rules](#es67-rules)
   * [Use =&gt; instead of bind(this) ](#use--instead-of-bind)
@@ -104,18 +104,18 @@ rule for Python code).
 
 No:
 ```js
-   if (someReallyLongBooleanVariableIMeanReallyLong &&
-      someOtherBoolean) {
-      return "monkeys";
-   }
+if (someReallyLongBooleanVariableIMeanReallyLong &&
+    someOtherBoolean) {
+    return "monkeys";
+}
 ```
 
 Yes:
 ```js
-   if (someReallyLongBooleanVariableIMeanReallyLong &&
-         someOtherBoolean) {
-      return "monkeys";
-   }
+if (someReallyLongBooleanVariableIMeanReallyLong &&
+        someOtherBoolean) {
+    return "monkeys";
+}
 ```
 
 #### Braces
@@ -127,25 +127,25 @@ multiple lines, with the opening brace on the same line.
 
 No:
 ```js
-   if (true)
-      blah();
+if (true)
+    blah();
 ```
 
 Yes:
 ```js
-   if (true) {
-      blah();
-   }
+if (true) {
+    blah();
+}
 ```
 
 `else/else if/catch` should go on the same line as the brace:
 
 ```js
-   if (blah) {
-      baz();
-   } else {
-      baz2();
-   }
+if (blah) {
+    baz();
+} else {
+    baz2();
+}
 ```
 
 #### Line length
@@ -162,11 +162,11 @@ Separate first party and third party `require()` lines, and sort
 `require()` lines.
 
 This is to mirror our [Python import style](python.md#import-style),
-though there are no "system" imports in Javascript.
+though there are no "system" imports in JavaScript.
 
 "First party" code is anything we wrote whose primary source lives in
 the repository its being used in.  Underscore is third party because
-we didn't write it.  Katex is third party in webapp because even
+we didn't write it.  KaTeX is third party in webapp because even
 though we wrote it, its primary sources lives in a different
 repository.
 
@@ -183,15 +183,13 @@ var HappySurvey = require("../missions-package/happy-survey.jsx");
 var DashboardActions = require('./datastores/dashboard-actions.js');
 var React = require("react");
 var UserMission = require("../missions-package/user-mission.js");
-var Kicksend = require(
-    "../../third_party/javascript-khansrc/mailcheck/mailcheck.js");
+var Kicksend = require("../../third_party/javascript-khansrc/mailcheck/mailcheck.js");
 ```
 
 Yes:
 ```js
 var $ = require("jquery");
-var Kicksend = require(
-    "../../third_party/javascript-khansrc/mailcheck/mailcheck.js");
+var Kicksend = require("../../third_party/javascript-khansrc/mailcheck/mailcheck.js");
 var React = require("react");
 var _ = require("underscore");
 
@@ -204,6 +202,8 @@ var cookieStoreRenderer = require("../shared-package/cookie-store.handlebars");
 ```
 
 Object destructuring should go after all require lines.
+
+Write requires on a single line, even if they extend past 80 chars, so they are easier to sort. Our linter automatically skips require lines when checking line length.
 
 No:
 ```
@@ -393,10 +393,10 @@ A single var statement is bad because:
   you from only declaring vars before first use, the latter preferable
   as it conveys intended scope to the reader
 
-#### Avoid `href="#"` for javascript triggers
+#### Avoid `href="#"` for JavaScript triggers
 
 When you want a link-like thing rather than a button to trigger a
-javascript operation, rather than going to a new address.
+JavaScript operation, rather than going to a new address.
 
 Here's a discussion on Stack Overflow about options:
 http://stackoverflow.com/questions/134845/href-tag-for-javascript-links-or-javascriptvoid0
@@ -489,8 +489,13 @@ feature and avoiding the old:
 
 #### Use `=>` instead of `bind(this)`
 
-An exception is if you need `bind()` because you need to access the
-`arguments` variable.  This should be rare.
+Arrow functions are easier to read (and with Babel, more efficient)
+than calling `bind` manually.
+
+#### Use rest params instead of `arguments`
+
+The magic `arguments` variable has some odd quirks. It's simpler to
+use rest params like `(...args) => foo(args)`.
 
 #### Use backticks for string interpolation
 
