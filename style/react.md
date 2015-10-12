@@ -17,6 +17,7 @@
   * [Do not use Backbone models.](#do-not-use-backbone-models)
   * [Minimize use of jQuery.](#minimize-use-of-jquery)
   * [Reuse standard components.](#reuse-standard-components)
+
 ----
 
 > Follow the normal [Javascript style guide](javascript.md) - including the 80 character line limit. In addition there are several React-specific rules.
