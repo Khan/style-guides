@@ -27,6 +27,7 @@
   * [Do not use async/await or generators](#do-not-use-asyncawait-or-generators)
   * [Do not use Set or Map ](#do-not-use-set-or-map)
   * [Use let and const for new files; do not use var ](#use-let-and-const-for-new-files-do-not-use-var)
+* [Move off Underscore][#move-off-underscore]
 * [Library rules](#library-rules)
   * [Use $ for jQuery](#use--for-jquery)
 
@@ -534,6 +535,399 @@ evinced.
 This rule will become mandatory everywhere once we have done a fixit
 to replace all uses of `var` in existing files.
 
+
+-----------------
+### Move off Underscore
+
+Now that we're using ES6/7 many of the features of Underscore.js are now built in to the language! We should move away from using Underscore in our code towards making use of these native features.
+
+There are a couple methods that are sufficiently complicated and don't have a direct equivalent so instead we have a custom-built copy of lodash containing only those methods. You can find this file at: `third_party/javascript-khansrc/lodash/lodash.js` along with instructions on how to build it and exactly what methods are included.
+
+What follows is a method-by-method set of equivalents for what we've used in Underscore and what you should be using in ES6/7 instead:
+
+#### _.bind
+
+```js
+_.bind(fn, someObj, args)
+```
+
+Becomes:
+```js
+fn.bind(someObj, args)
+```
+
+Note that cases where you had:
+
+```js
+_.bind(function() { ... }, this)
+```
+
+should instead become:
+
+```js
+() => { ... }
+```
+
+#### _.bindAll
+
+```js
+_.bindAll(someObj, "methodName")
+```
+
+Becomes:
+```js
+someObj.methodName = someObj.methodName.bind(someObj);
+```
+
+(or use a loop if binding multiple methods)
+
+#### _.clone
+
+No alternative at the moment! If you need it then you should add it to the compiled version of lodash and then update this guide to mention that it now exists!
+
+#### _.debounce
+
+This is included in our special-built version of lodash.
+
+#### _.defer
+
+```js
+_.defer(function() {
+    foo();
+});
+```
+
+Becomes:
+```js
+setTimeout(function() {
+    foo();
+}, 0);
+```
+
+#### _.delay
+
+```js
+_.delay(function() {
+    loadJavaScript();
+    requireSuggestions();
+}, 2000);
+```
+
+Becomes:
+```js
+setTimeout(function() {
+    loadJavaScript();
+    requireSuggestions();
+}, 2000);
+```
+
+#### _.each
+
+```js
+_.each(array)
+```
+
+Becomes:
+```js
+for (let val of array) {
+
+}
+```
+
+or:
+```js
+array.forEach(...)
+```
+
+```js
+_.each(object)
+```
+
+Becomes:
+```js
+for (let [key, val] of Object.entries(object)) {
+
+}
+```
+
+#### _.extend
+
+```js
+_.extend({}, dataToEventLogOnly, dataToGraphite,
+        {_request_id: KA.requestLogId,
+         _graphite_key_prefix: KA.gaeStatsKeyPrefix,
+         _graphite_keys: Object.keys(dataToGraphite).join()
+        })
+```
+
+Becomes:
+```js
+{
+    ...dataToEventLogOnly,
+    ...dataToGraphite,
+    _request_id: KA.requestLogId,
+    _graphite_key_prefix: KA.gaeStatsKeyPrefix,
+    _graphite_keys: Object.keys(dataToGraphite).join()
+}
+```
+
+```js
+_.extend(defaultOptions, options || {})
+```
+
+Becomes:
+```js
+{...defaultOptions, ...options}
+```
+
+```js
+_.extend(json, this.model.toJSON())
+```
+
+Becomes:
+```js
+Object.assign(json, this.model.toJSON())
+```
+
+#### _.filter
+
+```js
+_.filter(resourceTimings, function(t) {
+    return nameRegexp.test(t.name);
+})
+```
+
+Becomes:
+```js
+resourceTimings.filter(t => nameRegexp.test(t.name))
+```
+
+#### _.has
+
+```js
+_.has(array, value)
+```
+
+Becomes:
+```js
+array.includes(value)
+```
+
+```js
+_.has(obj, value)
+```
+
+Becomes:
+```js
+value in obj
+```
+
+#### _.isArray
+
+```js
+_.isArray(someObj)
+```
+
+Becomes:
+```js
+Array.isArray(someObj)
+```
+
+#### _.isFunction
+
+```js
+_.isFunction(fn)
+```
+
+Becomes:
+```js
+typeof fn === "function"
+```
+
+#### _.isString
+
+```js
+_.isString(obj)
+```
+
+Becomes:
+```js
+typeof obj === "string"
+```
+
+#### _.keys
+
+```js
+_.keys(obj)
+```
+
+Becomes:
+```js
+Object.keys(obj)
+```
+
+#### _.last
+
+```js
+_.last(someArray)
+```
+
+Becomes:
+```js
+someArray[someArray.length - 1]
+```
+
+or (if you don't case about the array contents):
+```js
+someArray.pop()
+```
+
+#### _.map
+
+```js
+_.map(resourceTimings, function(t) {
+    return nameRegexp.test(t.name);
+})
+```
+
+Becomes:
+```js
+resourceTimings.map(t => nameRegexp.test(t.name))
+```
+
+#### _.max
+
+```js
+_.max(array)
+```
+
+Becomes:
+```js
+Math.max(...array)
+```
+
+#### _.omit
+
+```js
+_.omit(array, props)
+```
+
+Becomes:
+```js
+array.filter(prop => !props.includes(prop))
+```
+
+```js
+_.omit(obj, props)
+```
+
+Becomes:
+```js
+Object.keys(obj).reduce((result, prop) => {
+    if (!props.includes(prop)) {
+        result[prop] = attrs[prop];
+    }
+}, {})
+```
+
+#### _.once
+
+```js
+$(...).on("click", _.once(...))
+```
+
+Becomes:
+```js
+$(...).one("click", ...)
+```
+
+```js
+{
+    method: _.once(function() {
+        ...
+    })
+}
+```
+
+Becomes:
+```js
+{
+    method: function() {
+        // Only execute this, at most, once
+        if (this._initDone) {
+            return;
+        }
+
+        this._initDone = true;
+
+        ...
+    }
+}
+```
+
+```js
+var fetchMissionPercentages = _.once(function() {
+    return $.when(...).then(...);
+});
+```
+
+Becomes:
+```js
+var fetchMissionPercentages = function() {
+    let val = $.when(...).then(...);
+
+    // Override the function to avoid multiple calls
+    fetchMissionPercentages = () => val;
+
+    return val;
+};
+```
+
+#### _.object
+
+```js
+_.object(_.map(accentedChars, function(chars, c) {
+    return [c, "[" + c + c.toLowerCase() + chars + "]"];
+}))
+```
+
+Becomes:
+```js
+Object.entries(accentedChars).reduce((result, [c, chars]) => {
+    result[c] = `[${c}${c.toLowerCase()}${chars}]`;
+    return result;
+}, {});
+```
+
+#### _.sortBy
+
+```js
+_.sortBy(timings, "startTime")
+```
+
+Becomes:
+```js
+timings = timings.sort((a, b) => a.startTime - b.startTime)
+```
+
+#### _.sortedIndex
+
+This is included in our special-built version of lodash.
+
+#### _.throttle
+
+This is included in our special-built version of lodash.
+
+#### _.values
+
+```js
+_.values(obj)
+```
+
+Becomes:
+```js
+Object.values(obj)
+```
 
 -----------------
 ### Library rules
