@@ -27,7 +27,7 @@
   * [Do not use async/await or generators](#do-not-use-asyncawait-or-generators)
   * [Do not use Set or Map ](#do-not-use-set-or-map)
   * [Use let and const for new files; do not use var ](#use-let-and-const-for-new-files-do-not-use-var)
-* [Move off Underscore][#move-off-underscore]
+* [Move off Underscore](#move-off-underscore)
 * [Library rules](#library-rules)
   * [Use $ for jQuery](#use--for-jquery)
 
@@ -671,6 +671,7 @@ Becomes:
 }
 ```
 
+or:
 ```js
 _.extend(defaultOptions, options || {})
 ```
@@ -680,6 +681,7 @@ Becomes:
 {...defaultOptions, ...options}
 ```
 
+or:
 ```js
 _.extend(json, this.model.toJSON())
 ```
@@ -713,6 +715,7 @@ Becomes:
 array.includes(value)
 ```
 
+or:
 ```js
 _.has(obj, value)
 ```
@@ -841,6 +844,7 @@ Becomes:
 $(...).one("click", ...)
 ```
 
+or:
 ```js
 {
     method: _.once(function() {
@@ -865,6 +869,7 @@ Becomes:
 }
 ```
 
+or:
 ```js
 var fetchMissionPercentages = _.once(function() {
     return $.when(...).then(...);
