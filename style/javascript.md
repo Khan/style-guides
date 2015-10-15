@@ -473,7 +473,7 @@ features](https://docs.google.com/spreadsheets/d/12mF99oCpERzLKS07wPPV3GiISUa8bP
 so they run on ES5-capable browsers.
 
 In some cases, we do not yet allow a new language feature, if it's
-expensive to polyfill.  In others, require using the newer language
+expensive to polyfill.  In others, we require using the newer language
 feature and avoiding the old:
 
 | Construct | Use...                                | ...instead of |
@@ -483,7 +483,7 @@ feature and avoiding the old:
 | fat arrow | `foo(() => { ... })` | `foo(function() { ... }.bind(this))` |
 | let/const | `let a = 1; const b = "4EVAH"; a++;` | `var a = 1; var b = "4EVAH"; a++;` |
 | includes | `array.includes(item)` | `array.indexOf(item) !== -1` |
-| for/of | `for (let [key, value] of Object.entries(obj)) { ... }` | `_.each(obj, function(value, key) { ... })` |
+| for/of | `for (const [key, value] of Object.entries(obj)) { ... }` | `_.each(obj, function(value, key) { ... })` |
 | spread | `{ ...a, ...b, c: d }` | `_.extend({}, a, b, { c: d })` |
 | rest params | `function(bar, ...args) { foo(...args); }` | `function(bar) { var args = Array.prototype.slice.call(arguments, 1); foo.apply(null, args); }` |
 
