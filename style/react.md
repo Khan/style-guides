@@ -7,7 +7,7 @@
   * [Name handlers in props onEventName.](#name-handlers-in-props-oneventname)
   * [Open elements on the same line.](#open-elements-on-the-same-line)
   * [Align and sort HTML properties.](#align-and-sort-html-properties)
-  * [Only export a single react class.](#only-export-a-single-react-class)
+  * [Only export a single React class.](#only-export-a-single-react-class)
 * [Language features](#language-features)
   * [Make "presentation" components pure.](#make-presentation-components-pure)
   * [Prefer <a href="http://facebook.github.io/react/docs/interactivity-and-dynamic-uis.html#what-components-should-have-state">props to state</a>.](#prefer-props-to-state)
@@ -30,7 +30,7 @@ In addition to these style rules, you may also be interested in
 
 #### Order your methods with lifecycle first and render last.
 
-Within your react component, you should order your methods like so:
+Within your React component, you should order your methods like so:
 
 1. lifecycle methods (in chronological order: 
       `getDefaultProps`,
@@ -120,10 +120,10 @@ No:
 >
 ```
 
-#### Only export a single react class.
+#### Only export a single React class.
 
-Every .jsx file should export a single react class, and nothing else.
-This is for testability: the fixture framework requires it to
+Every .jsx file should export a single React class, and nothing else.
+This is for testability; the fixture framework requires it to
 function.
 
 Note the file can still define multiple classes, it just can't export
@@ -170,10 +170,10 @@ attribute of this.props should have a corresponding entry in
 propTypes.  This documents that props need to be passed to a model.
 ([example](https://github.com/Khan/webapp/blob/32aa862769d4e93c477dc0ee0388816056252c4a/javascript/search-package/search-results-list.jsx#L14))
 
-If you as passing data through to a child component, you can use
-the prop-type `<child-class>.propTypes.<prop-name>`.
+If you are passing data through to a child component, you can use
+the propType `<child-class>.propTypes.<prop-name>`.
 
-Avoid these non-descriptive prop-types:
+Avoid these non-descriptive propTypes:
    * `React.PropTypes.any`
    * `React.PropTypes.array`
    * `React.PropTypes.object`
@@ -200,9 +200,9 @@ or in a React store if using a framework such as Redux.
 
 #### Do not use Backbone models.
 
-Use flux actions, or `$.ajax` directly, instead.
+Use Flux actions, or `$.ajax` directly, instead.
 
-We are trying to remove backbone from our codebase entirely.
+We are trying to remove Backbone from our codebase entirely.
 
 #### Minimize use of jQuery.
 
@@ -218,7 +218,7 @@ network communication.
 #### Reuse standard components.
 
 If possible, re-use existing components, especially low-level, pure
-components that emit html directly.  If you write a new such one, and
+components that emit HTML directly.  If you write a new such one, and
 it finds a user in a different project, put it in a shared location
 such as the react.js package.
 
