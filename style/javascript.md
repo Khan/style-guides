@@ -21,15 +21,15 @@
   * [Avoid href="#" for JavaScript triggers](#avoid-href-for-javascript-triggers)
   * [Use modules, not global variables](#use-modules-not-global-variables)
 * [ES6/7 rules](#es67-rules)
-  * [Use =&gt; instead of bind(this) ](#use--instead-of-bind)
+  * [Use =&gt; instead of bind(this) ](#use--instead-of-bindthis)
   * [Use backticks for string interpolation](#use-backticks-for-string-interpolation)
   * [Do not use ES6 classes for React classes](#do-not-use-es6-classes-for-react-classes)
   * [Do not use async/await or generators](#do-not-use-asyncawait-or-generators)
   * [Do not use Set or Map ](#do-not-use-set-or-map)
   * [Use let and const for new files; do not use var ](#use-let-and-const-for-new-files-do-not-use-var)
-* [Move off Underscore](#move-off-underscore)
 * [Library rules](#library-rules)
   * [Use $ for jQuery](#use--for-jquery)
+  * [Don't use Underscore](#dont-use-underscore)
 
 ----
 
@@ -537,404 +537,6 @@ to replace all uses of `var` in existing files.
 
 
 -----------------
-### Move off Underscore
-
-Now that we're using ES6/7 many of the features of Underscore.js are now built in to the language! We should move away from using Underscore in our code towards making use of these native features.
-
-There are a couple methods that are sufficiently complicated and don't have a direct equivalent so instead we have a custom-built copy of lodash containing only those methods. You can find this file at: `third_party/javascript-khansrc/lodash/lodash.js` along with instructions on how to build it and exactly what methods are included.
-
-What follows is a method-by-method set of equivalents for what we've used in Underscore and what you should be using in ES6/7 instead:
-
-#### _.bind
-
-```js
-_.bind(fn, someObj, args)
-```
-
-Becomes:
-```js
-fn.bind(someObj, args)
-```
-
-Note that cases where you had:
-
-```js
-_.bind(function() { ... }, this)
-```
-
-should instead become:
-
-```js
-() => { ... }
-```
-
-#### _.bindAll
-
-```js
-_.bindAll(someObj, "methodName")
-```
-
-Becomes:
-```js
-someObj.methodName = someObj.methodName.bind(someObj);
-```
-
-(or use a loop if binding multiple methods)
-
-#### _.clone
-
-No alternative at the moment! If you need it then you should add it to the compiled version of lodash and then update this guide to mention that it now exists!
-
-#### _.debounce
-
-This is included in our special-built version of lodash.
-
-#### _.defer
-
-```js
-_.defer(function() {
-    foo();
-});
-```
-
-Becomes:
-```js
-setTimeout(function() {
-    foo();
-}, 0);
-```
-
-#### _.delay
-
-```js
-_.delay(function() {
-    loadJavaScript();
-    requireSuggestions();
-}, 2000);
-```
-
-Becomes:
-```js
-setTimeout(function() {
-    loadJavaScript();
-    requireSuggestions();
-}, 2000);
-```
-
-#### _.each
-
-```js
-_.each(array)
-```
-
-Becomes:
-```js
-for (let val of array) {
-
-}
-```
-
-or:
-```js
-array.forEach(...)
-```
-
-```js
-_.each(object)
-```
-
-Becomes:
-```js
-for (let [key, val] of Object.entries(object)) {
-
-}
-```
-
-#### _.extend
-
-```js
-_.extend({}, dataToEventLogOnly, dataToGraphite,
-        {_request_id: KA.requestLogId,
-         _graphite_key_prefix: KA.gaeStatsKeyPrefix,
-         _graphite_keys: Object.keys(dataToGraphite).join()
-        })
-```
-
-Becomes:
-```js
-{
-    ...dataToEventLogOnly,
-    ...dataToGraphite,
-    _request_id: KA.requestLogId,
-    _graphite_key_prefix: KA.gaeStatsKeyPrefix,
-    _graphite_keys: Object.keys(dataToGraphite).join()
-}
-```
-
-or:
-```js
-_.extend(defaultOptions, options || {})
-```
-
-Becomes:
-```js
-{...defaultOptions, ...options}
-```
-
-or:
-```js
-_.extend(json, this.model.toJSON())
-```
-
-Becomes:
-```js
-Object.assign(json, this.model.toJSON())
-```
-
-#### _.filter
-
-```js
-_.filter(resourceTimings, function(t) {
-    return nameRegexp.test(t.name);
-})
-```
-
-Becomes:
-```js
-resourceTimings.filter(t => nameRegexp.test(t.name))
-```
-
-#### _.has
-
-```js
-_.has(array, value)
-```
-
-Becomes:
-```js
-array.includes(value)
-```
-
-or:
-```js
-_.has(obj, value)
-```
-
-Becomes:
-```js
-value in obj
-```
-
-#### _.isArray
-
-```js
-_.isArray(someObj)
-```
-
-Becomes:
-```js
-Array.isArray(someObj)
-```
-
-#### _.isFunction
-
-```js
-_.isFunction(fn)
-```
-
-Becomes:
-```js
-typeof fn === "function"
-```
-
-#### _.isString
-
-```js
-_.isString(obj)
-```
-
-Becomes:
-```js
-typeof obj === "string"
-```
-
-#### _.keys
-
-```js
-_.keys(obj)
-```
-
-Becomes:
-```js
-Object.keys(obj)
-```
-
-#### _.last
-
-```js
-_.last(someArray)
-```
-
-Becomes:
-```js
-someArray[someArray.length - 1]
-```
-
-or (if you don't case about the array contents):
-```js
-someArray.pop()
-```
-
-#### _.map
-
-```js
-_.map(resourceTimings, function(t) {
-    return nameRegexp.test(t.name);
-})
-```
-
-Becomes:
-```js
-resourceTimings.map(t => nameRegexp.test(t.name))
-```
-
-#### _.max
-
-```js
-_.max(array)
-```
-
-Becomes:
-```js
-Math.max(...array)
-```
-
-#### _.omit
-
-```js
-_.omit(array, props)
-```
-
-Becomes:
-```js
-array.filter(prop => !props.includes(prop))
-```
-
-```js
-_.omit(obj, props)
-```
-
-Becomes:
-```js
-Object.keys(obj).reduce((result, prop) => {
-    if (!props.includes(prop)) {
-        result[prop] = attrs[prop];
-    }
-}, {})
-```
-
-#### _.once
-
-```js
-$(...).on("click", _.once(...))
-```
-
-Becomes:
-```js
-$(...).one("click", ...)
-```
-
-or:
-```js
-{
-    method: _.once(function() {
-        ...
-    })
-}
-```
-
-Becomes:
-```js
-{
-    method: function() {
-        // Only execute this, at most, once
-        if (this._initDone) {
-            return;
-        }
-
-        this._initDone = true;
-
-        ...
-    }
-}
-```
-
-or:
-```js
-var fetchMissionPercentages = _.once(function() {
-    return $.when(...).then(...);
-});
-```
-
-Becomes:
-```js
-var fetchMissionPercentages = function() {
-    let val = $.when(...).then(...);
-
-    // Override the function to avoid multiple calls
-    fetchMissionPercentages = () => val;
-
-    return val;
-};
-```
-
-#### _.object
-
-```js
-_.object(_.map(accentedChars, function(chars, c) {
-    return [c, "[" + c + c.toLowerCase() + chars + "]"];
-}))
-```
-
-Becomes:
-```js
-Object.entries(accentedChars).reduce((result, [c, chars]) => {
-    result[c] = `[${c}${c.toLowerCase()}${chars}]`;
-    return result;
-}, {});
-```
-
-#### _.sortBy
-
-```js
-_.sortBy(timings, "startTime")
-```
-
-Becomes:
-```js
-timings = timings.sort((a, b) => a.startTime - b.startTime)
-```
-
-#### _.sortedIndex
-
-This is included in our special-built version of lodash.
-
-#### _.throttle
-
-This is included in our special-built version of lodash.
-
-#### _.values
-
-```js
-_.values(obj)
-```
-
-Becomes:
-```js
-Object.values(obj)
-```
-
------------------
 ### Library rules
 
 #### Use `$` for jQuery
@@ -951,3 +553,52 @@ Yes:
 ```js
 $(".some-class span").hide();
 ```
+
+#### Don't use Underscore
+
+We use ES6/7 which includes many of the features of Underscore.js! Using Underscore should be avoided in favor of these native language features.
+
+There are a couple of methods that are sufficiently complicated and don't have a direct equivalent so instead we have a [custom-built](https://lodash.com/custom-builds) copy of [lodash](https://lodash.com/) containing only those specific methods. You can find this file at: `third_party/javascript-khansrc/lodash/lodash.js` along with instructions on how to build it and exactly what methods are included.
+
+What follows is a method-by-method set of equivalents for what Underscore provides and what you could be using in ES6/7 instead:
+
+Method | Use...                                | ...instead of
+--------- | ------------------------------------- | ----------------------
+bind | `fn.bind(someObj, args)` | `_.bind(fn, someObj, args)`
+bind | `() => { ... }` | `_.bind(function() { ... }, this)`
+bindAll | `obj.method = obj.method.bind(someObj);` <sup>[1](#u1)</sup> | `_.bindAll(someObj, "method")`
+clone | No alternative at the moment! |
+debounce | Our custom lodash build. <sup>[2](#u2)</sup> |
+defer | `setTimeout(fn, 0);` | `_.defer(fn);`
+delay | `setTimeout(fn, 2000);` | `_.delay(fn, 2000);`
+each | `array.forEach(fn)` | `_.each(array, fn)`
+each | `for (const val of array) {}` | `_.each(array, fn)`
+each | `for (const [key, val] of Object.entries(obj)) {}` | `_.each(obj, fn)`
+extend | `{...options, prop: 1}` | `_.extend({}, options, {prop: 1})`
+extend | `{...defaultOptions, ...options}` | `_.extend(defaultOptions, options || {})`
+extend | `Object.assign(json, this.model.toJSON())` | `_.extend(json, this.model.toJSON())`
+filter | `array.filter(checkFn)` | `_.filter(array, checkFn)`
+has | `array.includes(value)` | `_.has(array, value)`
+has | `obj.hasOwnProperty(value)` | `_.has(obj, value)`
+isArray | `Array.isArray(someObj)` | `_.isArray(someObj)`
+isFunction | `typeof fn === "function"` | `_.isFunction(fn)`
+isString | `typeof obj === "string"` | `_.isString(obj)`
+keys | `Object.keys(obj)` | `_.keys(obj)`
+last | `someArray[someArray.length - 1]` | `_.last(someArray)`
+last | `someArray.pop()` <sup>[3](#u3)</sup> | `_.last(someArray)`
+map | `array.map(mapFn)` | `_.map(array, mapFn)`
+max | `Math.max(...array)` | `_.max(array)`
+omit | `array.filter(prop => !props.includes(prop))` | `_.omit(array, props)`
+omit | <pre>Object.keys(obj).reduce((result, prop) => {<br>&nbsp;&nbsp;&nbsp;&nbsp;if (!props.includes(prop)) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result[prop] = attrs[prop];<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}, {})</pre> | `_.omit(obj, props)`
+once | `$(...).one("click", ...)` | `$(...).on("click", _.once(...))`
+once | <pre>{<br>&nbsp;&nbsp;&nbsp;&nbsp;method: () => {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (this._initDone) { return; }<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this._initDone = true;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}</pre>| `{ method: _.once(() => { ... }) }`</pre>
+once | <pre>var getResult = () => {<br>&nbsp;&nbsp;&nbsp;&nbsp;let val = $.when(...).then(...);<br>&nbsp;&nbsp;&nbsp;&nbsp;getResult = () => val;<br>&nbsp;&nbsp;&nbsp;&nbsp;return val;<br>};</pre> | <pre>var getResult = _.once(() => {<br>&nbsp;&nbsp;&nbsp;&nbsp;return $.when(...).then(...);<br>});</pre>
+object | <pre>Object.entries(obj).reduce((result, [key, val]) => {<br>&nbsp;&nbsp;&nbsp;&nbsp;result[key] = value;<br>&nbsp;&nbsp;&nbsp;&nbsp;return result;<br>})</pre> | <pre>_.object(_.map(obj, (val, key) => {<br>&nbsp;&nbsp;&nbsp;&nbsp;return [key, value];<br>})</pre>
+sortBy | `result = result.sort((a, b) => a.prop - b.prop)` | `_.sortBy(result, "prop")`
+sortedIndex | Our custom lodash build. <sup>[2](#u2)</sup> |
+throttle | Our custom lodash build. <sup>[2](#u2)</sup> |
+values | `Object.values(obj)` | `_.values(obj)`
+
+1. Or use a loop if binding multiple methods. <b id="u1"></b>
+2. No alternative at the moment! If you need it then you should add it to the compiled version of lodash and then update this guide to mention that it now exists! <b id="u2"></b>
+3. Only if you don't care about the array contents. <b id="u3"></b>
