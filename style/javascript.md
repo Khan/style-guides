@@ -579,13 +579,13 @@ extend | `{...defaultOptions, ...options}` | `_.extend(defaultOptions, options |
 extend | `Object.assign(json, this.model.toJSON())` | `_.extend(json, this.model.toJSON())`
 filter | `array.filter(checkFn)` | `_.filter(array, checkFn)`
 has | `array.includes(value)` | `_.has(array, value)`
-has | `obj.hasOwnProperty(value)` | `_.has(obj, value)`
+has | `obj.hasOwnProperty(value)` <sup>[3](#u3)</sup> | `_.has(obj, value)`
 isArray | `Array.isArray(someObj)` | `_.isArray(someObj)`
 isFunction | `typeof fn === "function"` | `_.isFunction(fn)`
 isString | `typeof obj === "string"` | `_.isString(obj)`
 keys | `Object.keys(obj)` | `_.keys(obj)`
 last | `someArray[someArray.length - 1]` | `_.last(someArray)`
-last | `someArray.pop()` <sup>[3](#u3)</sup> | `_.last(someArray)`
+last | `someArray.pop()` <sup>[4](#u4)</sup> | `_.last(someArray)`
 map | `array.map(mapFn)` | `_.map(array, mapFn)`
 max | `Math.max(...array)` | `_.max(array)`
 omit | `array.filter(prop => !props.includes(prop))` | `_.omit(array, props)`
@@ -601,4 +601,5 @@ values | `Object.values(obj)` | `_.values(obj)`
 
 1. Or use a loop if binding multiple methods. <b id="u1"></b>
 2. No alternative at the moment! If you need it then you should add it to the compiled version of lodash and then update this guide to mention that it now exists! <b id="u2"></b>
-3. Only if you don't care about the array contents. <b id="u3"></b>
+3. While we recommend using `obj.hasOwnProperty(prop)` it is possible that the object could have a method named `hasOwnProperty` that does something else, causing this call to break. The likelihood of this happening is extremely slim - but if you're developing something that you wish to work absolutely everywhere you may want to do something like `Object.prototype.hasOwnProperty.call(obj, prop)`. <b id="u3"></b>
+4. Only if you don't care about the array contents. <b id="u4"></b>
