@@ -20,7 +20,7 @@
 
 ----
 
-> Follow the normal [Javascript style guide](javascript.md) - including the 80 character line limit. In addition there are several React-specific rules.
+> Follow the normal [JavaScript style guide](javascript.md) - including the 80 character line limit. In addition, there are several React-specific rules.
 
 In addition to these style rules, you may also be interested in
 [React best practices](https://docs.google.com/document/d/1ChtFUao18IyNhaXZ5sE2W-CFuFcYnqlFTyi5gfe6XV0/edit).
@@ -32,7 +32,7 @@ In addition to these style rules, you may also be interested in
 
 Within your react component, you should order your methods like so:
 
-1. lifecycle methods (in chronological order: 
+1. lifecycle methods (in chronological order:
       `getDefaultProps`,
       `getInitialState`,
       `componentWillMount`,
@@ -67,7 +67,7 @@ Example:
 
 #### Open elements on the same line.
 
-The 80-character line limit is a bit tight so we opt to conserve the extra 4.
+The 80-character line limit is a bit tight, so we opt to conserve the extra 4.
 
 Yes:
 ```jsx
@@ -87,10 +87,10 @@ return (      // "div" is not on the same line as "return"
 
 #### Align and sort HTML properties.
 
-Fit them all on the same line if you can.  If you can't, put each
+Fit them all on the same line if you can. If you can't, put each
 property on a line of its own, indented four spaces, in sorted order.
 The closing angle brace should be on a line of its own, indented the
-same as the opening angle brace.  This makes it easy to see the props
+same as the opening angle brace. This makes it easy to see the props
 at a glance.
 
 Yes:
@@ -122,11 +122,11 @@ No:
 
 #### Only export a single react class.
 
-Every .jsx file should export a single react class, and nothing else.
-This is for testability: the fixture framework requires it to
+Every .jsx file should export a single React class, and nothing else.
+This is for testability; the fixture framework requires it to
 function.
 
-Note the file can still define multiple classes, it just can't export
+Note that the file can still define multiple classes, it just can't export
 more than one.
 
 
@@ -148,26 +148,26 @@ never should.
 
 #### Prefer [props to state](http://facebook.github.io/react/docs/interactivity-and-dynamic-uis.html#what-components-should-have-state).
 
-You almost always want to use props.  By avoiding state when possible,
+You almost always want to use props. By avoiding state when possible,
 you minimize redundancy, making it easier to reason about your
 application.
 
-A common pattern -- which matches the "logic" vs. "presentation"
-component distinction -- is to create several stateless components
+A common pattern—which matches the "logic" vs. "presentation"
+component distinction—is to create several stateless components
 that just render data, and have a stateful component above them in the
 hierarchy that passes its state to its children via props. The
 stateful component encapsulates all of the interaction logic, while
 the stateless components take care of rendering data in a declarative
 way.
 
-Copying data from props to state ​can cause the UI to get out of sync
+Copying data from props to state can cause the UI to get out of sync
 and is especially bad.
 
 #### Use [propTypes](http://facebook.github.io/react/docs/reusable-components.html).
 
-React Components should always have complete propTypes.  Every
-attribute of this.props should have a corresponding entry in
-propTypes.  This documents that props need to be passed to a model.
+React Components should always have complete `propTypes`. Every
+attribute of `this.props` should have a corresponding entry in
+`propTypes`. This documents that props need to be passed to a model.
 ([example](https://github.com/Khan/webapp/blob/32aa862769d4e93c477dc0ee0388816056252c4a/javascript/search-package/search-results-list.jsx#L14))
 
 If you as passing data through to a child component, you can use
@@ -178,20 +178,20 @@ Avoid these non-descriptive prop-types:
    * `React.PropTypes.array`
    * `React.PropTypes.object`
 
-Instead, use 
+Instead, use
    * `React.PropTypes.arrayOf`
    * `React.PropTypes.objectOf`
    * `React.PropTypes.instanceOf`
    * `React.PropTypes.shape`
 
-As an exception, if passing data through to a child component, and you
-can't use `<child-class>.propTypes.<prop-name>` for some reason, you
-can use `React.PropType.any`.
+As an exception, if you are passing data through to a child component,
+and you can't use `<child-class>.propTypes.<prop-name>` for some
+reason, you can use `React.PropType.any`.
 
 #### *Never* store state in the DOM.
 
-Do not use `data-` attributes or classes.  All information
-should be stored in Javascript, either in the React component itself,
+Do not use `data-` attributes or classes. All information
+should be stored in JavaScript, either in the React component itself,
 or in a React store if using a framework such as Redux.
 
 
@@ -202,36 +202,36 @@ or in a React store if using a framework such as Redux.
 
 Use flux actions, or `$.ajax` directly, instead.
 
-We are trying to remove backbone from our codebase entirely.
+We are trying to remove Backbone from our codebase entirely.
 
 #### Minimize use of jQuery.
 
 *Never* use jQuery for DOM manipulation.
 
-Try to avoid using jQuery plugins.  When necessary, wrap the jQuery
+Try to avoid using jQuery plugins. When necessary, wrap the jQuery
 plugin with a React component so you only have to touch the jQuery
 once.
 
-You can use `$.ajax` (but no other function, such as $.post) for
+You can use `$.ajax` (but no other function, such as `$.post`) for
 network communication.
 
 #### Reuse standard components.
 
 If possible, re-use existing components, especially low-level, pure
-components that emit html directly.  If you write a new such one, and
+components that emit HTML directly. If you write a new such one, and
 it finds a user in a different project, put it in a shared location
 such as the react.js package.
 
 The standard shared location for useful components that have been
-opensourced is the `react-components.js` package in
-`javascript-packages.json`.  This includes components such as these:
+open sourced is the `react-components.js` package in
+`javascript-packages.json`. This includes components such as these:
 
 * `SetIntervalMixin` - provides a setInterval method so something can be
   done every x milliseconds
 * `$_` - the i18n wrapper to allow for translating text in React.
 * `TimeAgo` - “five minutes ago”, etc - this replaces $.timeago
 
-Reusable components that have not (yet) been opensourced are in the
+Reusable components that have not (yet) been open sourced are in the
 (poorly named) `react.js` package.  This include components such as
 these:
 
