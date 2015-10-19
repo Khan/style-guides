@@ -152,8 +152,8 @@ You almost always want to use props. By avoiding state when possible,
 you minimize redundancy, making it easier to reason about your
 application.
 
-A common pattern—which matches the "logic" vs. "presentation"
-component distinction—is to create several stateless components
+A common pattern — which matches the "logic" vs. "presentation"
+component distinction — is to create several stateless components
 that just render data, and have a stateful component above them in the
 hierarchy that passes its state to its children via props. The
 stateful component encapsulates all of the interaction logic, while
