@@ -219,7 +219,7 @@ network communication.
 
 If possible, re-use existing components, especially low-level, pure
 components that emit HTML directly. If you write a new such one, and
-it finds a user in a different project, put it in a shared location
+it finds a use in a different project, put it in a shared location
 such as the react.js package.
 
 The standard shared location for useful components that have been
