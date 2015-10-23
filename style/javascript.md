@@ -206,7 +206,7 @@ Object destructuring should go after all require lines.
 Write requires on a single line, even if they extend past 80 chars, so they are easier to sort. Our linter automatically skips require lines when checking line length.
 
 No:
-```
+```js
 var React = require("react");
 var ReactART = require("react-art");
 var Group = ReactART.Group;
@@ -217,7 +217,7 @@ var ItemStore = require("./item-store.jsx");
 ```
 
 Yes:
-```
+```js
 var React = require("react");
 var ReactART = require("react-art");
 var _ = require("underscore");
