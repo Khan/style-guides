@@ -21,7 +21,7 @@ Welcome to the CSS style guide. This guide borrows heavily from Github's [Primer
 Here is good example syntax:
 
 ```css
-// This is a good example!
+/* This is a good example! */
 .styleguide-format,
 .other-format,
 .third-format {
