@@ -481,7 +481,7 @@ feature and avoiding the old:
 | backticks | `` `http://${host}/${path}` `` | `"http://" + host + "/" + path` |
 | destructuring | `var { x, y } = a;` | `var x = a.x; var y = a.y;` |
 | fat arrow | `foo(() => { ... })` | `foo(function() { ... }.bind(this))` |
-| let/const | `let a = 1; const b = "4EVAH"; a++;` | `var a = 1; var b = "4EVAH"; a++;` |
+| let/const | `let a = 1; const B = "4EVAH";` | `var a = 1; var B = "4EVAH";` |
 | includes | `array.includes(item)` | `array.indexOf(item) !== -1` |
 | for/of | `for (const [key, value] of Object.entries(obj)) { ... }` | `_.each(obj, function(value, key) { ... })` |
 | spread | `{ ...a, ...b, c: d }` | `_.extend({}, a, b, { c: d })` |
