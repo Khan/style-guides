@@ -170,7 +170,7 @@ attribute of `this.props` should have a corresponding entry in
 `propTypes`. This documents that props need to be passed to a model.
 ([example](https://github.com/Khan/webapp/blob/32aa862769d4e93c477dc0ee0388816056252c4a/javascript/search-package/search-results-list.jsx#L14))
 
-If you as passing data through to a child component, you can use
+If you are passing data through to a child component, you can use
 the prop-type `<child-class>.propTypes.<prop-name>`.
 
 Avoid these non-descriptive prop-types:
