@@ -565,41 +565,40 @@ What follows is a method-by-method set of equivalents for what Underscore provid
 Method | Use...                                | ...instead of
 --------- | ------------------------------------- | ----------------------
 bind | `fn.bind(someObj, args)` | `_.bind(fn, someObj, args)`
-bind | `() => { ... }` | `_.bind(function() { ... }, this)`
-bindAll | `obj.method = obj.method.bind(someObj);` <sup>[1](#u1)</sup> | `_.bindAll(someObj, "method")`
-clone | No alternative at the moment! |
-debounce | Our custom lodash build. <sup>[2](#u2)</sup> |
+bind | `(a, b) => { ... }` | `_.bind(function(a, b) { ... }, this)` <sup>[1](#u1)</sup>
+bindAll | `obj.method = obj.method.bind(someObj);` <sup>[2](#u2)</sup> | `_.bindAll(someObj, "method")`
+clone | No alternative at the moment! <sup>[3](#u3)</sup> |
+debounce | Our custom lodash build. |
 defer | `setTimeout(fn, 0);` | `_.defer(fn);`
 delay | `setTimeout(fn, 2000);` | `_.delay(fn, 2000);`
-each | `array.forEach(fn)` | `_.each(array, fn)`
-each | `for (const val of array) {}` | `_.each(array, fn)`
-each | `for (const [key, val] of Object.entries(obj)) {}` | `_.each(obj, fn)`
-extend | `{...options, prop: 1}` | `_.extend({}, options, {prop: 1})`
-extend | `{...defaultOptions, ...options}` | `_.extend(defaultOptions, options || {})`
-extend | `Object.assign(json, this.model.toJSON())` | `_.extend(json, this.model.toJSON())`
+each (array) | `array.forEach((val, i) => {})` | `_.each(array, (val, i) => {})`
+each (array) | `for (const val of array) {}` | `_.each(array, fn)`
+each (object) | `for (const [key, val] of Object.entries(obj)) {}` | `_.each(obj, fn)`
+extend (new) | `{...options, prop: 1}` | `_.extend({}, options, {prop: 1})`
+extend (assign) | `Object.assign(json, this.model.toJSON())` | `_.extend(json, this.model.toJSON())`
 filter | `array.filter(checkFn)` | `_.filter(array, checkFn)`
-has | `array.includes(value)` | `_.has(array, value)`
-has | `obj.hasOwnProperty(value)` <sup>[3](#u3)</sup> | `_.has(obj, value)`
+has (array) | `array.includes(value)` | `_.has(array, value)`
+has (object) | `obj.hasOwnProperty(value)` <sup>[4](#u4)</sup> | `_.has(obj, value)`
 isArray | `Array.isArray(someObj)` | `_.isArray(someObj)`
 isFunction | `typeof fn === "function"` | `_.isFunction(fn)`
 isString | `typeof obj === "string"` | `_.isString(obj)`
 keys | `Object.keys(obj)` | `_.keys(obj)`
-last | `someArray[someArray.length - 1]` | `_.last(someArray)`
-last | `someArray.pop()` <sup>[4](#u4)</sup> | `_.last(someArray)`
+last | `someArray[someArray.length - 1]` <sup>[5](#u5)</sup> | `_.last(someArray)`
 map | `array.map(mapFn)` | `_.map(array, mapFn)`
 max | `Math.max(...array)` | `_.max(array)`
-omit | `array.filter(prop => !props.includes(prop))` | `_.omit(array, props)`
-omit | <pre>Object.keys(obj).reduce((result, prop) => {<br>&nbsp;&nbsp;&nbsp;&nbsp;if (!props.includes(prop)) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result[prop] = attrs[prop];<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}, {})</pre> | `_.omit(obj, props)`
+omit (array) | `array.filter(prop => !props.includes(prop))` | `_.omit(array, props)`
+omit (object) | <pre>Object.keys(obj).reduce((result, prop) => {<br>&nbsp;&nbsp;&nbsp;&nbsp;if (!props.includes(prop)) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result[prop] = attrs[prop];<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}, {})</pre> | `_.omit(obj, props)`
 once | `$(...).one("click", ...)` | `$(...).on("click", _.once(...))`
 once | <pre>{<br>&nbsp;&nbsp;&nbsp;&nbsp;method: () => {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (this._initDone) { return; }<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this._initDone = true;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}</pre>| `{ method: _.once(() => { ... }) }`</pre>
 once | <pre>var getResult = () => {<br>&nbsp;&nbsp;&nbsp;&nbsp;let val = $.when(...).then(...);<br>&nbsp;&nbsp;&nbsp;&nbsp;getResult = () => val;<br>&nbsp;&nbsp;&nbsp;&nbsp;return val;<br>};</pre> | <pre>var getResult = _.once(() => {<br>&nbsp;&nbsp;&nbsp;&nbsp;return $.when(...).then(...);<br>});</pre>
-object | <pre>Object.entries(obj).reduce((result, [key, val]) => {<br>&nbsp;&nbsp;&nbsp;&nbsp;result[key] = value;<br>&nbsp;&nbsp;&nbsp;&nbsp;return result;<br>})</pre> | <pre>_.object(_.map(obj, (val, key) => {<br>&nbsp;&nbsp;&nbsp;&nbsp;return [key, value];<br>})</pre>
+object | <pre>Object.entries(obj).reduce((result, [key, val]) => {<br>&nbsp;&nbsp;&nbsp;&nbsp;result[key] = value;<br>&nbsp;&nbsp;&nbsp;&nbsp;return result;<br>})</pre> | <pre>\_.object(\_.map(obj, (val, key) => {<br>&nbsp;&nbsp;&nbsp;&nbsp;return [key, value];<br>})</pre>
 sortBy | `result = result.sort((a, b) => a.prop - b.prop)` | `_.sortBy(result, "prop")`
-sortedIndex | Our custom lodash build. <sup>[2](#u2)</sup> |
-throttle | Our custom lodash build. <sup>[2](#u2)</sup> |
+sortedIndex | Our custom lodash build. <sup>[3](#u3)</sup> |
+throttle | Our custom lodash build. <sup>[3](#u3)</sup> |
 values | `Object.values(obj)` | `_.values(obj)`
 
-1. Or use a loop if binding multiple methods. <b id="u1"></b>
-2. No alternative at the moment! If you need it then you should add it to the compiled version of lodash and then update this guide to mention that it now exists! <b id="u2"></b>
-3. While we recommend using `obj.hasOwnProperty(prop)` it is possible that the object could have a method named `hasOwnProperty` that does something else, causing this call to break. The likelihood of this happening is extremely slim - but if you're developing something that you wish to work absolutely everywhere you may want to do something like `Object.prototype.hasOwnProperty.call(obj, prop)`. <b id="u3"></b>
-4. Only if you don't care about the array contents. <b id="u4"></b>
+1. To be used when you're creating a function and immediately binding its context to `this`. <b id="u1"></b>
+2. Or use a loop if binding multiple methods. <b id="u2"></b>
+3. No alternative at the moment! If you need it then you should add it to the compiled version of lodash and then update this guide to mention that it now exists! <b id="u3"></b>
+4. While we recommend using `obj.hasOwnProperty(prop)` it is possible that the object could have a method named `hasOwnProperty` that does something else, causing this call to break. The likelihood of this happening is extremely slim - but if you're developing something that you wish to work absolutely everywhere you may want to do something like `Object.prototype.hasOwnProperty.call(obj, prop)`. <b id="u4"></b>
+5. If you don't care about destructively modifying the array, you can also use `someArray.pop()``. <b id="u5"></b>
