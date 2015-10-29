@@ -565,7 +565,7 @@ What follows is a method-by-method set of equivalents for what Underscore provid
 Method | Use...                                | ...instead of
 --------- | ------------------------------------- | ----------------------
 bind | `fn.bind(someObj, args)` | `_.bind(fn, someObj, args)`
-bind | `(a, b) => { ... }` | `_.bind(function(a, b) { ... }, this)` <sup>[1](#u1)</sup>
+bind | `(a, b) => { ... }` <sup>[1](#u1)</sup> | `_.bind(function(a, b) { ... }, this)`
 bindAll | `obj.method = obj.method.bind(someObj);` <sup>[2](#u2)</sup> | `_.bindAll(someObj, "method")`
 clone | No alternative at the moment! <sup>[3](#u3)</sup> |
 debounce | Our custom lodash build. |
@@ -586,12 +586,12 @@ keys | `Object.keys(obj)` | `_.keys(obj)`
 last | `someArray[someArray.length - 1]` <sup>[5](#u5)</sup> | `_.last(someArray)`
 map | `array.map(mapFn)` | `_.map(array, mapFn)`
 max | `Math.max(...array)` | `_.max(array)`
+object | <pre>Object.entries(obj).reduce(<br>(result, [key, val]) => {<br>&nbsp;&nbsp;&nbsp;&nbsp;result[key] = value;<br>&nbsp;&nbsp;&nbsp;&nbsp;return result;<br>})</pre> | <pre>\_.object(\_.map(obj, (val, key) => {<br>&nbsp;&nbsp;&nbsp;&nbsp;return [key, value];<br>})</pre>
 omit (array) | `array.filter(prop => !props.includes(prop))` | `_.omit(array, props)`
 omit (object) | <pre>Object.keys(obj).reduce((result, prop) => {<br>&nbsp;&nbsp;&nbsp;&nbsp;if (!props.includes(prop)) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result[prop] = attrs[prop];<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}, {})</pre> | `_.omit(obj, props)`
 once | `$(...).one("click", ...)` | `$(...).on("click", _.once(...))`
 once | <pre>{<br>&nbsp;&nbsp;&nbsp;&nbsp;method: () => {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (this._initDone) { return; }<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this._initDone = true;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}</pre>| `{ method: _.once(() => { ... }) }`</pre>
 once | <pre>var getResult = () => {<br>&nbsp;&nbsp;&nbsp;&nbsp;let val = $.when(...).then(...);<br>&nbsp;&nbsp;&nbsp;&nbsp;getResult = () => val;<br>&nbsp;&nbsp;&nbsp;&nbsp;return val;<br>};</pre> | <pre>var getResult = _.once(() => {<br>&nbsp;&nbsp;&nbsp;&nbsp;return $.when(...).then(...);<br>});</pre>
-object | <pre>Object.entries(obj).reduce((result, [key, val]) => {<br>&nbsp;&nbsp;&nbsp;&nbsp;result[key] = value;<br>&nbsp;&nbsp;&nbsp;&nbsp;return result;<br>})</pre> | <pre>\_.object(\_.map(obj, (val, key) => {<br>&nbsp;&nbsp;&nbsp;&nbsp;return [key, value];<br>})</pre>
 sortBy | `result = result.sort((a, b) => a.prop - b.prop)` | `_.sortBy(result, "prop")`
 sortedIndex | Our custom lodash build. <sup>[3](#u3)</sup> |
 throttle | Our custom lodash build. <sup>[3](#u3)</sup> |
