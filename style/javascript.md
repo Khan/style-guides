@@ -21,7 +21,7 @@
   * [Avoid href="#" for JavaScript triggers](#avoid-href-for-javascript-triggers)
   * [Use modules, not global variables](#use-modules-not-global-variables)
 * [ES6/7 rules](#es67-rules)
-  * [Use =&gt; instead of bind(this) ](#use--instead-of-bind)
+  * [Use =&gt; instead of bind(this) ](#use--instead-of-bindthis)
   * [Use backticks for string interpolation](#use-backticks-for-string-interpolation)
   * [Do not use ES6 classes for React classes](#do-not-use-es6-classes-for-react-classes)
   * [Do not use async/await or generators](#do-not-use-asyncawait-or-generators)
@@ -29,6 +29,7 @@
   * [Use let and const for new files; do not use var ](#use-let-and-const-for-new-files-do-not-use-var)
 * [Library rules](#library-rules)
   * [Use $ for jQuery](#use--for-jquery)
+  * [Don't use Underscore](#dont-use-underscore)
 
 ----
 
@@ -552,3 +553,52 @@ Yes:
 ```js
 $(".some-class span").hide();
 ```
+
+#### Don't use Underscore
+
+We use ES6/7 which includes many of the features of Underscore.js! Using Underscore should be avoided in favor of these native language features.
+
+There are a couple of methods that are sufficiently complicated and don't have a direct equivalent so instead we have a [custom-built](https://lodash.com/custom-builds) copy of [lodash](https://lodash.com/) containing only those specific methods. You can find this file at: `third_party/javascript-khansrc/lodash/lodash.js` along with instructions on how to build it and exactly what methods are included.
+
+What follows is a method-by-method set of equivalents for what Underscore provides and what you could be using in ES6/7 instead:
+
+Method | Use...                                | ...instead of
+--------- | ------------------------------------- | ----------------------
+bind | `fn.bind(someObj, args)` | `_.bind(fn, someObj, args)`
+bind | `(a, b) => { ... }` <sup>[1](#u1)</sup> | `_.bind(function(a, b) { ... }, this)`
+bindAll | `obj.method = obj.method.bind(someObj);` <sup>[2](#u2)</sup> | `_.bindAll(someObj, "method")`
+clone | No alternative at the moment! <sup>[3](#u3)</sup> |
+debounce | Our custom lodash build. |
+defer | `setTimeout(fn, 0);` | `_.defer(fn);`
+delay | `setTimeout(fn, 2000);` | `_.delay(fn, 2000);`
+each (array) | `array.forEach((val, i) => {})` | `_.each(array, (val, i) => {})`
+each (array) | `for (const val of array) {}` | `_.each(array, fn)`
+each (object) | `for (const [key, val] of Object.entries(obj)) {}` | `_.each(obj, fn)`
+extend (new) | `{...options, prop: 1}` | `_.extend({}, options, {prop: 1})`
+extend (assign) | `Object.assign(json, this.model.toJSON())` | `_.extend(json, this.model.toJSON())`
+filter | `array.filter(checkFn)` | `_.filter(array, checkFn)`
+has (array) | `array.includes(value)` | `_.has(array, value)`
+has (object) | `obj.hasOwnProperty(value)` <sup>[4](#u4)</sup> | `_.has(obj, value)`
+isArray | `Array.isArray(someObj)` | `_.isArray(someObj)`
+isFunction | `typeof fn === "function"` | `_.isFunction(fn)`
+isString | `typeof obj === "string"` | `_.isString(obj)`
+keys | `Object.keys(obj)` | `_.keys(obj)`
+last | `someArray[someArray.length - 1]` <sup>[5](#u5)</sup> | `_.last(someArray)`
+map | `array.map(mapFn)` | `_.map(array, mapFn)`
+max | `Math.max(...array)` | `_.max(array)`
+object | <pre>Object.entries(obj).reduce(<br>(result, [key, val]) => {<br>&nbsp;&nbsp;&nbsp;&nbsp;result[key] = value;<br>&nbsp;&nbsp;&nbsp;&nbsp;return result;<br>})</pre> | <pre>\_.object(\_.map(obj, (val, key) => {<br>&nbsp;&nbsp;&nbsp;&nbsp;return [key, value];<br>})</pre>
+omit (array) | `array.filter(prop => !props.includes(prop))` | `_.omit(array, props)`
+omit (object) | <pre>Object.keys(obj).reduce((result, prop) => {<br>&nbsp;&nbsp;&nbsp;&nbsp;if (!props.includes(prop)) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result[prop] = attrs[prop];<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}, {})</pre> | `_.omit(obj, props)`
+once | `$(...).one("click", ...)` | `$(...).on("click", _.once(...))`
+once | <pre>{<br>&nbsp;&nbsp;&nbsp;&nbsp;method: () => {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (this._initDone) { return; }<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this._initDone = true;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}</pre>| `{ method: _.once(() => { ... }) }`</pre>
+once | <pre>var getResult = () => {<br>&nbsp;&nbsp;&nbsp;&nbsp;let val = $.when(...).then(...);<br>&nbsp;&nbsp;&nbsp;&nbsp;getResult = () => val;<br>&nbsp;&nbsp;&nbsp;&nbsp;return val;<br>};</pre> | <pre>var getResult = _.once(() => {<br>&nbsp;&nbsp;&nbsp;&nbsp;return $.when(...).then(...);<br>});</pre>
+sortBy | `result = result.sort((a, b) => a.prop - b.prop)` | `_.sortBy(result, "prop")`
+sortedIndex | Our custom lodash build. |
+throttle | Our custom lodash build. |
+values | `Object.values(obj)` | `_.values(obj)`
+
+1. To be used when you're creating a function and immediately binding its context to `this`. <b id="u1"></b>
+2. Or use a loop if binding multiple methods. <b id="u2"></b>
+3. No alternative at the moment! If you need it then you should add it to the compiled version of lodash and then update this guide to mention that it now exists! <b id="u3"></b>
+4. While we recommend using `obj.hasOwnProperty(prop)` it is possible that the object could have a method named `hasOwnProperty` that does something else, causing this call to break. The likelihood of this happening is extremely slim - but if you're developing something that you wish to work absolutely everywhere you may want to do something like `Object.prototype.hasOwnProperty.call(obj, prop)`. <b id="u4"></b>
+5. If you don't care about destructively modifying the array, you can also use `someArray.pop()``. <b id="u5"></b>
