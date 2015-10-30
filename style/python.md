@@ -140,7 +140,7 @@ Classes should follow a similar format: a single line describing the class, plus
 
 Modules (files) should have a docstring too, at the top of the file, starting with the usual one-line summary:  
 ```py
-"""One line summary
+"""One line summary.
 
 Longer description.
 """
