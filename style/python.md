@@ -231,7 +231,7 @@ Because Python's indentation style is unlike many C-based languages, your editor
 - Emacs has great support out of the box via `python-mode`.
 - Vim needs some help. Installing [this indent script by Eric Mc Sween](http://www.vim.org/scripts/script.php?script_id=974) will get you there.
 
-Examples of line splitting from our code
+Examples of line splitting from our code:
 
 ```py
 BAD:  zero_duration_videos = video_models.Video.all().filter("duration =", 0).fetch(10000)
@@ -265,7 +265,7 @@ kwargs = dict((str(key), value)
 
 There are cases where line splitting doesn't feel nice. Let's look at a few of them, sigh, and move on.
 
-This long method reference needs surrounding parens and splits the line before the dot operator.
+This long method reference needs surrounding parens and splits the line before the dot operator:
 
 ```py
 # Bad:
