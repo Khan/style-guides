@@ -29,6 +29,7 @@
   * [Use let and const for new files; do not use var ](#use-let-and-const-for-new-files-do-not-use-var)
 * [Library rules](#library-rules)
   * [Use $ for jQuery](#use--for-jquery)
+  * [Use `Promise` instead of `$.when()` or `$.Deferred()`](#use-promise-instead-of-when-or-deferred)
   * [Don't use Underscore](#dont-use-underscore)
 
 ----
@@ -535,7 +536,6 @@ evinced.
 This rule will become mandatory everywhere once we have done a fixit
 to replace all uses of `var` in existing files.
 
-
 -----------------
 ### Library rules
 
@@ -553,6 +553,42 @@ Yes:
 ```js
 $(".some-class span").hide();
 ```
+
+### Use `Promise` instead of `$.when()` or `$.Deferred()`
+
+We use the [ES6 Promise polyfill](https://github.com/jakearchibald/es6-promise) on our site. In general the [MDN Polyfill Guide](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) is extremely helpful in determining how to best use the `Promise` object.
+
+Moving from `$.when()` to the `Promise` object is quite easy.
+
+Instead of... | Use...
+--------------|-------------------
+`$.when()` (no arguments) | `Promise.resolve()`
+`$.when(arrayOfPromises)` | `Promise.all(arrayOfPromises)`
+`$.when(promise)` | `promise` (`$.when` just returns the promise)
+
+Moving from `$.Deferred` to `Promise` can be a bit trickier, it all depends upon how you were originally using it. The biggest difference is that in order to mark a `Promise` as resolved you must execute the callback function that was passed in to the `new Promise()` constructor. This is easy if you're tracking progress on some asynchronous operation:
+
+```
+var promise = new Promise((resolve) => {
+    $.ajax(...).then(resolve);
+});
+```
+
+However it gets a bit trickier when you want to resolve the promise at some later time, outside the scope of the instantiation function. Since there is no `.resolve()` method, as was available on `$.Deferred()` objects, a common pattern may look like this:
+
+```
+var markResolved;
+var promise = new Promise((resolve) => {
+    markResolved = resolve;
+});
+
+// later in your code...
+if (markResolved) {
+    markResolved();
+}
+```
+
+It's also important to note that Promises do not throw exceptions. If you wish to catch an exception you must explicitly attach a `.catch()` callback to it and listen for the error.
 
 #### Don't use Underscore
 
