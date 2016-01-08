@@ -609,12 +609,8 @@ Get some JSON data (same use case as `$.getJSON`).
 ```
 fetch("/some.json")
     .then((response) => response.json())
-    .then((json) => {
-        // Use the JSON data...
-    })
-    .catch((err) => {
-        // Handle server error...
-    });
+    .then((json) => { /* Use the JSON data... */ })
+    .catch((err) => { /* Handle server error... */ });
 ```
 
 ##### `$.post()`
@@ -630,12 +626,8 @@ fetch("/api/some/endpoint", {
     body: JSON.stringify(myJSONObject),
 })
     .then((response) => response.json())
-    .then((json) => {
-        // Use the JSON data...
-    })
-    .catch((err) => {
-        // Handle server error...
-    });
+    .then((json) => { /* Use the JSON data... */ })
+    .catch((err) => { /* Handle server error... */ });
 ```
 
 POSTing form data to an API andpoint and getting JSON back. See the [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) API for more details.
@@ -651,12 +643,8 @@ fetch("/api/some/endpoint", {
     body: new FormData(myForm),
 })
     .then((response) => response.json())
-    .then((json) => {
-        // Use the JSON data...
-    })
-    .catch((err) => {
-        // Handle server error...
-    });
+    .then((json) => { /* Use the JSON data... */ })
+    .catch((err) => { /* Handle server error... */ });
 ```
 
 POSTing a form to an API andpoint and getting JSON back. See the [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) API for more details.
@@ -669,12 +657,8 @@ fetch("/api/some/endpoint", {
     body: new FormData(myForm),
 })
     .then((response) => response.json())
-    .then((json) => {
-        // Use the JSON data...
-    })
-    .catch((err) => {
-        // Handle server error...
-    });
+    .then((json) => { /* Use the JSON data... */ })
+    .catch((err) => { /* Handle server error... */ });
 ```
 
 #### Don't use Underscore
