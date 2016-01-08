@@ -563,8 +563,10 @@ Moving from `$.when()` to the `Promise` object is quite easy.
 Instead of... | Use...
 --------------|-------------------
 `$.when()` (no arguments) | `Promise.resolve()`
-`$.when(arrayOfPromises)` | `Promise.all(arrayOfPromises)`
+`$.when.apply($, arrayOfPromises)` | `Promise.all(arrayOfPromises)`
 `$.when(promise)` | `promise` (`$.when` just returns the promise)
+
+Note that if you're calling `Promise.all()` on an array of promises that the result to be passed to the `.then()` callback will be an array of all the results from each of the promises in the array. More [details on MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all).
 
 Moving from `$.Deferred` to `Promise` can be a bit trickier, it all depends upon how you were originally using it. The biggest difference is that in order to mark a `Promise` as resolved you must execute the callback function that was passed in to the `new Promise()` constructor. This is easy if you're tracking progress on some asynchronous operation:
 
