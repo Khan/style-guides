@@ -592,6 +592,75 @@ if (markResolved) {
 
 It's also important to note that Promises do not throw exceptions. If you wish to catch an exception you must explicitly attach a `.catch()` callback to it and listen for the error.
 
+#### Use `fetch()` instead of `$.ajax`/`$.get`/`$.post`/`$.getJSON`
+
+We now provide a polyfill for the [`fetch()` method](https://developer.mozilla.org/en-US/docs/Web/API/GlobalFetch/fetch). We should use this for all Ajax-style requests. Note that in order to use the method you'll need to explictly import it using:
+
+```
+var fetch = require("khan-fetch");
+```
+
+As we wrap the method to ensure that Khan Academy-specific logic is intact (such as handling API Action Results).
+
+##### `$.get()`
+
+Get some JSON data (same use case as `$.getJSON`).
+
+```
+fetch("/some.json")
+    .then((response) => response.json())
+    .then((json) => { /* Use the JSON data... */ })
+    .catch((err) => { /* Handle server error... */ });
+```
+
+##### `$.post()`
+
+POSTing JSON to an API endpoint and getting JSON back.
+
+```
+fetch("/api/some/endpoint", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json",
+    },
+    body: JSON.stringify(myJSONObject),
+})
+    .then((response) => response.json())
+    .then((json) => { /* Use the JSON data... */ })
+    .catch((err) => { /* Handle server error... */ });
+```
+
+POSTing form data to an API andpoint and getting JSON back. See the [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) API for more details.
+
+```
+const formData = new FormData();
+
+formData.append("name", "John");
+formData.append("requestId", myRequestId);
+
+fetch("/api/some/endpoint", {
+    method: "POST",
+    body: new FormData(myForm),
+})
+    .then((response) => response.json())
+    .then((json) => { /* Use the JSON data... */ })
+    .catch((err) => { /* Handle server error... */ });
+```
+
+POSTing a form to an API andpoint and getting JSON back. See the [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) API for more details.
+
+```
+const myForm = document.querySelector("#myform");
+
+fetch("/api/some/endpoint", {
+    method: "POST",
+    body: new FormData(myForm),
+})
+    .then((response) => response.json())
+    .then((json) => { /* Use the JSON data... */ })
+    .catch((err) => { /* Handle server error... */ });
+```
+
 #### Don't use Underscore
 
 We use ES6/7 which includes many of the features of Underscore.js! Using Underscore should be avoided in favor of these native language features.
