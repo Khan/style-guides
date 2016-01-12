@@ -592,22 +592,29 @@ if (markResolved) {
 
 It's also important to note that Promises do not throw exceptions. If you wish to catch an exception you must explicitly attach a `.catch()` callback to it and listen for the error.
 
-#### Use `fetch()` instead of `$.ajax`/`$.get`/`$.post`/`$.getJSON`
+#### Use `khanFetch()` instead of `$.ajax`/`$.get`/`$.post`/`$.getJSON`
 
-We now provide a polyfill for the [`fetch()` method](https://developer.mozilla.org/en-US/docs/Web/API/GlobalFetch/fetch). We should use this for all Ajax-style requests. Note that in order to use the method you'll need to explictly import it using:
+We now provide a polyfill for the [`fetch()` method](https://developer.mozilla.org/en-US/docs/Web/API/GlobalFetch/fetch). We should use this for all Ajax-style requests. We wrote a wrapper around `fetch()` which adds in some Khan Academy-specific logic (such as adding cachebusting parameters and handling API Action Results). The interface to `khanFetch()` is exactly the same as the normal `fetch()` function. You can use it like:
 
 ```
-var fetch = require("khan-fetch");
+const { khanFetch } = require("./path-to-shared-package/khan-fetch.js");
 ```
-
-As we wrap the method to ensure that Khan Academy-specific logic is intact (such as handling API Action Results).
 
 ##### `$.get()`
+
+Get some textual data:
+
+```
+khanFetch("/some.json")
+    .then((response) => response.text())
+    .then((text) => { /* Use the textual data... */ })
+    .catch((err) => { /* Handle server error... */ });
+```
 
 Get some JSON data (same use case as `$.getJSON`).
 
 ```
-fetch("/some.json")
+khanFetch("/some.json")
     .then((response) => response.json())
     .then((json) => { /* Use the JSON data... */ })
     .catch((err) => { /* Handle server error... */ });
@@ -618,7 +625,7 @@ fetch("/some.json")
 POSTing JSON to an API endpoint and getting JSON back.
 
 ```
-fetch("/api/some/endpoint", {
+khanFetch("/api/some/endpoint", {
     method: "POST",
     headers: {
         "Content-Type": "application/json",
@@ -630,31 +637,17 @@ fetch("/api/some/endpoint", {
     .catch((err) => { /* Handle server error... */ });
 ```
 
-POSTing form data to an API andpoint and getting JSON back. See the [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) API for more details.
+POSTing form data to an API andpoint and getting JSON back. This is the default encoding that `$.post` used, so this should be used in place of `$.post(url, data)`. We wrote a function called `formUrlencode` to make this easy:
 
 ```
-const formData = new FormData();
+const { khanFetch, formUrlencode } = require("./path-to-shared-package/khan-fetch.js");
 
-formData.append("name", "John");
-formData.append("requestId", myRequestId);
-
-fetch("/api/some/endpoint", {
+khanFetch("/api/some/endpoint", {
     method: "POST",
-    body: new FormData(myForm),
-})
-    .then((response) => response.json())
-    .then((json) => { /* Use the JSON data... */ })
-    .catch((err) => { /* Handle server error... */ });
-```
-
-POSTing a form to an API andpoint and getting JSON back. See the [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) API for more details.
-
-```
-const myForm = document.querySelector("#myform");
-
-fetch("/api/some/endpoint", {
-    method: "POST",
-    body: new FormData(myForm),
+    body: formUrlencode({
+        key1: "value1",
+        key2: 2,
+    }),
 })
     .then((response) => response.json())
     .then((json) => { /* Use the JSON data... */ })
