@@ -69,11 +69,11 @@ Interactions with these frameworks embody a complex responsibility; their vended
 
 `UIViewController`s often entangle many responsibilities:
 
-1. Receiving lifecycle and system events from UIKit and instantiating `UIView`s.
+1. Receiving lifecycle and system events from UIKit and instantiating `UIView`s, and handling user-interaction gestures.
 2. Transforming model data for presentation.
-3. Performing side effects (e.g. network requests, I/O) in response to UI actions.
+3. Performing side effects (e.g. network requests, I/O) in response to user actions.
 
-Try to restrict subclasses to responsibility #1. Not sure how to go about decomposing your view controller's responsibility? One coarse split to start from: split #2 out into a (easily testable) value-typed "presenter" component and #3 into a reference-typed "interactor" component.
+Try to restrict subclasses to responsibility #1. Not sure how to go about decomposing your view controller's responsibility? One coarse split to start from: split #2 out into a (easily testable) value-typed "presenter" component to transform model data, and #3 into a reference-typed "interactor" component to interact with side effects like network requests or I/O.
 
 ### Minimize secret handshakes between types
 
