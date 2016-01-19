@@ -233,6 +233,11 @@ the screen resolution, the device pixel density etc.
 
 An example of a browser-specific API is `canvas.getContext()`.
 
+The output must be deterministic. One way to get
+non-deterministic output is to generate random
+IDs in `getInitialState()`, and have the output
+of render depend on that ID.
+
 #### Side effect free until `componentDidMount`
 
 The parts of the React component lifecycle that are run to
@@ -242,10 +247,10 @@ Examples of side effects that must be avoided:
 - Sending an AJAX request
 - Mutating global JS state
 - Injecting elements into the DOM
-- Changint the page title
+- Changing the page title
 - `alert()`
 
-The methods that are part of this lifecycle are currently:
+The lifecycle methods that run on the server are currently:
 
 - `getInitialState()`
 - `getDefaultProps()`
