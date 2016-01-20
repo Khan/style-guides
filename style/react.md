@@ -13,6 +13,10 @@
   * [Prefer <a href="http://facebook.github.io/react/docs/interactivity-and-dynamic-uis.html#what-components-should-have-state">props to state</a>.](#prefer-props-to-state)
   * [Use <a href="http://facebook.github.io/react/docs/reusable-components.html">propTypes</a>.](#use-proptypes)
   * [<em>Never</em> store state in the DOM.](#never-store-state-in-the-dom)
+* [Server-side rendering](#server-side-rendering)
+  * [Props must be plain JSON](#props-must-be-plain-json)
+  * [Pure functions of props and state](#pure-functions-of-props-and-state)
+  * [Side effect free until `componentDidMount`](#side-effect-free-until-componentdidmount)
 * [React libraries and components](#react-libraries-and-components)
   * [Do not use Backbone models.](#do-not-use-backbone-models)
   * [Minimize use of jQuery.](#minimize-use-of-jquery)
@@ -194,6 +198,68 @@ Do not use `data-` attributes or classes. All information
 should be stored in JavaScript, either in the React component itself,
 or in a React store if using a framework such as Redux.
 
+----------------------------------
+
+### Server-side rendering
+
+To make components safe to render server-side, they must adhere
+to a few more restrictions than regular components.
+
+#### Props must be plain JSON
+
+In order to render server-side, the props are serialized and
+deserialized from JSON. This means that e.g. dates must be
+passed as timestamps as opposed to JS `Date` objects.
+
+Note that this only applies to the root component being
+rendered with server-side rendering. If the root component
+constructs more complex data structures from props, and
+passes those constructs down to child components, that won't
+cause problems.
+
+#### Pure functions of props and state
+
+Components must be pure functions of their `props` and `state`.
+This means the output of their `render()` function must not
+depend on either KA-specific globals, on browser-specific
+state, or browser-specific APIs.
+
+Examples of KA-specific globals include anything attached to
+the `KA` global, e.g. `KA.getUserId()`, or data extracted from
+the DOM such as `data-` properties attached to other DOM nodes.
+
+Examples of browser-specific state include the user agent,
+the screen resolution, the device pixel density etc. 
+
+An example of a browser-specific API is `canvas.getContext()`.
+
+The output must be deterministic. One way to get
+non-deterministic output is to generate random
+IDs in `getInitialState()`, and have the output
+of render depend on that ID. Don't do this.
+
+#### Side effect free until `componentDidMount`
+
+The parts of the React component lifecycle that are run to
+render on the server must be free from side effects.
+
+Examples of side effects that must be avoided:
+- Sending an AJAX request
+- Mutating global JS state
+- Injecting elements into the DOM
+- Changing the page title
+- `alert()`
+
+The lifecycle methods that run on the server are currently:
+
+- `getInitialState()`
+- `getDefaultProps()`
+- `componentWillMount()`
+- `render()`
+
+If you need to execute any of the above listed side effects,
+you must do so in `componentDidMount` or later in the component
+lifecycle. These functions are not executed server-side.
 
 ----------------------------------
 ### React libraries and components
