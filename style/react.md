@@ -236,7 +236,7 @@ An example of a browser-specific API is `canvas.getContext()`.
 The output must be deterministic. One way to get
 non-deterministic output is to generate random
 IDs in `getInitialState()`, and have the output
-of render depend on that ID.
+of render depend on that ID. Don't do this.
 
 #### Side effect free until `componentDidMount`
 
@@ -258,8 +258,8 @@ The lifecycle methods that run on the server are currently:
 - `render()`
 
 If you need to execute any of the above listed side effects,
-it must be done in `componentDidMount` or later in the component
-lifecycle. These parts are not executed server-side.
+you must do so in `componentDidMount` or later in the component
+lifecycle. These functions are not executed server-side.
 
 ----------------------------------
 ### React libraries and components
