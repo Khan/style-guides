@@ -69,7 +69,7 @@ Interactions with these frameworks embody a complex responsibility; their vended
 
 `UIViewController`s often entangle many responsibilities:
 
-1. Receiving lifecycle and system events from UIKit and instantiating `UIView`s, and handling user-interaction gestures.
+1. Receiving lifecycle and system events from UIKit and instantiating `UIView`s; handling user-interaction gestures.
 2. Transforming model data for presentation.
 3. Performing side effects (e.g. network requests, I/O) in response to user actions.
 
