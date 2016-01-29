@@ -417,7 +417,7 @@ Yes:
 #### Use modules, not global variables
 
 In most of our major JavaScript repositories (webapp, perseus,
-khan-exerises), we use some form of module system like
+khan-exercises), we use some form of module system like
 [RequireJS](http://requirejs.org/) or
 [browserify](http://browserify.org/), or in the case of webapp our own
 home built thing that works similarly to browserify.
