@@ -131,6 +131,6 @@ Avoid architectural approaches which will require you to test a component in con
 
 A few strategies which help components be useful in isolation:
 
- * moving more functionality to the value layer (aka playing "the value layer game")
+ * moving more functionality to the value layer (aka playing ["the value layer game"](https://realm.io/news/andy-matuschak-controlling-complexity/))
  * using dependency injection
  * making methods `static` or free
