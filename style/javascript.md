@@ -686,6 +686,7 @@ isString | `typeof obj === "string"` | `_.isString(obj)`
 keys | `Object.keys(obj)` | `_.keys(obj)`
 last | `someArray[someArray.length - 1]` <sup>[5](#u5)</sup> | `_.last(someArray)`
 map | `array.map(mapFn)` | `_.map(array, mapFn)`
+map (object) | `Object.entries(obj).map(([key, val]) => mapFn(val, key))` | `_.map(obj, mapFn)`
 max | `Math.max(...array)` | `_.max(array)`
 object | <pre>Object.entries(obj).reduce(<br>(result, [key, val]) => {<br>&nbsp;&nbsp;&nbsp;&nbsp;result[key] = value;<br>&nbsp;&nbsp;&nbsp;&nbsp;return result;<br>})</pre> | <pre>\_.object(\_.map(obj, (val, key) => {<br>&nbsp;&nbsp;&nbsp;&nbsp;return [key, value];<br>})</pre>
 omit (array) | `array.filter(prop => !props.includes(prop))` | `_.omit(array, props)`
