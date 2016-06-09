@@ -243,7 +243,7 @@ variety.
 
 All files and classes should have JSDoc comments.
 
-JSDoc can be parsed by a number of open source tools, and must be well-formed. 
+JSDoc can be parsed by a number of open source tools, and must be well-formed.
 
 Syntax:
 ```js
@@ -264,7 +264,7 @@ compatibility information.  As an example:
  * the profile page.
  *
  * These utilities were not written to be a general purpose utility
- * for the entire code base, but has been optimized with the 
+ * for the entire code base, but has been optimized with the
  * assumption that the Profile namespace is fully loaded.
 
  */
@@ -388,7 +388,7 @@ var c = fn(a, b);
 
 A single var statement is bad because:
 
-* If you forget a comma, you just made a global 
+* If you forget a comma, you just made a global
 * It originated when people wanted to save bytes, but we have a minifier
 * It makes line-based diffs/editing messier
 * It encourages C89-style declarations at the top of scope, preventing
