@@ -681,6 +681,7 @@ has (array) | `array.includes(value)` | `_.has(array, value)`
 has (object) | `obj.hasOwnProperty(value)` <sup>[4](#u4)</sup> | `_.has(obj, value)`
 isArray | `Array.isArray(someObj)` | `_.isArray(someObj)`
 isFunction | `typeof fn === "function"` | `_.isFunction(fn)`
+isNull | `obj === null` | `_.isNull(obj)`
 isString | `typeof obj === "string"` | `_.isString(obj)`
 keys | `Object.keys(obj)` | `_.keys(obj)`
 last | `someArray[someArray.length - 1]` <sup>[5](#u5)</sup> | `_.last(someArray)`
