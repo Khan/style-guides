@@ -8,6 +8,7 @@
   * [File names](#file-names)
   * [Indentation](#indentation)
   * [Braces](#braces)
+  * [Spaces](#spaces)
   * [Line length](#line-length)
   * [require() lines.](#require-lines)
 * [Comments and documentation](#comments-and-documentation)
@@ -148,6 +149,45 @@ if (blah) {
 } else {
     baz2();
 }
+```
+
+#### Spaces
+
+Don't insert extra spaces between parens, brackets, or braces.
+
+No:
+```js
+// Literals:
+const fancyPants = pants.map((pant) => ({ ...pant, isFancy: true }));
+const toCartesian = (r, theta) => [ r * cos(theta), r * sin(theta) ];
+
+// Destructuring:
+const { StyleSheet, css } = require('aphrodite');
+const [ x, y ] = coordinates;
+
+// Template strings:
+const mission = `A ${ price }, ${ quality } education for ${ clientele }.`;
+
+// Parens:
+if ( ( a === b ) || ( b === c ) ) {...}
+```
+
+Yes:
+```js
+// Literals:
+const fancyPants = pants.map((pant) => ({...pant, isFancy: true}));
+const toCartesian = (r, theta) => [r * cos(theta), r * sin(theta)];
+
+// Destructuring:
+const {StyleSheet, css} = require('aphrodite');
+const [x, y] = coordinates;
+
+
+// Template strings:
+const mission = `A ${price}, ${quality} education for ${clientele}.`;
+
+// Parens:
+if ((a === b) || (b === c)) {...}
 ```
 
 #### Line length
