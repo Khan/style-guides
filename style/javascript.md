@@ -22,12 +22,12 @@
   * [Avoid href="#" for JavaScript triggers](#avoid-href-for-javascript-triggers)
   * [Use modules, not global variables](#use-modules-not-global-variables)
 * [ES6/7 rules](#es67-rules)
-  * [Use =&gt; instead of bind(this) ](#use--instead-of-bindthis)
+  * [Use =&gt; instead of bind(this)](#use--instead-of-bindthis)
   * [Use backticks for string interpolation](#use-backticks-for-string-interpolation)
   * [Do not use ES6 classes for React classes](#do-not-use-es6-classes-for-react-classes)
   * [Do not use async/await or generators](#do-not-use-asyncawait-or-generators)
-  * [Do not use Set or Map ](#do-not-use-set-or-map)
-  * [Use let and const for new files; do not use var ](#use-let-and-const-for-new-files-do-not-use-var)
+  * [Do not use Set or Map](#do-not-use-set-or-map)
+  * [Use let and const for new files; do not use var](#use-let-and-const-for-new-files-do-not-use-var)
 * [Library rules](#library-rules)
   * [Use $ for jQuery](#use--for-jquery)
   * [Use `Promise` instead of `$.when()` or `$.Deferred()`](#use-promise-instead-of-when-or-deferred)
@@ -394,7 +394,7 @@ if (someVariable == null) {
 ```
 
 Though you will often want to just check against falsey values, and
-can just say `if (!someVariable) { ... }`.
+can just say `if (!someVariable) {...}`.
 
 #### Array and Object literals
 
@@ -521,13 +521,13 @@ feature and avoiding the old:
 | Construct | Use...                                | ...instead of |
 | --------- | ------------------------------------- | ---------------------- |
 | backticks | `` `http://${host}/${path}` `` | `"http://" + host + "/" + path` |
-| destructuring | `var { x, y } = a;` | `var x = a.x; var y = a.y;` |
-| fat arrow | `foo(() => { ... })` | `foo(function() { ... }.bind(this))` |
+| destructuring | `var {x, y} = a;` | `var x = a.x; var y = a.y;` |
+| fat arrow | `foo(() => {...})` | `foo(function() {...}.bind(this))` |
 | let/const | `let a = 1; const b = "4EVAH"; a++;` | `var a = 1; var b = "4EVAH"; a++;` |
 | includes | `array.includes(item)` | `array.indexOf(item) !== -1` |
-| for/of | `for (const [key, value] of Object.entries(obj)) { ... }` | `_.each(obj, function(value, key) { ... })` |
-| spread | `{ ...a, ...b, c: d }` | `_.extend({}, a, b, { c: d })` |
-| rest params | `function(bar, ...args) { foo(...args); }` | `function(bar) { var args = Array.prototype.slice.call(arguments, 1); foo.apply(null, args); }` |
+| for/of | `for (const [key, value] of Object.entries(obj)) {...}` | `_.each(obj, function(value, key) {...})` |
+| spread | `{...a, ...b, c: d}` | `_.extend({}, a, b, {c: d})` |
+| rest params | `function(bar, ...args) {foo(...args);}` | `function(bar) {var args = Array.prototype.slice.call(arguments, 1); foo.apply(null, args);}` |
 
 #### Use `=>` instead of `bind(this)`
 
@@ -637,7 +637,7 @@ It's also important to note that Promises do not throw exceptions. If you wish t
 We now provide a polyfill for the [`fetch()` method](https://developer.mozilla.org/en-US/docs/Web/API/GlobalFetch/fetch). We should use this for all Ajax-style requests. We wrote a wrapper around `fetch()` which adds in some Khan Academy-specific logic (such as adding cachebusting parameters and handling API Action Results). The interface to `khanFetch()` is exactly the same as the normal `fetch()` function. You can use it like:
 
 ```
-const { khanFetch } = require("./path-to-shared-package/khan-fetch.js");
+const {khanFetch} = require("./path-to-shared-package/khan-fetch.js");
 ```
 
 ##### `$.get()`
@@ -647,8 +647,8 @@ Get some textual data:
 ```
 khanFetch("/some.json")
     .then((response) => response.text())
-    .then((text) => { /* Use the textual data... */ })
-    .catch((err) => { /* Handle server error... */ });
+    .then((text) => {/* Use the textual data... */})
+    .catch((err) => {/* Handle server error... */});
 ```
 
 Get some JSON data (same use case as `$.getJSON`).
@@ -656,8 +656,8 @@ Get some JSON data (same use case as `$.getJSON`).
 ```
 khanFetch("/some.json")
     .then((response) => response.json())
-    .then((json) => { /* Use the JSON data... */ })
-    .catch((err) => { /* Handle server error... */ });
+    .then((json) => {/* Use the JSON data... */})
+    .catch((err) => {/* Handle server error... */});
 ```
 
 ##### `$.post()`
@@ -673,14 +673,14 @@ khanFetch("/api/some/endpoint", {
     body: JSON.stringify(myJSONObject),
 })
     .then((response) => response.json())
-    .then((json) => { /* Use the JSON data... */ })
-    .catch((err) => { /* Handle server error... */ });
+    .then((json) => {/* Use the JSON data... */})
+    .catch((err) => {/* Handle server error... */});
 ```
 
 POSTing form data to an API andpoint and getting JSON back. This is the default encoding that `$.post` used, so this should be used in place of `$.post(url, data)`. We wrote a function called `formUrlencode` to make this easy:
 
 ```
-const { khanFetch, formUrlencode } = require("./path-to-shared-package/khan-fetch.js");
+const {khanFetch, formUrlencode} = require("./path-to-shared-package/khan-fetch.js");
 
 khanFetch("/api/some/endpoint", {
     method: "POST",
@@ -690,8 +690,8 @@ khanFetch("/api/some/endpoint", {
     }),
 })
     .then((response) => response.json())
-    .then((json) => { /* Use the JSON data... */ })
-    .catch((err) => { /* Handle server error... */ });
+    .then((json) => {/* Use the JSON data... */})
+    .catch((err) => {/* Handle server error... */});
 ```
 
 #### Don't use Underscore
@@ -705,7 +705,7 @@ What follows is a method-by-method set of equivalents for what Underscore provid
 Method | Use...                                | ...instead of
 --------- | ------------------------------------- | ----------------------
 bind | `fn.bind(someObj, args)` | `_.bind(fn, someObj, args)`
-bind | `(a, b) => { ... }` <sup>[1](#u1)</sup> | `_.bind(function(a, b) { ... }, this)`
+bind | `(a, b) => {...}` <sup>[1](#u1)</sup> | `_.bind(function(a, b) {...}, this)`
 bindAll | `obj.method = obj.method.bind(someObj);` <sup>[2](#u2)</sup> | `_.bindAll(someObj, "method")`
 clone | No alternative at the moment! <sup>[3](#u3)</sup> |
 debounce | Our custom lodash build. |
@@ -733,7 +733,7 @@ object | <pre>Object.entries(obj).reduce(<br>(result, [key, val]) => {<br>&nbsp;
 omit (array) | `array.filter(prop => !props.includes(prop))` | `_.omit(array, props)`
 omit (object) | <pre>Object.keys(obj).reduce((result, prop) => {<br>&nbsp;&nbsp;&nbsp;&nbsp;if (!props.includes(prop)) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result[prop] = attrs[prop];<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}, {})</pre> | `_.omit(obj, props)`
 once | `$(...).one("click", ...)` | `$(...).on("click", _.once(...))`
-once | <pre>{<br>&nbsp;&nbsp;&nbsp;&nbsp;method: () => {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (this._initDone) { return; }<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this._initDone = true;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}</pre>| `{ method: _.once(() => { ... }) }`</pre>
+once | <pre>{<br>&nbsp;&nbsp;&nbsp;&nbsp;method: () => {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (this._initDone) {return;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this._initDone = true;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}</pre>| `{method: _.once(() => {...})}`</pre>
 once | <pre>var getResult = () => {<br>&nbsp;&nbsp;&nbsp;&nbsp;let val = $.when(...).then(...);<br>&nbsp;&nbsp;&nbsp;&nbsp;getResult = () => val;<br>&nbsp;&nbsp;&nbsp;&nbsp;return val;<br>};</pre> | <pre>var getResult = _.once(() => {<br>&nbsp;&nbsp;&nbsp;&nbsp;return $.when(...).then(...);<br>});</pre>
 range | `Array(n).fill().map((_, i) => i * i)` | `_.range(0, n).map(i => i * i)`
 sortBy | `result = result.sort((a, b) => a.prop - b.prop)` | `_.sortBy(result, "prop")`
