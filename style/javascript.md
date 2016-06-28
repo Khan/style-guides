@@ -105,18 +105,18 @@ Extra indentation should be used to clearly distinguish multiline
 conditionals from the following block of code (similar to the PEP8
 rule for Python code).
 
-No:
-```js
-if (someReallyLongBooleanVariableIMeanReallyLong &&
-    someOtherBoolean) {
-    return "monkeys";
-}
-```
-
 Yes:
 ```js
 if (someReallyLongBooleanVariableIMeanReallyLong &&
         someOtherBoolean) {
+    return "monkeys";
+}
+```
+
+No:
+```js
+if (someReallyLongBooleanVariableIMeanReallyLong &&
+    someOtherBoolean) {
     return "monkeys";
 }
 ```
@@ -127,12 +127,6 @@ Braces should always be used on blocks.
 
 `if/else/for/while/try` should always have braces and always go on
 multiple lines, with the opening brace on the same line.
-
-No:
-```js
-if (true)
-    blah();
-```
 
 Yes:
 ```js
@@ -151,26 +145,15 @@ if (blah) {
 }
 ```
 
+No:
+```js
+if (true)
+    blah();
+```
+
 #### Spaces
 
 Don't insert extra spaces between parens, brackets, or braces.
-
-No:
-```js
-// Literals:
-const fancyPants = pants.map((pant) => ({ ...pant, isFancy: true }));
-const toCartesian = (r, theta) => [ r * cos(theta), r * sin(theta) ];
-
-// Destructuring:
-const { StyleSheet, css } = require('aphrodite');
-const [ x, y ] = coordinates;
-
-// Template strings:
-const mission = `A ${ price }, ${ quality } education for ${ clientele }.`;
-
-// Parens:
-if ( ( a === b ) || ( b === c ) ) {...}
-```
 
 Yes:
 ```js
@@ -188,6 +171,23 @@ const mission = `A ${price}, ${quality} education for ${clientele}.`;
 
 // Parens:
 if ((a === b) || (b === c)) {...}
+```
+
+No:
+```js
+// Literals:
+const fancyPants = pants.map((pant) => ({ ...pant, isFancy: true }));
+const toCartesian = (r, theta) => [ r * cos(theta), r * sin(theta) ];
+
+// Destructuring:
+const { StyleSheet, css } = require('aphrodite');
+const [ x, y ] = coordinates;
+
+// Template strings:
+const mission = `A ${ price }, ${ quality } education for ${ clientele }.`;
+
+// Parens:
+if ( ( a === b ) || ( b === c ) ) {...}
 ```
 
 #### Line length
@@ -214,20 +214,6 @@ repository.
 
 Imports should be sorted lexicographically (as per unix `sort`).
 
-No:
-```js
-var _ = require("underscore");
-var $ = require("jquery");
-var APIActionResults = require("../shared-package/api-action-results.js");
-var Cookies = require("../shared-package/cookies.js");
-var cookieStoreRenderer = require("../shared-package/cookie-store.handlebars");
-var HappySurvey = require("../missions-package/happy-survey.jsx");
-var DashboardActions = require('./datastores/dashboard-actions.js');
-var React = require("react");
-var UserMission = require("../missions-package/user-mission.js");
-var Kicksend = require("../../third_party/javascript-khansrc/mailcheck/mailcheck.js");
-```
-
 Yes:
 ```js
 var $ = require("jquery");
@@ -241,23 +227,26 @@ var DashboardActions = require('./datastores/dashboard-actions.js');
 var HappySurvey = require("../missions-package/happy-survey.jsx");
 var UserMission = require("../missions-package/user-mission.js");
 var cookieStoreRenderer = require("../shared-package/cookie-store.handlebars");
+```
+
+No:
+```js
+var _ = require("underscore");
+var $ = require("jquery");
+var APIActionResults = require("../shared-package/api-action-results.js");
+var Cookies = require("../shared-package/cookies.js");
+var cookieStoreRenderer = require("../shared-package/cookie-store.handlebars");
+var HappySurvey = require("../missions-package/happy-survey.jsx");
+var DashboardActions = require('./datastores/dashboard-actions.js');
+var React = require("react");
+var UserMission = require("../missions-package/user-mission.js");
+var Kicksend = require("../../third_party/javascript-khansrc/mailcheck/mailcheck.js");
 ```
 
 Object destructuring should go after all require lines.
 
 Write requires on a single line, even if they extend past 80 chars, so they are easier to sort. Our linter automatically skips require lines when checking line length.
 
-No:
-```js
-var React = require("react");
-var ReactART = require("react-art");
-var Group = ReactART.Group;
-var Path = ReactART.Path;
-var _ = require("underscore");
-
-var ItemStore = require("./item-store.jsx");
-```
-
 Yes:
 ```js
 var React = require("react");
@@ -268,6 +257,17 @@ var ItemStore = require("./item-store.jsx");
 
 var Group = ReactART.Group;
 var Path = ReactART.Path;
+```
+
+No:
+```js
+var React = require("react");
+var ReactART = require("react-art");
+var Group = ReactART.Group;
+var Path = ReactART.Path;
+var _ = require("underscore");
+
+var ItemStore = require("./item-store.jsx");
 ```
 
 
@@ -412,18 +412,18 @@ rule for consistency with arrays.  Plus, `{}` is more readable.
 
 #### Use a new var statement for each declaration
 
-No:
-```js
-var a = "foo",
-    b = a + "bar",
-    c = fn(a, b);
-```
-
 Yes:
 ```js
 var a = "foo";
 var b = a + "bar";
 var c = fn(a, b);
+```
+
+No:
+```js
+var a = "foo",
+    b = a + "bar",
+    c = fn(a, b);
 ```
 
 A single var statement is bad because:
@@ -444,14 +444,14 @@ Here's a discussion on Stack Overflow about options:
 http://stackoverflow.com/questions/134845/href-tag-for-javascript-links-or-javascriptvoid0
 
 
-No:
-```js
-<a href="#">Flag</a>
-```
-
 Yes:
 ```js
 <a href="javascript:void 0">Flag</a>
+```
+
+No:
+```js
+<a href="#">Flag</a>
 ```
 
 #### Use modules, not global variables
@@ -465,6 +465,20 @@ home built thing that works similarly to browserify.
 In all of these cases, there are mechanisms for an explicit
 import/export mechanism rather than using global variables to export
 functionality.
+
+Yes:
+```js
+var Jungle = {
+    welcome: function() {
+        // ...
+    },
+    haveFever: function() {
+        // ...
+    }
+};
+
+module.exports = Jungle;
+```
 
 No:
 ```js
@@ -487,20 +501,6 @@ window.welcome = function() {
 window.haveFever = function() {
    // ...
 };
-```
-
-Yes:
-```js
-var Jungle = {
-    welcome: function() {
-        // ...
-    },
-    haveFever: function() {
-        // ...
-    }
-};
-
-module.exports = Jungle;
 ```
 
 You can export multiple objects in one file, but consider if it
@@ -584,14 +584,14 @@ to replace all uses of `var` in existing files.
 We use `$` as the jQuery identifier, as opposed to typing out `jQuery`
 in full.
 
-No:
-```js
-jQuery(".some-class span").hide();
-```
-
 Yes:
 ```js
 $(".some-class span").hide();
+```
+
+No:
+```js
+jQuery(".some-class span").hide();
 ```
 
 ### Use `Promise` instead of `$.when()` or `$.Deferred()`
