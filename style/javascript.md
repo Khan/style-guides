@@ -677,14 +677,13 @@ khanFetch("/api/some/endpoint", {
     .catch((err) => {/* Handle server error... */});
 ```
 
-POSTing form data to an API andpoint and getting JSON back. This is the default encoding that `$.post` used, so this should be used in place of `$.post(url, data)`. We wrote a function called `formUrlencode` to make this easy:
-
+POSTing form data to an API andpoint and getting JSON back. This is the default encoding that `$.post` used, so this should be used in place of `$.post(url, data)`. To make this use case easier, we wrote a function called `formUrlencode` which automatically encodes the form data and appends the `"Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"` header.
 ```
 const {khanFetch, formUrlencode} = require("./path-to-shared-package/khan-fetch.js");
 
 khanFetch("/api/some/endpoint", {
     method: "POST",
-    body: formUrlencode({
+    ...formUrlencode({
         key1: "value1",
         key2: 2,
     }),
