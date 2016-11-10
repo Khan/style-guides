@@ -2,6 +2,7 @@
 
 ----
 * [Syntax](#syntax)
+  * [Use ES6 classes.](#use-es6-classes)
   * [Order your methods with lifecycle first and render last.](#order-your-methods-with-lifecycle-first-and-render-last)
   * [Name handlers handleEventName.](#name-handlers-handleeventname)
   * [Name handlers in props onEventName.](#name-handlers-in-props-oneventname)
@@ -31,6 +32,47 @@ In addition to these style rules, you may also be interested in
 
 ----------
 ### Syntax
+
+#### Use ES6 classes.
+
+1. Use static properties for `propTypes` and `defaultProps`.
+2. Use an instance property for `state`.
+3. Autobind event handlers and callbacks.
+
+    Example:
+
+    ```jsx
+    class Foo extends React.Component {
+        static propTypes = {}
+
+        static defaultProps = {}
+
+        state = {}
+
+        handleClick = (e) => {
+            // handle the click
+        }
+    }
+    ```
+
+4. If `state` depends on `props`, define it in the constructor.
+
+    Example:
+
+    ```jsx
+    class Bar extends React.Component {
+        constructor(props) {
+            super(props);   // must be called first
+            this.state = {
+                value: props.value,
+            };
+        }
+    }
+    ```
+
+5. Use higher order components instead of mixins.
+   ES6 style classes do not support mixins.  See the [mixins considered harmful](https://facebook.github.io/react/blog/2016/07/13/mixins-considered-harmful.html)
+   blog post for details of how to convert mixins to higher order components.
 
 #### Order your methods with lifecycle first and render last.
 
@@ -229,7 +271,7 @@ the `KA` global, e.g. `KA.getUserId()`, or data extracted from
 the DOM such as `data-` properties attached to other DOM nodes.
 
 Examples of browser-specific state include the user agent,
-the screen resolution, the device pixel density etc. 
+the screen resolution, the device pixel density etc.
 
 An example of a browser-specific API is `canvas.getContext()`.
 
@@ -306,4 +348,4 @@ these:
 
 This list is far from complete.
 
-### 
+###
