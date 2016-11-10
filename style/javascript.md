@@ -24,7 +24,7 @@
 * [ES6/7 rules](#es67-rules)
   * [Use =&gt; instead of bind(this)](#use--instead-of-bindthis)
   * [Use backticks for string interpolation](#use-backticks-for-string-interpolation)
-  * [Do not use ES6 classes for React classes](#do-not-use-es6-classes-for-react-classes)
+  * [Use ES6 classes for React classes](#use-es6-classes-for-react-classes)
   * [Do not use async/await or generators](#do-not-use-asyncawait-or-generators)
   * [Do not use Set or Map](#do-not-use-set-or-map)
   * [Use let and const for new files; do not use var](#use-let-and-const-for-new-files-do-not-use-var)
@@ -543,14 +543,18 @@ use rest params like `(...args) => foo(args)`.
 
 `+` is not forbidden, but backticks are encouraged!
 
-#### Do not use ES6 classes for React classes
+#### Use ES6 classes for React classes
 
-Continue to use React's `createClass`, which works with React mixins.
+See [React Use ES6 classes](react.md#use-es6-classes) for details.
 
-For classes outside of React -- which should actually be pretty rare
--- there is no style rule whether to use ES6 classes or not.
+For classes outside of React -- which should actually be pretty rare -- you
+should also use ES6 classes.  Some things to keep in mind when using ES6
+classes:
 
-This rule may change once React supports mixins with ES6 classes.
+- Use `static` properties instead of adding propertiers to the class object
+  after defining the class.
+- Use `extend` syntax for inheritance.
+
 
 #### Do not use `async`/`await` or generators
 
