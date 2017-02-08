@@ -96,7 +96,7 @@ We are planning (as of 13 April 2012) on moving to a world where third-party (ak
 
 ## Docstrings
 
-All non-trivial methods should have docstrings. Docstrings should follow guidelines here: [PEP257](http://www.python.org/dev/peps/pep-0257/).  For more examples, see the [Google style guide](http://google-styleguide.googlecode.com/svn/trunk/pyguide.html?showone=Comments#Comments) around docstrings.
+All non-trivial methods should have docstrings. Docstrings should follow guidelines here: [PEP257](http://www.python.org/dev/peps/pep-0257/).  For more examples, see the [Google style guide](https://google.github.io/styleguide/pyguide.html#Comments) around docstrings.
 
 To summarize: There are two types of docstrings, long-form and short-form.
 
