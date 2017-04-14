@@ -8,9 +8,10 @@
   * [File names](#file-names)
   * [Indentation](#indentation)
   * [Braces](#braces)
+  * [Ternaries](#ternaries)
   * [Spaces](#spaces)
   * [Line length](#line-length)
-  * [require() lines.](#require-lines)
+  * [Imports](#imports)
 * [Comments and documentation](#comments-and-documentation)
   * [Inline Comments](#inline-comments)
   * [Top level file and class comments](#top-level-file-and-class-comments)
@@ -28,6 +29,10 @@
   * [Do not use async/await or generators](#do-not-use-asyncawait-or-generators)
   * [Do not use Set or Map](#do-not-use-set-or-map)
   * [Use let and const for new files; do not use var](#use-let-and-const-for-new-files-do-not-use-var)
+* [Flow rules](#flow-rules)
+    * [Enabling Flow](#enabling-flow)
+    * [Be specific](#be-specific)
+    * [Use the long form for arrays](#use-the-long-form-for-arrays)
 * [Library rules](#library-rules)
   * [Use $ for jQuery](#use--for-jquery)
   * [Use `Promise` instead of `$.when()` or `$.Deferred()`](#use-promise-instead-of-when-or-deferred)
@@ -151,6 +156,50 @@ if (true)
     blah();
 ```
 
+#### Ternaries
+
+Ideally, ternaries are written on a single line:
+
+```js
+const color = selected ? 'green' : 'orange'
+```
+
+If the ternary is too long to fit on a single line, within the
+79-character limit, each fork of the ternary should be on its own
+line.
+
+Yes:
+```js
+const result = reallyVeryLengthConditional
+    ? superLongComputationOfPositiveResult()
+    : superLongComputationOfNegativeResult();
+
+const style = selected
+    ? {
+        color: 'green',
+        fontWeight: 'bold',
+    }
+    : {
+        color: 'orange',
+    }
+```
+
+No:
+```js
+// Unnecessarily split:
+const color = selected
+    ? 'green'
+    : 'orange';
+
+// Too long
+const result = reallyVeryLengthConditional ? superLongComputationOfPositiveResult() : superLongComputationOfNegativeResult();
+
+// Incorrectly split
+const result = reallyVeryLengthConditional ?
+    superLongComputationOfPositiveResult() :
+    superLongComputationOfNegativeResult();
+```
+
 #### Spaces
 
 Don't insert extra spaces between parens, brackets, or braces.
@@ -197,13 +246,27 @@ character rule," leaving 1 character for the newline.)
 
 This is consistent with our Python style guide, which adheres to PEP8.
 
+#### Imports
 
-#### `require()` lines.
+**Module System**
+Prefer ES2015 imports (`import foo from 'foo'`) to CommonJS requires
+(`const foo = require('foo')`). [Learn more about ES2015 imports](https://docs.google.com/document/d/12kT37eK7VusH8OK4vU9b7AmXN2G0Sw8g0c1LZ83-l-c/edit#heading=h.2j42ozjzl6id).
 
-Separate first party and third party `require()` lines, and sort
-`require()` lines.
+*NOTE*: Khan Academy employees working on the webapp need to be aware of an exception to this rule. The `i18n` module should still be required using CommonJS:
 
-This is to mirror our [Python import style](python.md#import-style),
+```js
+const i18n = require("../shared-package/i18n.js");
+```
+
+The reasoning for this is that our build process that updates translations
+looks for very specific markup, and ES2015 modules get transpiled by Babel
+to an incompatible syntax.
+
+**Grouping**
+There should be 3 clusters of imports: third-party (aka vendor) libraries,
+first-party libraries, and Flow types.
+
+This approximately mirrors our [Python import style](python.md#import-style),
 though there are no "system" imports in JavaScript.
 
 "First party" code is anything we wrote whose primary source lives in
@@ -212,64 +275,47 @@ we didn't write it.  KaTeX is third party in webapp because even
 though we wrote it, its primary sources lives in a different
 repository.
 
-Imports should be sorted lexicographically (as per unix `sort`).
+**Named Imports**
+Named imports should go on the same line, when possible. When 3+ named
+imports are imported, break each named import onto its own line.
 
 Yes:
 ```js
-var $ = require("jquery");
-var Kicksend = require("../../third_party/javascript-khansrc/mailcheck/mailcheck.js");
-var React = require("react");
-var _ = require("underscore");
+import $ from "jquery";
+import Kicksend from "../../third_party/javascript-khansrc/mailcheck/mailcheck.js";
+import React, {Component} from "react";
+import _ from "underscore";
 
-var APIActionResults = require("../shared-package/api-action-results.js");
-var Cookies = require("../shared-package/cookies.js");
-var DashboardActions = require('./datastores/dashboard-actions.js');
-var HappySurvey = require("../missions-package/happy-survey.jsx");
-var UserMission = require("../missions-package/user-mission.js");
-var cookieStoreRenderer = require("../shared-package/cookie-store.handlebars");
+import APIActionResults from "../shared-package/api-action-results.js";
+import Cookies from "../shared-package/cookies.js";
+import DashboardActions from './datastores/dashboard-actions.js';
+import HappySurvey from "../missions-package/happy-survey.jsx";
+import UserMission from "../missions-package/user-mission.js";
+import cookieStoreRenderer from "../shared-package/cookie-store.handlebars";
+import mainThing, {
+    firstOtherThing,
+    secondOtherThing,
+    thirdOtherThing,
+} from '../somewhere';
+
+import type {Thing} from '../somewhere-else';
 ```
 
 No:
 ```js
-var _ = require("underscore");
-var $ = require("jquery");
-var APIActionResults = require("../shared-package/api-action-results.js");
-var Cookies = require("../shared-package/cookies.js");
-var cookieStoreRenderer = require("../shared-package/cookie-store.handlebars");
-var HappySurvey = require("../missions-package/happy-survey.jsx");
-var DashboardActions = require('./datastores/dashboard-actions.js');
-var React = require("react");
-var UserMission = require("../missions-package/user-mission.js");
-var Kicksend = require("../../third_party/javascript-khansrc/mailcheck/mailcheck.js");
-```
-
-Object destructuring should go after all require lines.
-
-Write requires on a single line, even if they extend past 80 chars, so they are easier to sort. Our linter automatically skips require lines when checking line length.
-
-Yes:
-```js
-var React = require("react");
-var ReactART = require("react-art");
+// Avoid require()
 var _ = require("underscore");
 
-var ItemStore = require("./item-store.jsx");
+// Avoid grouping first- and third-party libraries
+import React from 'react';
+import APIActionResults from "../shared-package/api-action-results.js";
 
-var Group = ReactART.Group;
-var Path = ReactART.Path;
+// Avoid breaking named imports onto multiple lines when possible.
+import React, {
+    Component
+} from 'react';
+
 ```
-
-No:
-```js
-var React = require("react");
-var ReactART = require("react-art");
-var Group = ReactART.Group;
-var Path = ReactART.Path;
-var _ = require("underscore");
-
-var ItemStore = require("./item-store.jsx");
-```
-
 
 ------------------------------
 ### Comments and documentation
@@ -577,8 +623,28 @@ evinced.
 
 `let` is superior to `var`, so prefer it for new code.
 
-This rule will become mandatory everywhere once we have done a fixit
-to replace all uses of `var` in existing files.
+
+-----------------
+### Flow rules
+
+Flow is a type-checker that runs at compile-time to catch issues and
+prevent bugs. It should be enabled and used for all new JS.
+
+[Read the full documentation](https://docs.google.com/document/d/1PQngtANm48R1d90WFJS3t1gixGeiShHgq_ef7j3hYYE/edit) for more information on setup, usage, and troubleshooting.
+
+#### Use the long form for arrays.
+
+The long form (`Array<X>`) should be preferred over the short-hand form (`X[]`).This is to avoid ambiguity when using [Maybe types](https://flow.org/en/docs/types/maybe/).
+
+Good:
+```
+const arr: Array<number> = [1, 2, 3];
+```
+
+Bad:
+```
+const arr: number[] = [1, 2, 3];
+```
 
 -----------------
 ### Library rules

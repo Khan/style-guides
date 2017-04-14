@@ -3,7 +3,7 @@
 ----
 * [Syntax](#syntax)
   * [Use ES6 classes.](#use-es6-classes)
-  * [Order your methods with lifecycle first and render last.](#order-your-methods-with-lifecycle-first-and-render-last)
+  * [Component method and property ordering](#component-method-and-property-ordering)
   * [Name handlers handleEventName.](#name-handlers-handleeventname)
   * [Name handlers in props onEventName.](#name-handlers-in-props-oneventname)
   * [Open elements on the same line.](#open-elements-on-the-same-line)
@@ -12,8 +12,10 @@
 * [Language features](#language-features)
   * [Make "presentation" components pure.](#make-presentation-components-pure)
   * [Prefer <a href="http://facebook.github.io/react/docs/interactivity-and-dynamic-uis.html#what-components-should-have-state">props to state</a>.](#prefer-props-to-state)
-  * [Use <a href="http://facebook.github.io/react/docs/reusable-components.html">propTypes</a>.](#use-proptypes)
   * [<em>Never</em> store state in the DOM.](#never-store-state-in-the-dom)
+* [Type-checking with Flow](#type-checking-with-flow)
+  * [Use Flow instead of PropTypes](#use-flow-instead-of-proptypes)
+  * [Annotate `children`](#annotate-children)
 * [Server-side rendering](#server-side-rendering)
   * [Props must be plain JSON](#props-must-be-plain-json)
   * [Pure functions of props and state](#pure-functions-of-props-and-state)
@@ -33,21 +35,25 @@ In addition to these style rules, you may also be interested in
 ----------
 ### Syntax
 
-#### Use ES6 classes.
+#### Use ES2015 classes.
 
-1. Use static properties for `propTypes` and `defaultProps`.
+1. Use static properties for `defaultProps`.
 2. Use an instance property for `state`.
-3. Autobind event handlers and callbacks.
+3. Use flow for `props` and `state`.
+4. Autobind event handlers and callbacks.
 
     Example:
 
     ```jsx
-    class Foo extends React.Component {
-        static propTypes = {}
+    import React, {Component} from 'react';
 
+    class Foo extends Component {
         static defaultProps = {}
 
         state = {}
+
+        state: {}
+        props: {}
 
         handleClick = (e) => {
             // handle the click
@@ -55,12 +61,12 @@ In addition to these style rules, you may also be interested in
     }
     ```
 
-4. If `state` depends on `props`, define it in the constructor.
+5. If `state` depends on `props`, define it in the constructor.
 
     Example:
 
     ```jsx
-    class Bar extends React.Component {
+    class Bar extends Component {
         constructor(props) {
             super(props);   // must be called first
             this.state = {
@@ -70,26 +76,65 @@ In addition to these style rules, you may also be interested in
     }
     ```
 
-5. Use higher order components instead of mixins.
+6. Use higher order components instead of mixins.
    ES6 style classes do not support mixins.  See the [mixins considered harmful](https://facebook.github.io/react/blog/2016/07/13/mixins-considered-harmful.html)
    blog post for details of how to convert mixins to higher order components.
 
-#### Order your methods with lifecycle first and render last.
+**Codemods**
 
-Within your react component, you should order your methods like so:
+Converting legacy components to use ES2015 classes? There's a codemod for that.
 
-1. lifecycle methods (in chronological order:
-      `getDefaultProps`,
-      `getInitialState`,
-      `componentWillMount`,
-      `componentDidMount`,
-      `componentWillReceiveProps`,
-      `shouldComponentUpdate`,
-      `componentWillUpdate`,
-      `componentDidUpdate`,
-      `componentWillUnmount`)
-2. everything else
-3. `render`
+Convert one or more files with the following command:
+
+```bash
+$ tools/react-codemod.js class path/to/file path/to/other/file
+```
+
+#### Component method and property ordering
+
+Ordering within a React component is strict. The following example
+illustrates the precise ordering of various component methods and
+properties:
+
+```js
+class Foo extends Component {
+    // Static properties
+    static defaultProps = {}
+
+    // The `constructor` method
+    constructor() {
+        super();
+    }
+
+    // Instance properties
+    state = { hi: 5}
+
+    // Flow `state` annotation
+    // NOTE: `state` is special. All other Flow annotations live below.
+    state: { hi: number }
+
+    // React lifecycle hooks.
+    // They should follow their chronological ordering:
+    // 1. componentWillMount
+    // 2. componentDidMount
+    // 3. componentWillReceiveProps
+    // 4. shouldComponentUpdate
+    // 5. componentWillUpdate
+    // 6. componentDidUpdate
+    // 7. componentWillUnmount
+    componentDidMount() { ... }
+
+    // All other Flow annotations
+    props: { ... }
+    someRandomData: string,
+
+    // All other instance methods
+    handleClick = (e) => { ... }
+
+    // Finally, the render method
+    render() { ... }
+}
+```
 
 #### Name handlers `handleEventName`.
 
@@ -175,8 +220,8 @@ function.
 Note that the file can still define multiple classes, it just can't export
 more than one.
 
-
 ---------------------
+
 ### Language features
 
 #### Make "presentation" components pure.
@@ -209,36 +254,79 @@ way.
 Copying data from props to state can cause the UI to get out of sync
 and is especially bad.
 
-#### Use [propTypes](http://facebook.github.io/react/docs/reusable-components.html).
-
-React Components should always have complete `propTypes`. Every
-attribute of `this.props` should have a corresponding entry in
-`propTypes`. This documents that props need to be passed to a model.
-([example](https://github.com/Khan/webapp/blob/32aa862769d4e93c477dc0ee0388816056252c4a/javascript/search-package/search-results-list.jsx#L14))
-
-If you are passing data through to a child component, you can use
-the prop-type `<child-class>.propTypes.<prop-name>`.
-
-Avoid these non-descriptive prop-types:
-   * `React.PropTypes.any`
-   * `React.PropTypes.array`
-   * `React.PropTypes.object`
-
-Instead, use
-   * `React.PropTypes.arrayOf`
-   * `React.PropTypes.objectOf`
-   * `React.PropTypes.instanceOf`
-   * `React.PropTypes.shape`
-
-As an exception, if you are passing data through to a child component,
-and you can't use `<child-class>.propTypes.<prop-name>` for some
-reason, you can use `React.PropType.any`.
-
 #### *Never* store state in the DOM.
 
 Do not use `data-` attributes or classes. All information
 should be stored in JavaScript, either in the React component itself,
 or in a React store if using a framework such as Redux.
+
+----------------------------------
+
+### Type-checking with [Flow](https://flow.org/)
+
+Flow is a type-checker that runs at compile-time to catch issues
+and prevent bugs. It should be used on all new components.
+
+For more information on how we use Flow, check the [Javascript
+style guide](https://github.com/Khan/style-guides/blob/master/style/javascript.md#flow-rules)
+
+#### Use Flow instead of PropTypes
+
+Props can now be validated with Flow instead of React's PropTypes.
+Flow provides a much more expressive way to set types for props,
+with the additional benefits of being able to annotate state (and
+any additional methods or data).
+
+Types can be defined on the class itself:
+
+```jsx
+class Foo extends Component {
+    props: {
+        name: string,
+        uniqueId: number,
+        complexData: {
+            setOfThings: Array<string>,
+        },
+    }
+}
+```
+
+If you're writing a Stateless Functional Component, or if you use
+lifecycle methods that reference props (eg. `componentDidUpdate`),
+you may find it helpful to define a Props type, and reference it:
+
+```jsx
+type Props = {
+    numbers: Array<number>,
+};
+
+class Foo extends Component {
+    props: Props
+
+    shouldComponentUpdate(nextProps: Props) {
+        ...
+    }
+}
+
+const StatelessFoo = ({numbers}: Props) => {
+    ...
+};
+
+```
+
+#### Annotate `children`
+
+`children` is something of a special prop in React. Most often,
+you'll want to pass a React element (or an array of React elements).
+
+This can be annotated like so:
+
+```js
+children: React$Element<any> | Array<React$Element<any>>
+```
+
+Note that this is only the most common use-case for children.
+Children can also be other types (like a string, or a function).
 
 ----------------------------------
 
@@ -308,7 +396,7 @@ lifecycle. These functions are not executed server-side.
 
 #### Do not use Backbone models.
 
-Use flux actions, or `$.ajax` directly, instead.
+Use redux actions, or `fetch` directly, instead.
 
 We are trying to remove Backbone from our codebase entirely.
 
@@ -320,8 +408,9 @@ Try to avoid using jQuery plugins. When necessary, wrap the jQuery
 plugin with a React component so you only have to touch the jQuery
 once.
 
-You can use `$.ajax` (but no other function, such as `$.post`) for
-network communication.
+Use the [fetch API](https://developer.mozilla.org/en-US/docs/Web/API/GlobalFetch/fetch) (accessible via khanFetch) instead of `$.ajax`.
+
+For more information on khanFetch, see the [javascript style guide](https://github.com/Khan/style-guides/blob/master/style/javascript.md#use-khanfetch-instead-of-ajaxgetpostgetjson).
 
 #### Reuse standard components.
 
