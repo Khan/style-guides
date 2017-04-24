@@ -168,9 +168,9 @@ Start your file with a module docstring. Do not put a shebang line (`#!/usr/bin/
 
 > *Exception:* if the python file is meant to be executable, it should start with the following shebang line:
 
-> ```py
-#!/usr/bin/env python
-```
+>```py
+>#!/usr/bin/env python
+>```
 
 > *Rationale:* a shebang line is useless for non-executable files. An `__author__` line just gets out of date, and is better determined by looking at source control history in any case. Code is automatically copyrighted; a copyright line doesn't help. No need to put this useless boilerplate at the top of the file!
 
