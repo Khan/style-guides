@@ -71,7 +71,7 @@ I argue, though, this verbiage is beneficial: in the same way that self.xxx is a
 
 ## Import style
 
-All imports should be at the top of the file, separated (by blank lines) into three sections: system imports, third-party imports (including appengine), and khan academy-written imports. All non-system imports should be specified relative to the root of the ka python tree; do not use absolute_import. Each section should be sorted alphabetically. Only one import should be on each line.
+All imports should be at the top of the file, separated (by blank lines) into three sections: system imports, third-party imports (including appengine), and khan academy-written imports. Note that imports from `third_party` and `shared` are considered "third party" even if they are maintained by Khan Academy and only used in webapp. All non-system imports should be specified relative to the root of the ka python tree; do not use absolute_import. Each section should be sorted alphabetically. Only one import should be on each line.
 
 > *Rationale:* When I see autocomplete.foo() in the code, and I want to know what it does, it’s helpful to know if I should be looking on the web (because autocomplete is part of the python distribution), or in the local source tree (because autocomplete is written by us). It’s also helpful to know if it’s code we wrote (and the barrier to hacking on it is low) or code someone else wrote (which means it may be easier to just work around any problems I have with it). The three sections tell me that with just a quick glance at the top of the file. Plus, since each section is alphabetical, it’s easy for me to find the import within the section.
 
@@ -91,8 +91,6 @@ Here are some constructs that are not consistent with this style rule:
 from app import App, Zebra    # BAD: two imports on the same line
 import .models                # BAD: relative import.  Alternative: from <curmodule> import models
 ```
-
-We are planning (as of 13 April 2012) on moving to a world where third-party (aka ‘vendor’) code all lives in a third_party/ directory, making this rule easier to follow. Until then,don't get too worked up about whether oauth_provider imports (say) are in section 2 or section 3.
 
 ## Docstrings
 
