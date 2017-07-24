@@ -2,7 +2,7 @@
 
 ----
 * [Syntax](#syntax)
-  * [Use ES6 classes.](#use-es6-classes)
+  * [Use ES6 classes.](#use-es2015-classes)
   * [Component method and property ordering](#component-method-and-property-ordering)
   * [Name handlers handleEventName.](#name-handlers-handleeventname)
   * [Name handlers in props onEventName.](#name-handlers-in-props-oneventname)
