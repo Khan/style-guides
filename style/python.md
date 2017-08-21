@@ -72,7 +72,8 @@ I argue, though, this verbiage is beneficial: in the same way that self.xxx is a
 ### absolute_import
 
 Always use `from __future__ import absolute_import` as the first
-import in your source file.
+import in your source file.  Do not use relative imports (`from
+. import foo`) unless you have to.
 
 > *Rationale:* Suppose you have both `intl.py` and
 `content/videos/intl.py`, and you say `import intl` in your source
@@ -81,6 +82,14 @@ your source file lives (in content/videos or elsewhere), which is
 confusing.  By making all imports be related to the repository-root,
 it avoids ambiguity, making it easier for code readers -- and code
 writers! -- to figure out the exact file that's being imported.
+
+The reason not to use relative imports is to avoid two ways of doing
+things: some people importing a module as an absolute path and some as
+a relative path makes it harder for readers to understand, harder to
+do tooling, and so forth.  (We could have settled on _always_ using
+relative imports, but combining the two does not make sense.)
+Sometimes, when you're doing fancy things with import hooks or the
+like you have to use relative imports, but minimize these cases.
 
 This means that all non-system imports will be specified relative to
 the root of the KA python tree.
