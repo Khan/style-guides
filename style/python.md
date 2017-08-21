@@ -69,9 +69,25 @@ m = possibly_a_very_long_name.MyClass(...)
 
 I argue, though, this verbiage is beneficial: in the same way that self.xxx is an immediate sign at the point of use that xxx is a member of the current class, x.MyClass is an immediate sign that MyClass comes from file x (which often tells you more about what MyClass is for, and makes it easier to find in the source as well). This often tells you enough that you can continue reading the code, without needing a context switch to look up the where MyClass is defined and what it says.
 
-## Import style
+### absolute_import
 
-All imports should be at the top of the file, separated (by blank lines) into three sections: system imports, third-party imports (including appengine), and khan academy-written imports. Note that imports from `third_party` and `shared` are considered "third party" even if they are maintained by Khan Academy and only used in webapp. All non-system imports should be specified relative to the root of the ka python tree. Using `from __future__ import absolute_import` is encouraged, to make it clear to us and to python that we don't want relative imports. Each section should be sorted alphabetically. Only one import should be on each line.
+Always use `from __future__ import absolute_import` as the first
+import in your source file.
+
+> *Rationale:* Suppose you have both `intl.py` and
+`content/videos/intl.py`, and you say `import intl` in your source
+file.  Without absolute-imports, what gets imported depends on where
+your source file lives (in content/videos or elsewhere), which is
+confusing.  By making all imports be related to the repository-root,
+it avoids ambiguity, making it easier for code readers -- and code
+writers! -- to figure out the exact file that's being imported.
+
+This means that all non-system imports will be specified relative to
+the root of the KA python tree.
+
+### Import style
+
+All imports should be at the top of the file, separated (by blank lines) into three sections: system imports, third-party imports (including appengine), and khan academy-written imports. Note that imports from `third_party` and `shared` are considered "third party" even if they are maintained by Khan Academy and only used in webapp.
 
 > *Rationale:* When I see autocomplete.foo() in the code, and I want to know what it does, it’s helpful to know if I should be looking on the web (because autocomplete is part of the python distribution), or in the local source tree (because autocomplete is written by us). It’s also helpful to know if it’s code we wrote (and the barrier to hacking on it is low) or code someone else wrote (which means it may be easier to just work around any problems I have with it). The three sections tell me that with just a quick glance at the top of the file. Plus, since each section is alphabetical, it’s easy for me to find the import within the section.
 
@@ -173,6 +189,26 @@ Start your file with a module docstring. Do not put a shebang line (`#!/usr/bin/
 > *Rationale:* a shebang line is useless for non-executable files. An `__author__` line just gets out of date, and is better determined by looking at source control history in any case. Code is automatically copyrighted; a copyright line doesn't help. No need to put this useless boilerplate at the top of the file!
 
 TODO(csilvers): should we put in a line indicating licensing?
+
+## Symbol naming
+
+When naming a top-level symbol -- function, class, or variable -- use
+a leading underscore if the symbol is private to the module: that is,
+nobody may reference that symbol except for code in the module itself
+and its associate test file(s).
+
+Modules themselves may have names starting with a leading underscore
+to mean that all symbols in that module are private to the _package_
+the symbols is in.  A "package" is basically the top-level directory
+that the module is under, within webapp.  (Example packages are
+"content", "login", and "missions.")  Note that an underscored symbol
+within an underscored module is still considered private to the
+module.
+
+Inside a class, use a leading underscore to indicate a symbol (method
+or class variable) is private to that class and its subclasses.  If
+you want a symbol to be private to the class itself, and not even
+visible to subclasses, use a leading double-underscore.
 
 ## Unused variables
 
@@ -319,3 +355,24 @@ class Rectangle(Blob):
                 highlight > 100):
             raise ValueError("sorry, you lose")
 ```
+
+## Classes
+
+Use classes primarily as a container for data.  You can use methods
+for functionality that is "core" to the purpose of a class -- one way
+to tell is if that method has a lot of callers, rather than just one
+or two -- or when needed for object-oriented programming, but try to
+keep them to a minimum.  Prefer top-level functions instead.
+
+> Rationale: in Python, the implementation of a class needs to be in a
+  single file.  If you have a class with many methods
+  doing many different things, each with its own set of dependencies,
+  then the file defining that class ends up with a huge number of
+  dependencies.  This can make the class hard to use, since importing
+  it may cause circular imports -- or at the least, bloat your
+  dependency graph.
+
+For the same reason, prefer one class per file.  (You can make
+exceptions for classes that are very closely related, or a class that
+is used primarily as a member of another class.)
+
