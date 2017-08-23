@@ -370,8 +370,11 @@ class Rectangle(Blob):
 Use classes primarily as a container for data.  You can use methods
 for functionality that is "core" to the purpose of a class -- one way
 to tell is if that method has a lot of callers, rather than just one
-or two -- or when needed for object-oriented programming, but try to
-keep them to a minimum.  Prefer top-level functions instead.
+or two -- or when needed for method-name dispatch (e.g., having a
+bunch of different classes define their own `get_search_data()` so a
+function can call `node.get_search_data()` and get the right function
+for that node-type), but try to keep them to a minimum.  Prefer
+top-level functions instead.
 
 > Rationale: in Python, the implementation of a class needs to be in a
   single file.  If you have a class with many methods
