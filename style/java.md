@@ -67,3 +67,15 @@ The square brackets form part of the _type_, not the variable.
 Good: `String[] args`
 Bad: `String args[]`
 
+
+## Use TODO comments with author name
+
+Extending [AOSP style guide](https://source.android.com/setup/code-style#use-todo-comments), TODOs should include the string TODO in all caps, the author's name in parentheses, and a colon:
+
+`// TODO(author): ...`
+
+
+## Use `final` variables when possible
+
+Mark variables that should only be initialized once as `final`. This includes function arguments.
+
