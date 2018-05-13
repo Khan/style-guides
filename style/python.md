@@ -153,7 +153,7 @@ A function (including methods and generators) must have a docstring, unless it m
 
 The docstring should describe the function's calling syntax and its semantics, not its implementation.
 
-The docstring should end with the following special sections (see [the Google style guide](http://google-styleguide.googlecode.com/svn/trunk/pyguide.html?showone=Comments#Comments) for more details).
+The docstring should end with the following special sections (see [the Google style guide](https://google.github.io/styleguide/pyguide.html?showone=Comments#Comments) for more details).
 
 - **Arguments:** List each parameter by name, and a description of it. The description can span several lines (use a hanging indent if so). Use instead of "Args". 
 - **Returns:** (or **Yields:** for generators): Describe the type and semantics of the return value. If the function only returns None, this section is not required.
