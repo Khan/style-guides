@@ -514,7 +514,7 @@ functionality.
 
 Yes:
 ```js
-var Jungle = {
+const Jungle = {
     welcome: function() {
         // ...
     },
@@ -523,7 +523,7 @@ var Jungle = {
     }
 };
 
-module.exports = Jungle;
+export default Jungle;
 ```
 
 No:
@@ -622,6 +622,10 @@ evinced.
 #### Use `let` and `const` for new files; do not use `var`
 
 `let` is superior to `var`, so prefer it for new code.
+
+#### Use `export default` and `export`
+`export default foo` instead of `module.exports = foo`
+`export {foo, bar}` instead of `module.exports = {foo, bar}`
 
 
 -----------------
