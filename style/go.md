@@ -549,7 +549,7 @@ observed.  See their documentation for more.
 > needed; use tasks for larger or more important blocks of asynchronous
 > work.]
 
-### Defer log.PanicHandler
+### Handle panics inside goroutines
 
 When starting a goroutine, make sure you call a defer that handles any
 panics, before doing anything else.  This ensures that a a panic in
