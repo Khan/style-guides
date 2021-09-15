@@ -172,7 +172,7 @@ func (
 ) {
     ...
 }
-
+```
 
 Sometimes, the best way is a temporary variable:
 ```
