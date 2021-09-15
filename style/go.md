@@ -25,7 +25,7 @@ public and lowercased names are visible to all files in the same
 package, we add an additional rule: if you want to declare that only
 _this_ file should access the symbol, name it with a leading
 underscore.
-```
+```go
 // style/visibility.go
 package style
 func AnyoneCanCall()                {}
@@ -80,7 +80,7 @@ urls, that are longer.
 Go is liberal in allowing line breaks without explicit continuation.
 Any binary operator that ends a line signals that the next line
 continues the same expression.  For example:
-```
+```go
 // bad
 if myLongCondition("isToo", long) && yourEvenLongerCondition("has", "so", "many", "arguments") {
     …
@@ -96,7 +96,7 @@ if myLongCondition("isToo", long) &&
 In general, this style is preferable to breaking up a single element
 of the condition.  When possible, break in a way that matches the
 precedence of the operators:
-```
+```go
 // bad
 if aa && ab && ac || ba &&
     bb && bc {
@@ -128,7 +128,7 @@ the wrapping right.)
 For function/method definitions, if the signature is too long for a
 single line, put each argument on its own line (note you will need a
 trailing comma):
-```
+```go
 // bad
 func (t *MyType) MyBadMethod(ctx context.Context, argumentOne string, argumentTwo string) (string, error) {
     ...
@@ -161,7 +161,7 @@ use the `nameOne, nameTwo type` style, but otherwise either the
 signature should be a single line, or each argument should have its
 own line.  The same wrapping is possible, albeit rarely necessary, for
 receivers and returns:
-```
+```go
 func (
     t *MyVeryLongReceiverTypeName,
 ) MyVeryLongMethodName(
@@ -175,7 +175,7 @@ func (
 ```
 
 Sometimes, the best way is a temporary variable:
-```
+```go
 // bad
 donationAsk.DefaultDonationFrequency = donationFrequencyGraphQLtoModel[*input.DefaultDonationFrequency]
 
@@ -188,7 +188,7 @@ A few lines get exceptions to even the 100 character rule, because
 there's no good way to wrap them.  These include machine-readable
 comments (like //go:generate), lines ending with a URL, or lines
 containing struct tags.
-```
+```go
 // ok
 var serviceURL = "https://www.my.long.service.domain.name/some/path/to/api/v1/my/call/yikes/"
 
@@ -207,7 +207,7 @@ declarations, like `var`, `const`, and `type`, may go on consecutive
 lines to each other, especially if they are related and fit on a
 single line.
 
-```
+```go
 // good
 type fooString string
 type barString string
@@ -309,7 +309,7 @@ Use [named
 returns](https://golang.org/doc/effective_go.html#named-results) if
 the types are not sufficient to tell what the return values mean; this
 is especially useful if multiple of them have the same type:
-```
+```go
 // bad
 func GetEmailBody(...) (string, string, error) { … }
 
@@ -343,7 +343,7 @@ identifier, or collides with another name), it's okay to use an
 abbreviated name, but don't abbreviate so far that the name is
 nonspecific.  (If the package is first-party, a better name may be in
 order!)  Do not import unqualified.  For example:
-```
+```go
 import (
     // good
     "net/http"
@@ -371,7 +371,7 @@ that.  We follow a style similar to python: standard library imports,
 third-party imports, and first-party imports go in separate blocks.
 We consider "pkg" imports from webapp to be first-party imports.  Each
 block is sorted (goimports enforces this).  For example:
-```
+```go
 // good
 import (
     "log"
@@ -406,7 +406,7 @@ import (
 ### Be sparing in using assignments in if statements
 
 Go lets you do -- perhaps encourages you to do -- code like this:
-```
+```go
 // bad
 if value, err := myfunc(); err != nil { ... }
 ```
@@ -416,7 +416,7 @@ lots of other stuff going on in that line as well.
 
 Clearer is to do the assignment separately, even though it's an extra
 line of code:
-```
+```go
 // good
 value, err := myfunc()
 if err != nil { ... }
@@ -445,7 +445,7 @@ The same applies for file paths: use `path/filepath`, not string
 manipulation.
 
 For example:
-```
+```go
 // bad
 return "https://" + req.Host + "/about"
 
@@ -488,7 +488,7 @@ promise-style structure.
 
 For more on this topic, see [this
 talk](https://drive.google.com/file/d/1nPdvhB0PutEJzdCq5ms6UI58dp50fcAN/view).
-```
+```go
 // good: doesn't use a goroutine
 func GetUserData(ctx ...) (*UserData, error) {
     err := ctx.Datastore().Get(...)
@@ -572,7 +572,7 @@ Channels are a great tool, and are often useful for returning results
 back from work happening in a goroutine.  However, using channels
 means paying attention to when they might block, and making sure to
 close them if needed.  Not all concurrent code needs channels.
-```
+```go
 // good: needs channels to do a select
 c := make(chan int)
 go func{
@@ -690,7 +690,7 @@ nil-ness in addition to checking for errors (but can still check
 separately for not-found vs other errors if they care to).
 
 Good:
-```
+```go
 func GetMyModel(key *datastore.Key) (*MyModel, error) {
     var mymodel MyModel
     err := ctx.Datastore().Get(ctx, key, &mymodel)
@@ -699,7 +699,7 @@ func GetMyModel(key *datastore.Key) (*MyModel, error) {
 ```
 
 Bad:
-```
+```go
 func GetMyModel(key *datastore.Key) (*MyModel, error) {
     var mymodel MyModel
     err := ctx.Datastore().Get(ctx, key, &mymodel)
@@ -722,7 +722,7 @@ to support tear-down functionality, extra methods, and for
 consistency; see ADR-222 for more..  The API is more or less the same;
 see their respective godocs for details.  The receiver variable should
 always be named `suite`, e.g.
-```
+```go
 func (suite *mySuite) TestFoo() { … }
 ```
 
@@ -731,7 +731,7 @@ grouping is useful.  The suite type should come first, followed by the
 methods, then the runner-test.  If there are multiple suites, they
 should come one after the other, and not be interleaved; this makes it
 easy to see what code goes with what.
-```
+```go
 // good
 type mySuite struct{ servicetest.Suite }
 // methods of mySuite
@@ -752,13 +752,13 @@ methods must call the "super", i.e. suite.Suite.MethodName().
 
 The default style in Testify is for assertions to allow the test to
 continue running:
-```
+```go
 suite.Assert().Equal(3, 1 + 1)    // or assert.Equal
 suite.Assert().Equal(4, 2 + 3)
 ```
 will report two errors in the same test.  To exit the test if the
 assertion fails, one can use require:
-```
+```go
 suite.Require().Equal(3, 1 + 1)   // or require.Equal
 suite.Require().Equal(4, 2 + 3)   // will not run
 ```
@@ -769,7 +769,7 @@ can aid in debugging.  (See its documentation for details.)  Do not
 use `suite.Equal`: always use the equivalent and more explicit
 `suite.Assert().Equal`.  (One exception: `suite.FailNow(message)` is
 acceptable.)
-```
+```go
 // good
 suite.Require().Equal(3, 1 + 2)
 suite.All(
@@ -798,7 +798,7 @@ different inputs to test it on -- a table-driven test is often a good
 option.  Testify's `suite.Run` is useful for this: it makes each
 sub-case execute as a separate Go test, so failures will be reported
 individually.  Make sure to give each one a useful name.  For example:
-```
+```go
 // good
 func (suite *mySuite) TestF() {
     tests := []struct{
