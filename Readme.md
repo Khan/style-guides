@@ -25,6 +25,7 @@ In code reviews, it is common to put in TODOs when a reviewer points out some th
 - [React](/style/react.md)
 - [CSS](/style/css.md)
 - [Python](/style/python.md)
+- [Go](/style/go.md)
 - [Java](/style/java.md)
 - [ObjC](https://github.com/Khan/objective-c-style-guide) (hosted separately)
 - [iOS](/style/ios.md)
