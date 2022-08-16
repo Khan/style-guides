@@ -516,6 +516,11 @@ func GetUserData(ctx ...) (<-chan *UserData, error) {
 }
 ```
 
+> [Khan-specific: Instead of ErrGroup or -- gasp! -- WaitGroup,
+> use `pkg/external/opentelemetry/tracegroup`.  Its API is
+> similar to ErrGroup but it takes care of promoting the context
+> for you, and also automatically sends traces for each goroutine.]
+
 ### Arrange for all your goroutines to exit
 
 If you start a goroutine, it's your responsibility to arrange for it
