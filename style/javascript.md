@@ -776,7 +776,7 @@ Method | Use...                                | ...instead of
 bind | `fn.bind(someObj, args)` | `_.bind(fn, someObj, args)`
 bind | `(a, b) => {...}` <sup>[1](#u1)</sup> | `_.bind(function(a, b) {...}, this)`
 bindAll | `obj.method = obj.method.bind(someObj);` <sup>[2](#u2)</sup> | `_.bindAll(someObj, "method")`
-clone | No alternative at the moment! <sup>[3](#u3)</sup> |
+clone | `{...obj}` | `_.clone(obj)`
 debounce | Our custom lodash build. |
 defer | `setTimeout(fn, 0);` | `_.defer(fn);`
 delay | `setTimeout(fn, 2000);` | `_.delay(fn, 2000);`
