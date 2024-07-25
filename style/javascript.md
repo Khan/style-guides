@@ -2,11 +2,16 @@
 
 ----------
 
-## Syntax
-
-### Formatting
+## Linting, Formatting, and TypeChecking
 
 We use [Prettier](https://prettier.io/) for formatting our code. You shouldn't need to stress about how your code is formatted, just let Prettier do its job.
+
+We also use [ESLint](https://eslint.org/) to enforce a number of rules (some of which are mentioned here, some of which are clarified by other documentation).
+
+We highly recommend that you don't ignore ESLint errors, nor ignore TypeScript errors (as both of
+those could be preventing serious issues from appearing).
+
+## Syntax
 
 ### Naming
 
@@ -48,12 +53,16 @@ Don't worry about the import order, we prefer using a tool to handle this for us
 
 ### Inline Comments
 
-Inline style comments should be of the `//` variety, not the `/* */`
+Inline comments should be of the `//` variety, not the `/* */`
 variety.
 
 ### Top level file, class, and component comments
 
-All files, classes, and components should have a comment.
+All files, classes, and components should have a comment (if a file only has a single class or component, then there's no need for an extra comment for the whole file).
+
+Ideally, we should use a JSDoc-style comment, so that IDEs can pick them up for display. You
+don't, necessarily, have to worry about documenting each argument (or prop), you can rely upon
+TypeScript for that, instead.
 
 Syntax:
 
@@ -136,7 +145,7 @@ const a = "foo",
     c = fn(a, b);
 ```
 
-A single const statement is bad because:
+A single `const` statement is bad because:
 
 * If you forget a comma, you just made a global
 * It originated when people wanted to save bytes, but we have a minifier
