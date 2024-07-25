@@ -37,7 +37,10 @@ test-files-like-this.stories.tsx
 **Module System**
 We exclusively use ES2015 imports (`import foo from 'foo'` or `import('foo')`).
 
-Don't worry about the import order, we prefer the [Prettier Sort Imports Plugin](https://github.com/trivago/prettier-plugin-sort-imports).
+Don't worry about the import order, we prefer using a tool to handle this for us, like:
+
+* [Prettier Sort Imports Plugin](https://github.com/IanVS/prettier-plugin-sort-imports)
+* [ESLint Sort Imports](https://eslint.org/docs/latest/rules/sort-imports)
 
 ----------
 
